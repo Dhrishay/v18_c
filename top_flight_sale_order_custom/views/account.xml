@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_move_view_form_inherit" model="ir.ui.view">
+        <field name="name">account.move.view.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[hasclass('oe_invoice_lines_tab')]" position="after">
+                <group col="12">
+                    <group colspan="5">
+                        <label for="tax_rate" string="Tax rate"/>
+                        <div>
+                            <field name="tax_rate" class="oe_inline"/>
+                            <span class="o_form_label oe_inline">%</span>
+                        </div>
+                        <field name="tax_amount"/>
+                        <field name="total_tax"/>
+                    </group>
+                </group>
+            </xpath>
+            
+            <xpath expr="//field[@name='invoice_date']" position="after">
+                <field name="invoice_type"
+                       invisible="move_type not in ('out_invoice', 'out_refund', 'out_receipt')"
+                       readonly="state != 'draft'"/>
+            </xpath>
+            
+            <xpath expr="//div[@name='currency_conversion_div']" position="after">
+                <div name="inverse_invoice_currency_rate_div" class="d-flex text-muted float-start" invisible="currency_id == company_currency_id">
+                    <span>1 </span>
+                    <field name="currency_id" readonly="True" options="{'no_open': True}"/>
+                    <span> = </span>
+                    <field name="inverse_invoice_currency_rate" digits="[12,6]" readonly="True"/>
+                    <span> </span>
+                    <field name="company_currency_id" readonly="True" options="{'no_open': True}"/>
+                </div>
+            </xpath>
+            
+<!--            Export invoice report fields     -->
+            <xpath expr="//notebook" position="inside">
+                <page name="export_invoice_tab" id="export_invoice_tab" string="Export Invoice">
+                    <group>
+                        <group>
+                            <field name="reverse_charge"/>
+                            <field name="ie_code" readonly="1"/>
+                            <field name="attention_partner_id"/>
+                            <field name="goods_origin"/>
+                            <field name="destination"/>
+                            <field name="transport_means"/>
+                            <field name="loading_port"/>
+                            <field name="discharge_port"/>
+                        </group>
+                        
+                        <group>
+                            <field name="delivery_terms"/>
+                            <field name="pre_carriage"/>
+                            <field name="receipt_place"/>
+                            <field name="total_box"/>
+                            <field name="gross_weight"/>
+                            <field name="net_weight"/>
+                            <field name="box_size"/>
+                            <field name="remark"/>
+                        </group>
+                        
+                        <group string="E-Invoice Details">
+                            <field name="irn_number"/>
+                            <field name="ack_number"/>
+                            <field name="ack_date"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            
+            
+            <xpath expr="//page[@id='invoice_tab']//field[@name='invoice_line_ids']//field[@name='name']" position="after">
+                <field name="dbk_code"/>
+                <field name="consignee_hsn"/>
+            </xpath>
+            
+        </field>
+    </record>
+</odoo>

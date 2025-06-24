@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="seq_account_move_local" model="ir.sequence">
+        <field name="name">Account Move Local</field>
+        <field name="code">account.move.local</field>
+        <field name="prefix"></field>
+        <field name="padding">3</field>
+        <field name="company_id" eval="False"/>
+        <field eval="1" name="number_next"/>
+        <field eval="1" name="number_increment"/>
+    </record>
+
+    <record id="seq_account_move_export" model="ir.sequence">
+        <field name="name">Account Move Export</field>
+        <field name="code">account.move.export</field>
+        <field name="prefix"></field>
+        <field name="padding">3</field>
+        <field name="company_id" eval="False"/>
+        <field eval="1" name="number_next"/>
+        <field eval="1" name="number_increment"/>
+    </record>
+
+    <record id="seq_account_move_rodtpe" model="ir.sequence">
+        <field name="name">Account Move RoDTEP</field>
+        <field name="code">account.move.rodtpe</field>
+        <field name="prefix"></field>
+        <field name="padding">3</field>
+        <field name="company_id" eval="False"/>
+        <field eval="1" name="number_next"/>
+        <field eval="1" name="number_increment"/>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_invoice_signature_block">
+        <div class="row" style="margin-top: 0px;">
+            <div class="col-6">
+                <div class="pt-2" t-field="company.report_footer"/>
+                <span t-if="report_type == 'pdf' and display_name_in_footer" style="text-align:left" class="text-muted" t-out="str(o.name) + ', '">(document name)</span>
+                <span t-if="report_type == 'pdf'" style="text-align:left" class="text-muted">Page<span class="page"/>/<span class="topage"/></span>
+            </div>
+            
+            <div t-if="o.show_signature_area" style="text-align: right; padding-right: 40px; margin-top: -25px;"
+                 t-attf-class="col-6">
+                <t t-if="o.signature">
+                    <span style="display: block;">For Sree Nila Aerospace Private Limited</span>
+                    <img t-att-src="image_data_uri(o.signature)" style="max-height: 6rem;" alt="Signature"/>
+                </t>
+                <t t-else="">
+                    <!-- leave an empty space allowing to sign the invoice manually -->
+                    <div class="col-12" style="min-height: 10rem"/>
+                </t>
+                <!-- Add authorized signatory text -->
+                <p class="text-right" style="padding-right: 65px;">Authorized signatory</p>
+            </div>
+        </div>
+    </template>
+    
+    
+    <template id="report_layout_inherit" inherit_id="account.report_invoice_document">
+        <xpath expr="//div[@id='right-elements']//div[contains(@t-if, 'o.show_signature_area')]" position="attributes">
+            <attribute name="style">display: none;</attribute>
+        </xpath>
+        
+        <xpath expr="//div[@name='comment']" position="after">
+            <t t-if="num == 1">
+                <div class="text-muted mb-3" style="margin-top: -30px;">
+                    Account Name: SREE NILA AEROSPACE PRIVATE LIMITED <br/>
+                    Account Number: 0281102000017259<br/>
+                    IFSC CODE: IBKL0000281
+                </div>
+            </t>
+        </xpath>
+        
+        <xpath expr="//td[@name='td_quantity']/span" position="attributes">
+            <attribute name="t-options">{'widget': 'float', 'precision': 2}</attribute>
+        </xpath>
+        
+        <xpath expr="//div[@id='right-elements']" position="attributes">
+            <attribute name="style">page-break-inside: avoid;</attribute>
+        </xpath>
+
+        <xpath expr="//t[@t-set='layout_document_title']//span[@t-if=&quot;o.move_type == &apos;out_invoice&apos; and o.state == &apos;posted&apos;&quot;]"
+               position="replace">
+            <span t-if="o.move_type == 'out_invoice' and o.state == 'posted' and num == 4">Delivery Challan</span>
+            <span t-if="o.move_type == 'out_invoice' and o.state == 'posted' and num != 4">Invoice</span>
+        </xpath>
+
+        <xpath expr="//*[contains(@t-field, 'o.name')]" position="replace">
+            <t>
+                <t t-set="invoice_prefix"
+                   t-value="'TFI' if o.invoice_type == 'local' else ('EXP' if o.invoice_type == 'export' else ('RoDTEP' if o.invoice_type == 'rodtep' else 'INV'))"/>
+                <t t-set="invoice_name"
+                   t-value="o.name if o.name and o.name != '/' else ''"/>
+                No.:
+                <t t-esc="invoice_prefix"/>
+                <t t-if="invoice_name">/
+                    <t t-esc="invoice_name.split('/', 1)[1] if '/' in invoice_name else invoice_name"/>
+                </t>
+            </t>
+        </xpath>
+
+    </template>
+
+    <template id="report_invoice_inherit" inherit_id="account.report_invoice">
+
+        <xpath expr="//t[@t-call='web.html_container']" position="replace">
+            <t t-set="copy_range" t-value="range(1, 3) if docs and docs[0].invoice_type == 'rodtep' else range(1, 5)"/>
+            <t t-foreach="copy_range" t-as="num">
+                <div style="page-break-before: always;">
+                    <t t-set="num_text"
+                       t-value="'Original For Recipient Copy' if num == 1 else 'Duplicate Copy' if num == 2 else 'Triplicate Copy' if num == 3 else 'Delivery Challan'"/>
+                    <t t-call="web.html_container">
+                        <t t-foreach="docs" t-as="o">
+                            <t t-set="lang" t-value="o.partner_id.lang"/>
+                            <t t-if="o.invoice_type == 'local'">
+                                <t t-call="sale_order_custom.local_invoice_report"/>
+                            </t>
+                            <t t-elif="o.invoice_type == 'export'">
+                                <t t-call="sale_order_custom.export_invoice_report"/>
+                            </t>
+                            <t t-else="">
+                                <t t-call="account.report_invoice_document" t-lang="lang" t-with-num="num"/>
+                            </t>
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </xpath>
+
+
+    </template>
+    
+    <template id="external_layout_bubble_inherit_cr" inherit_id="web.external_layout_bubble">
+        <xpath expr="//div[contains(@t-field, 'company.report_footer')]" position="replace">
+            <t t-if="o and o._name == 'account.move'">
+                <!-- Call the signature template only for invoices -->
+                <t t-call="sale_order_custom.report_invoice_signature_block"/>
+            </t>
+            <t t-else="">
+                <!-- Default behavior for other documents -->
+                <div class="border-top pt-2" t-field="company.report_footer"/>
+                <span t-if="report_type == 'pdf' and display_name_in_footer" class="text-muted" t-out="str(o.name) + ', '">(document name)</span>
+            </t>
+        </xpath>
+        
+        <xpath expr="//div[@name='company_address']/ul" position="before">
+            <div class="copy-text">
+                <div style="text-align: right; font-size: 18px; font-weight: bold;">
+                    <span t-esc="num_text"/>
+                </div>
+            </div>
+        </xpath>
+    </template>
+    
+</odoo>
