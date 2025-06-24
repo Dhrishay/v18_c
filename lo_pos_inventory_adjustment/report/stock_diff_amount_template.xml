@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="stock_diff_amount_template">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout" t-lang="user.partner_id.lang">
+                <t t-set="lang" t-value="user.partner_id.lang"/>
+                <!-- <t t-set="font" t-value="''"/> -->
+                <t t-if="lang == 'lo_LA'">
+                    <t t-set="font" t-value="'Noto Sans Lao'"/>
+                </t>
+                <t t-else="">
+                    <t t-set="font" t-value="'Montserrat'"/>
+                </t>
+                <div class="page">
+                    <span t-attf-style="font-family: {{ font }}">
+                <!-- <div class="page" t-att-style='font-family: Montserrat, Saysettha OT;'> -->
+                    <!-- <style>
+                        table, td, th {
+                            border: 1px solid #000;
+                            font-family:Phetsarath OT;
+                            padding: 8px;
+                            font-size:14px
+                        }
+                        td{
+                            height: 20px;
+                            overflow: hidden;
+                            vertical-align: middle;
+                        }   
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                        }
+                        .border {
+                            border: 1px solid #000;
+                        }
+                    </style> -->
+
+                    <div class="oe_structure"/>
+                    <div class="text-center" style="font-size: 20px;font-weight: bold;">
+                            <p t-if="header['report_diff'] == 'no_diff'">Report Recount</p>
+                            <p t-else="">Report Diff Amount +-1</p>
+                    </div>
+                    <div class="row w-100">
+                        <div class="col-12 text-center" style="font-size: 16px;font-weight: bold;">
+                            <span>Date: </span><t t-esc="header['date_start']"/>
+                            <span> To </span>
+                            <t t-esc="header['date_end']"/>
+                        </div>
+                    </div>
+                    <div class="row w-100 mt-3">
+                        <div class="col-4"></div>
+                        <div class="col-4"></div>
+                        <div class="col-4 text-center">
+                            <img t-if="header['location_no']" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', header['pda'], 600, 100)" style="width:400px;height:60px;"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <span>Warehouse No: </span><t t-esc="header['pda']"/>
+                        </div>
+                        <div class="col-4">
+                            <span>PDA No: </span><t t-esc="header['pda']"/>
+                        </div>
+                        <div class="col-4">
+                            <span>Location No: </span><t t-esc="header['location_no']"/>
+                        </div>
+                    </div>
+                    <br/>
+                    
+                    <table class="table table-sm w-100" style="font-size: 12px;">
+                        <thead style="border-bottom: 2px solid #000;border-top: 2px solid #000;font-size: 13px;">
+                            <tr height="25">
+                                <th style="vertical-align:middle;text-align: center" rowspan="2">No</th>
+                                <th style="vertical-align:middle;" rowspan="2">Location No</th>
+                                <th style="vertical-align:middle;text-align: center" colspan="3">Barcode</th>
+                                <th style="vertical-align:middle" rowspan="2">Description</th>
+                                <th t-if="header['report_diff'] == 'no_diff'"  style="vertical-align:middle" rowspan="2">Recount Qty</th>
+                                <th style="vertical-align:middle;text-align: right" rowspan="2">On Hand</th>
+                                <th style="vertical-align:middle;text-align: right" rowspan="2">Counted Qty</th>
+                                <th style="vertical-align:middle;text-align: right" rowspan="2">Diff Qty</th>
+                                <th style="vertical-align:middle;text-align: right" rowspan="2">Cost</th>
+                                <th style="vertical-align:middle;text-align: right" rowspan="2">Diff AMT</th>
+                                <!-- <th style="vertical-align:middle;text-align: center">RECP</th> -->
+                            </tr>
+                            <tr>
+                                <th style="vertical-align:middle;">Unit</th>
+                                <th style="vertical-align:middle;">Pack</th>
+                                <th style="vertical-align:middle;">Box</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            <t t-set="total_cost" t-value="0"/>
+                            <t t-set="i" t-value="1"/>
+                            
+                            <t t-if="header['location_no'] != False">
+                                <t t-foreach="datas" t-as="data">
+                                    <tr height="40">
+                                        <td style="vertical-align:middle;" height="40" class="text-center"><t t-esc="i"/></td>
+                                        <td style="vertical-align:middle;"><t t-esc="data['location_no']"/></td>
+                                        <td style="vertical-align:middle;"><t t-esc="data['barcode']"/></td>
+                                        <td style="vertical-align:middle;"><t t-esc="data['product_name']"/></td>
+                                        <td style="vertical-align:middle;" t-if="header['report_diff'] == 'no_diff'"></td>
+                                        <td style="vertical-align:middle;" class="text-right"><div><t t-esc="data['qty_onhand']"/></div></td>
+                                        <td style="vertical-align:middle;" class="text-right"><div><t t-esc="data['counted_qty']"/></div></td>
+                                        <td style="vertical-align:middle;" class="text-right"><div><t t-esc="data['diff_qty']"/></div></td>
+                                        <td style="vertical-align:middle;" class="text-right"><div><t t-esc="data['cost']"/></div></td>
+                                        <td style="vertical-align:middle;" class="text-right"><div><t t-esc="data['diff_amount']"/></div></td>
+                                        <td style="vertical-align:middle;"></td>
+                                    </tr>
+                                    <t t-set="i" t-value="i+1"/>
+                                </t>
+                            </t>
+                            <t t-else="">
+                                <t t-foreach="temps" t-as="temp">
+                                    <t t-set="sum_qty_onhand" t-value="0"/>
+                                    <t t-set="sum_counted_qty" t-value="0"/>
+                                    <t t-set="sum_diff_qty" t-value="0"/>
+                                    <t t-set="cost_num" t-value="0"/>
+                                    <t t-set="sum_diff_amount" t-value="0"/>
+                                    <!-- <t t-set="sum_cost" t-value="0"/> -->
+                                    <t t-foreach="temps[temp]" t-as="qty">
+                                        <t t-set="barcode" t-value="qty['barcode']"/>
+                                        <t t-set="sum_qty_onhand" t-value="qty['qty_onhand_num']"/>
+                                        <t t-set="sum_counted_qty" t-value="sum_counted_qty + qty['counted_qty_num']"/>
+                                        <!-- <t t-set="sum_diff_qty" t-value="sum_counted_qty - sum_qty_onhand"/> -->
+                                        <t t-set="cost_num" t-value="qty['cost_num']"/>
+                                        <!-- <t t-set="sum_cost" t-value="sum_cost + qty['total_cost_num']"/> -->
+                                    </t>
+                                    <t t-set="sum_diff_amount" t-value="(sum_counted_qty - sum_qty_onhand) * cost_num"/>
+                                    <!-- <t t-if="total['diff_amount_start'] &lt;= sum_diff_amount and total['diff_amount_end'] &gt;= sum_diff_amount and total['diff_amount_end'] != 0"> -->
+                                    <t t-if="total['diff_amount_start'] != 0 or total['diff_amount_end'] != 0">
+                                        <tr height="40" class="font-weight-bold">
+                                            <td style="vertical-align:middle" height="40" class="text-center"><t t-esc="i"/></td>
+                                            <td style="vertical-align:middle"></td>
+                                            <td style="vertical-align:middle"><t t-esc="barcode['bar_unit']"/></td>
+                                            <td style="vertical-align:middle"><t t-esc="barcode['bar_pack']"/></td>
+                                            <td style="vertical-align:middle"><t t-esc="barcode['bar_box']"/></td>
+                                            <td style="vertical-align:middle"><t t-esc="temp"/></td>
+                                            <td style="vertical-align:middle" t-if="header['report_diff'] == 'no_diff'"></td>
+                                            <td style="vertical-align:middle" class="text-right"><div><t t-esc="'{:,.2f}'.format(sum_qty_onhand)"/></div></td>
+                                            <td style="vertical-align:middle" class="text-right"><div><t t-esc="'{:,.2f}'.format(sum_counted_qty)"/></div></td>
+                                            <td style="vertical-align:middle" class="text-right"><div><t t-esc="'{:,.2f}'.format(sum_counted_qty - sum_qty_onhand)"/></div></td>
+                                            <td style="vertical-align:middle" class="text-right"><div><t t-esc="'{:,.2f}'.format(cost_num)"/></div></td>
+                                            <td style="vertical-align:middle" class="text-right"><div><t t-esc="'{:,.2f}'.format(sum_diff_amount)"/></div></td>
+                                            <!-- <td></td> -->
+                                        </tr>
+                                        <t t-foreach="temps[temp]" t-as="line">
+                                            <tr>
+                                                <td style="vertical-align:middle" height="40" class="text-center"></td>
+                                                <td style="vertical-align:middle"><t t-esc="line['location_no']"/></td>
+                                                <td style="vertical-align:middle"><t t-esc="line['barcode']['bar_unit']"/></td>
+                                                <td style="vertical-align:middle"><t t-esc="line['barcode']['bar_pack']"/></td>
+                                                <td style="vertical-align:middle"><t t-esc="line['barcode']['bar_box']"/></td>
+                                                <td style="vertical-align:middle"><t t-esc="line['product_name']"/></td>
+                                                <td style="vertical-align:middle" t-if="header['report_diff'] == 'no_diff'"></td>
+                                                <td style="vertical-align:middle" class="text-right"></td>
+                                                <td style="vertical-align:middle" class="text-right"><t t-esc="line['counted_qty']"/></td>
+                                                <td style="vertical-align:middle" class="text-right"></td>
+                                                <td style="vertical-align:middle" class="text-right"></td>
+                                                <td style="vertical-align:middle" class="text-right"></td>
+                                                <!-- <td></td> -->
+                                            </tr>
+                                        </t>
+                                        <t t-set="i" t-value="i+1"/>
+                                    </t>
+                                    <!-- </t> -->
+                                    <t t-elif="total['diff_amount_start'] == 0 and total['diff_amount_end'] == 0">
+                                        <tr height="40" class="font-weight-bold">
+                                            <td style="vertical-align:middle" height="40" class="text-center"><t t-esc="i"/></td>
+                                            <td style="vertical-align:middle"></td>
+                                            <td style="vertical-align:middle"><t t-esc="barcode['bar_unit']"/></td>
+                                            <td style="vertical-align:middle"><t t-esc="barcode['bar_pack']"/></td>
+                                            <td style="vertical-align:middle"><t t-esc="barcode['bar_box']"/></td>
+                                            <td style="vertical-align:middle"><t t-esc="temp"/></td>
+                                            <td style="vertical-align:middle" t-if="header['report_diff'] == 'no_diff'"></td>
+                                            <td style="vertical-align:middle" class="text-right"><div><t t-esc="'{:,.2f}'.format(sum_qty_onhand)"/></div></td>
+                                            <td style="vertical-align:middle" class="text-right"><div><t t-esc="'{:,.2f}'.format(sum_counted_qty)"/></div></td>
+                                            <td style="vertical-align:middle" class="text-right"><div><t t-esc="'{:,.2f}'.format(sum_counted_qty - sum_qty_onhand)"/></div></td>
+                                            <td style="vertical-align:middle" class="text-right"><div><t t-esc="'{:,.2f}'.format(cost_num)"/></div></td>
+                                            <td style="vertical-align:middle" class="text-right"><div><t t-esc="'{:,.2f}'.format(sum_diff_amount)"/></div></td>
+                                            <!-- <td></td> -->
+                                        </tr>
+                                        <t t-foreach="temps[temp]" t-as="line">
+                                            <tr height="40">
+                                                <td style="vertical-align:middle" height="40" class="text-center"></td>
+                                                <td style="vertical-align:middle"><t t-esc="line['location_no']"/></td>
+                                                <td style="vertical-align:middle"><t t-esc="line['barcode']['bar_unit']"/></td>
+                                                <td style="vertical-align:middle"><t t-esc="line['barcode']['bar_pack']"/></td>
+                                                <td style="vertical-align:middle"><t t-esc="line['barcode']['bar_box']"/></td>
+                                                <td style="vertical-align:middle"><t t-esc="line['product_name']"/></td>
+                                                <td style="vertical-align:middle" t-if="header['report_diff'] == 'no_diff'"></td>
+                                                <td style="vertical-align:middle" class="text-right"></td>
+                                                <td style="vertical-align:middle" class="text-right"><t t-esc="line['counted_qty']"/></td>
+                                                <td style="vertical-align:middle" class="text-right"></td>
+                                                <td style="vertical-align:middle" class="text-right"></td>
+                                                <td style="vertical-align:middle" class="text-right"></td>
+                                                <!-- <td></td> -->
+                                            </tr>
+                                        </t>
+                                        <t t-set="i" t-value="i+1"/>
+                                    </t>
+                                    
+                                </t>
+                            </t>
+                            <tr style="border-top: 2px solid #000 !important;">
+                                <td style="vertical-align:middle" height="40"></td>
+                                <td style="vertical-align:middle" t-if="header['report_diff'] == 'no_diff'" colspan='6' class="text-right font-weight-bold">Grand Total</td>
+                                <td style="vertical-align:middle" t-else="" colspan='5' class="text-right font-weight-bold">Grand Total</td>
+                                <td style="vertical-align:middle" class="text-right font-weight-bold"><t t-esc="total['sum_qty_onhand']"/></td>
+                                <td style="vertical-align:middle" class="text-right font-weight-bold"><t t-esc="total['sum_counted_qty']"/></td>
+                                <td style="vertical-align:middle" class="text-right font-weight-bold"><t t-esc="total['sum_diff_qty']"/></td>
+                                <td style="vertical-align:middle" class="text-right font-weight-bold"><t t-esc="total['sum_cost']"/></td>
+                                <td style="vertical-align:middle" class="text-right font-weight-bold"><t t-esc="total['sum_diff_amount']"/></td>
+                                <!-- <td></td> -->
+                            </tr>
+                        </tbody>
+                        
+                    </table>
+                    <br/>
+                    <br/>
+                    <div class="row w-100 mt-3">
+                        <div class="col-4 text-center">Verifier</div>
+                        <div class="col-4 text-center">Corrector By</div>
+                        <div class="col-4 text-center">Control Desk</div>
+                    </div>
+
+                    <div class="footer" style='font-family: Montserrat, Saysettha OT;'>
+                        <div class="row w-100 pt-2" style="font-size: 12px;">
+                            <div class="col-12 text-right">
+                                <strong>Page: <span class="page"/> of <span class="topage"/></strong>
+                            </div>
+                        </div>
+                    </div>
+                    </span>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo noupdate="1">
+    <function model="receipt.design.custom"
+              name="_create_order_receipt_design_1"/>
+    <function model="receipt.design.custom"
+              name="_create_order_receipt_design_2"/>
+    <function model="receipt.design.custom"
+              name="_create_bar_rest_receipt_design_1"/>
+    <function model="receipt.design.custom"
+              name="_create_bar_rest_receipt_design_2"/>
+    <function model="receipt.design.custom"
+              name="_create_sticker_design"/>
+    <function model="receipt.design.custom"
+              name="_create_sticker_design_topping"/>
+</odoo>

@@ -1,0 +1,22 @@
+<odoo>
+    <record id="view_pos_void_reason_tree" model="ir.ui.view">
+        <field name="name">Void Reason</field>
+        <field name="model">void.reasons</field>
+        <field name="arch" type="xml">
+            <list string="Void Reason" editable="bottom">
+                <field name="name" />
+            </list>
+        </field>
+    </record>
+
+    <record id="action_pos_void_reason" model="ir.actions.act_window">
+        <field name="name">Void Reason</field>
+        <field name="res_model">void.reasons</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <menuitem id="menu_pos_void_reason"
+             parent="point_of_sale.menu_point_config_product"
+             action="action_pos_void_reason"
+             sequence="11"/>
+</odoo>

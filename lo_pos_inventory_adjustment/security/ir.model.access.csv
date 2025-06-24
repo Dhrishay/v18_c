@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_stock_count_adjust,stock.count.adjust,model_stock_count_adjust,base.group_user,1,1,1,1
+access_stock_corrected_adjust,stock.corrected.adjust,model_stock_corrected_adjust,base.group_user,1,1,1,1
+access_stock_prepare_count,stock.prepare.count,model_stock_prepare_count,base.group_user,1,1,1,1
+access_stock_corrected_wizard,stock.corrected.wizard,model_stock_corrected_wizard,base.group_user,1,1,1,1

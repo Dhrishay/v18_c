@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="stock_corrected_wizard" model="ir.ui.view">
+        <field name="name">Corrected Wizard</field>
+        <field name="model">stock.corrected.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Corrected Wizard">
+                <span>Will you corrected it to <field name="number"/> ?</span>
+                <footer>
+                    <button name="action_confirm" string="Comfirm" type="object" class="oe_highlight"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

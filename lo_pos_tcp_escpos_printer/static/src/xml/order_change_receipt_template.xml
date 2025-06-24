@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="lo_pos_tcp_escpos_printer.OrderChangeReceipt" t-inherit="point_of_sale.OrderChangeReceipt" t-inherit-mode="extension">
+        <!-- <xpath expr="//div[@t-if='line.note']" position="attributes">
+             <attribute name="style" add="display: none;" separator=" "/>
+        </xpath>  -->
+        <!-- <xpath expr="//div[@t-if='line.note']" position="after">
+            <div t-if="line.sticker_note" class="fst-italic" style="font-size: 91%;">
+                <t t-esc="line.sticker_note.split('\n').join(', ')"/><br/>
+            </div>
+        </xpath>    -->
+    </t>
+</templates>

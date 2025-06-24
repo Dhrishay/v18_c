@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="product_packaging_tree_view_uom" model="ir.ui.view">
+        <field name="name">product.packaging.list.view.uom</field>
+        <field name="model">product.packaging</field>
+        <field name="inherit_id" ref="product.product_packaging_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list//field[@name='product_uom_id']" position="replace">
+                <field name="package_uom_id" optional="show" options="{'no_open': True, 'no_create': True}" required="1"/>
+            </xpath>
+            <xpath expr="//field[@name='product_id']" position="replace"/>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="package_product_id" options="{'no_create': True}"/>
+            </xpath>
+            <xpath expr="//list[@name='packaging']" position="attributes">
+                <attribute name="editable">bottom</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="product_packaging_form_view_uom_id" model="ir.ui.view">
+        <field name="name">product.packaging.form.view.uom.id</field>
+        <field name="model">product.packaging</field>
+        <field name="inherit_id" ref="product.product_packaging_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='barcode']" position="before">
+                <field name="package_uom_id" required="True" options="{'no_open': True, 'no_create': True}" domain="[('category_id','=',product_uom_category_id)]"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="product_template_tree_view_uom" model="ir.ui.view">
+        <field name="name">product.template.list.view.uom</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='inventory']//group[@name='packaging']//field[@name='packaging_ids']" position="attributes">
+                <attribute name="context">{'list_view_ref':'product.product_packaging_tree_view', 'default_company_id': company_id}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

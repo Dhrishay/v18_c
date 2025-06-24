@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="stock_quant_search_inherit" model="ir.ui.view">
+        <field name="name">stock.quant.view.search.inherit</field>
+        <field name="model">stock.quant</field>
+        <field name="inherit_id" ref="stock.quant_search_view"/>
+        <field name="arch" type="xml">
+            <filter name="to_count" position="before">
+                <filter name="is_ready_count" string="Ready Count" domain="[('is_ready_count', '=', True)]"/>
+            </filter>
+        </field>
+    </record>
+
+    <record id="stock_quant_inherit_form_view" model="ir.ui.view">
+        <field name="name">stock.quant.view.form.inherit</field>
+        <field name="model">stock.quant</field>
+        <field name="inherit_id" ref="stock.view_stock_quant_tree_inventory_editable"/>
+        <field name="arch" type="xml">
+            <field name="product_id" position="before">
+                <field name="date_ending" />
+                <field name="barcode" />
+            </field>
+            <field name="quantity" position="after">
+                <field name="value_amount" />
+            </field>
+            <field name="inventory_quantity" position="after">
+                <button type="object" name="action_counted_stock" string="Counted" class="btn btn-link text-info" icon="fa-adjust" invisible="inventory_quantity == 0"/>
+                <field name="count_amount" />
+            </field>
+            <field name="inventory_diff_quantity" position="after">
+                <field name="diff_amount" />
+            </field>
+            <field name="user_id" position="after">
+                <field name="employee_id" />
+                <field name="warehouse_no" optional="hide"/>
+                <field name="location_no" optional="hide"/>
+                <field name="pda" optional="hide"/>
+                <field name="is_ready_count" optional="hide"/>
+            </field>
+        </field>
+    </record>
+
+
+    <record id="stock_count_adjust_view_search" model="ir.ui.view">
+        <field name="name">stock.count.adjust.view.search</field>
+        <field name="model">stock.count.adjust</field>
+        <field name="arch" type="xml">
+            <search string="Stock Counted Search">
+                <field name="product_id" string="Product/Location" filter_domain="['|', '|', ('product_id.barcode', 'ilike', self), ('product_id', 'ilike', self), ('location_id', 'ilike', self)]"/>
+                <field name="stock_quant_id" string="Adjusment"/>
+                <field name="user_id" string="User"/>
+                <field name="employee_id" string="Employee"/>
+
+                <filter string="My Counted" domain="[('user_id', '=', uid)]" name="my_counted_filter"/>
+
+                <group expand="0" string="Group By">
+                    <filter string="Stock Quant" name="stock_quant_group" domain="[]" context="{'group_by': 'stock_quant_id'}"/>
+                    <filter string="Location" name="location_group" domain="[]" context="{'group_by': 'location_id'}"/>
+                    <filter string="User" name="user_group"  domain="[]" context="{'group_by': 'user_id'}"/>
+                    <filter string="Employee" name="employee_group" domain="[]" context="{'group_by': 'employee_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="stock_count_adjust_view_tree" model="ir.ui.view">
+        <field name="name">stock.count.adjust.view.list</field>
+        <field name="model">stock.count.adjust</field>
+        <field name="arch" type="xml">
+            <list string="Stock Counted Adjust" editable="bottom">
+                <field name="counted_date" />
+                <field name="stock_quant_id" />
+                <field name="location_id" />
+                <field name="barcode" />
+                <field name="product_id" />
+                <field name="qty_onhand" readonly="1"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="stock_values" sum="Sum Stock Values"/>
+                <field name="counted_qty" readonly="1"/>
+                <field name="counted_amount" sum="Sum Counted Amount"/>
+                <field name="corrected_qty" />
+                <field name="corrected_amount" />
+                <field name="diff_qty" optional="hide"/>
+                <field name="diff_amount" sum="Sum Diff Amount" optional="hide"/>
+                <field name="user_id" />
+                <field name="employee_id" />
+                <field name="pos_name" optional="hide"/>
+                <field name="warehouse_no" optional="hide"/>
+                <field name="location_no" optional="hide"/>
+                <field name="pda" optional="hide"/>
+                <button type="object" name="action_apply_corrected_stock" string="Apply " class="btn btn-link text-info" icon="fa-check-square-o"/>
+                <button type="object" name="action_corrected_stock" string="Corrected " class="btn btn-link text-info" icon="fa-pencil"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="stock_count_adjust_view_form" model="ir.ui.view">
+        <field name="name">stock.count.adjust.view.form</field>
+        <field name="model">stock.count.adjust</field>
+        <field name="arch" type="xml">
+            <form string="Stock Counted Adjust">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="counted_date" />
+                            <field name="stock_quant_id" />
+                            <field name="location_id" />
+                            <field name="barcode" />
+                            <field name="product_id" />
+                            <field name="qty_onhand" />
+                            <field name="stock_values"/>
+                        </group>
+                        <group>
+                            <field name="counted_qty" />
+                            <field name="counted_amount"/>
+                            <field name="diff_qty"/>
+                            <field name="diff_amount"/>
+                            <field name="user_id" />
+                            <field name="employee_id" />
+                            <field name="warehouse_no" optional="hide"/>
+                            <field name="location_no" optional="hide"/>
+                            <field name="pda" optional="hide"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="stock_count_adjust_action" model="ir.actions.act_window">
+        <field name="name">Inventory Counted</field>
+        <field name="res_model">stock.count.adjust</field>
+        <field name="view_mode">list,form</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="context">{'search_default_stock_quant_group': 1}</field>
+        <field name="search_view_id" ref="stock_count_adjust_view_search"/>
+    </record>
+
+    <menuitem
+        id="stock_count_menu"
+        name="Inventory Counted"
+        action="stock_count_adjust_action"
+        parent="stock.menu_stock_adjustments"
+        sequence="22"/>
+
+
+    <record id="stock_corrected_adjust_view_search" model="ir.ui.view">
+        <field name="name">stock.corrected.adjust.view.search</field>
+        <field name="model">stock.corrected.adjust</field>
+        <field name="arch" type="xml">
+            <search string="Stock Corrected Search">
+                <field name="product_id" string="Product/Location" filter_domain="['|', '|', ('product_id.barcode', 'ilike', self), ('product_id', 'ilike', self), ('location_id', 'ilike', self)]"/>
+                <field name="stock_count_id" string="Stock Counted"/>
+                <field name="user_id" string="User"/>
+                <field name="employee_id" string="Employee"/>
+
+                <filter string="My Corrected" domain="[('user_id', '=', uid)]" name="my_corrected_filter"/>
+
+                <group expand="0" string="Group By">
+                    <filter string="Stock Counted" name="stock_counted_group" domain="[]" context="{'group_by': 'stock_count_id'}"/>
+                    <filter string="Product" name="stock_product_group" domain="[]" context="{'group_by': 'product_id'}"/>
+                    <filter string="Location" name="location_group" domain="[]" context="{'group_by': 'location_id'}"/>
+                    <filter string="User" name="user_group"  domain="[]" context="{'group_by': 'user_id'}"/>
+                    <filter string="Employee" name="employee_group" domain="[]" context="{'group_by': 'employee_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="stock_corrected_adjust_view_tree" model="ir.ui.view">
+        <field name="name">stock.corrected.adjust.view.list</field>
+        <field name="model">stock.corrected.adjust</field>
+        <field name="arch" type="xml">
+            <list string="Stock corrected Adjust" editable="bottom">
+                <field name="corrected_date" />
+                <field name="stock_count_id" />
+                <field name="location_id" />
+                <field name="barcode" />
+                <field name="product_id" />
+                <field name="currency_id" invisible="1"/>
+                <field name="counted_qty" />
+                <field name="counted_amount" sum="Sum Stock Counted Amount"/>
+                <field name="corrected_qty" />
+                <field name="corrected_amount" sum="Sum Corrected Amount"/>
+                <field name="diff_qty" optional="hide"/>
+                <field name="diff_amount" sum="Sum Diff Amount" optional="hide"/>
+                <field name="user_id" />
+                <field name="employee_id" />
+                <field name="warehouse_no" />
+                <field name="location_no" />
+                <field name="pda" />
+            </list>
+        </field>
+    </record>
+
+    <record id="stock_corrected_adjust_view_form" model="ir.ui.view">
+        <field name="name">stock.corrected.adjust.view.form</field>
+        <field name="model">stock.corrected.adjust</field>
+        <field name="arch" type="xml">
+            <form string="Stock corrected Adjust">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="corrected_date" />
+                            <field name="stock_count_id" />
+                            <field name="location_id" />
+                            <field name="barcode" />
+                            <field name="product_id" />
+                        </group>
+                        <group>
+                            <field name="counted_qty" />
+                            <field name="counted_amount"/>
+                            <field name="corrected_qty" />
+                            <field name="corrected_amount"/>
+                            <field name="user_id" />
+                            <field name="employee_id" />
+                            <field name="warehouse_no" />
+                            <field name="location_no" />
+                            <field name="pda" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="stock_corrected_action" model="ir.actions.act_window">
+        <field name="name">Inventory Corrected</field>
+        <field name="res_model">stock.corrected.adjust</field>
+        <field name="view_mode">list,form</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="context">{'search_default_stock_product_group': 1}</field>
+        <field name="search_view_id" ref="stock_corrected_adjust_view_search"/>
+    </record>
+
+    <menuitem
+        id="stock_corrected_menu"
+        name="Inventory Corrected"
+        action="stock_corrected_action"
+        parent="stock.menu_stock_adjustments"
+        sequence="23"/>
+
+<!--    <menuitem-->
+<!--        id="stock_physical_count"-->
+<!--        name="Physical Count"-->
+<!--        parent="kkm_branch.root_franchise_menu"-->
+<!--        sequence="100"/>-->
+
+<!--    <menuitem-->
+<!--        id="stock_fc_count_menu"-->
+<!--        name="Inventory Counted"-->
+<!--        action="stock_count_adjust_action"-->
+<!--        parent="stock_physical_count"-->
+<!--        sequence="10"/>-->
+
+<!--    <menuitem-->
+<!--        id="stock_fc_corrected_menu"-->
+<!--        name="Inventory Corrected"-->
+<!--        action="stock_corrected_action"-->
+<!--        parent="stock_physical_count"-->
+<!--        sequence="20"/>-->
+</odoo>

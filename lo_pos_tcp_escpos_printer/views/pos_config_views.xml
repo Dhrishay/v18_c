@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pos_iot_config_view_form" model="ir.ui.view">
+        <field name="name">pos.iot.config.form.view</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//setting[@id='other_devices']" position="after">
+                <setting id="esc_pos_devices" string="ESC/POS Printer"
+                         help="Connect device to your PoS without an IoT Box">
+                    <field name="escpos_print"/>
+                    <div class="content-group" invisible="not escpos_print">
+                        <field name="escpos_printer_ip" placeholder="ESC/POS Receipt Printer IP Address"/>
+                        <field name="espos_printer_port" placeholder="PORT"/>
+                        <div class="row" invisible="escpos_printer_ip in [False, '']">
+                            <label string="Cashdrawer" for="escpos_print_cashdrawer" class="col-lg-3 o_light_label"/>
+                            <field name="escpos_print_cashdrawer"/>
+                        </div>
+                        <div class="row" invisible="escpos_printer_ip in [False, '']">
+                            <label string="Receipt Design" for="receipt_design" class="col-lg-3 o_light_label"/>
+                            <field name="receipt_design" domain="[('receipt_type','=','order')]"/>
+                        </div>
+                        <div class="row">
+                            <label string="Sticker Printer" for="sticker_printer"
+                                   class="col-lg-3 o_light_label"/>
+                            <field name="sticker_printer"/>
+                        </div>
+                        <div class="row" invisible="1">
+                            <label string="Receipt Design Text" for="receipt_design_text"
+                                   class="col-lg-3 o_light_label"/>
+                            <field name="receipt_design_text"/>
+                        </div>
+                    </div>
+                    <div role="alert" class="alert alert-warning"
+                         invisible="not escpos_print_cashdrawer or not escpos_print or escpos_printer_ip in [False, '']">
+                        The receipt printer will be used instead of the receipt printer connected to the IoT Box.
+                    </div>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>

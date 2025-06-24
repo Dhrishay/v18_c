@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="lo_pos_void.voidReasonPopup">
+        <Dialog size="'md'">
+            <div class="opening-notes-container d-flex flex-column align-items-start">
+                <label class="form-label" for="openingNotes">Reason</label>
+
+                <select class=" reason_select_select form-select form-select-md" style="height: 40px;" t-on-click="onClickReason">
+                <option t-foreach="props.list" t-as="value" t-key="value.id" t-att-value="value.id">
+                    <span t-esc="value.label"  style="font-size: 120%;"/>
+                </option>
+            </select>
+            <textarea class="extra_reason_note form-control form-control-lg mx-auto" style="margin-top:22px;" type="text"  t-ref="input" placeholder="Add Extra Note..."/>
+            </div>
+            <t t-set-slot="footer">
+                <button
+                    class="btn btn-primary btn-lg lh-lg o-default-button"
+                    t-on-click="confirm">
+                    Void
+                </button>
+<!--                <button-->
+<!--                    class="btn btn-primary btn-lg lh-lg o-default-button"-->
+<!--                    t-att-class="{'disabled': !this.visible_scrap_button}"-->
+<!--                    t-on-click="confirm_with_scrap">-->
+<!--                    Void &amp; scrap-->
+<!--                </button>-->
+                <button class="btn btn-secondary btn-lg lh-lg o-default-button" t-on-click="close">Discard</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>

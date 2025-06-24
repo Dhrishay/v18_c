@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="ProductScreen" t-inherit="point_of_sale.ProductScreen" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('leftpane')]" position="replace">
+            <div t-att-class="{'flex-grow-1 w-100 mw-100': ui.isSmall, 'd-none': ui.isSmall and pos.mobile_pane !== 'left'}"
+                 class="leftpane d-flex flex-column p-2" style="overflow: hidden !important;">
+                <OrderSummary/>
+                <div t-if="this.pos.config.is_inventory_adjustment">
+                    <div style="padding-top: 5px; padding-bottom: 5px; padding-left: 10px;padding-right: 10px; font-weight: bold; font-size: 14px;">
+                        <span>
+                            Stock Warehouse:
+                        </span>
+                        <span id="stock-warehouse" t-out="this.pos.config.warehouse_name">
+
+                        </span>
+                    </div>
+                    <div class="d-flex">
+                        <div class="col-6"
+                             style="padding-bottom: 5px; padding-left: 10px;padding-right: 10px; font-weight: bold; font-size: 14px;">
+                            <span>
+                                Stock Location:
+                            </span>
+                            <span id="stock-loc">
+
+                            </span>
+                        </div>
+                            <div class="col-6"
+                                 style="padding-bottom: 5px; padding-left: 10px;padding-right: 10px; font-weight: bold; font-size: 14px;">
+                            <span>
+                                Scanner/PDA:
+                            </span>
+                                <span id="stock-pda">
+
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-top: solid 2px #714B67;border-bottom: solid 2px #714B67;text-align: center;" t-on-click="(ev) => this.toogleNumpad(ev)">
+                    <i class="numpad-toggle fa fa-caret-down fa-2x"
+                       style="cursor: pointer !important; transform: scale(2,1); color: #714B67;">
+                    </i>
+                </div>
+                <div class="pads">
+                    <div t-attf-class="control-buttons d-flex justify-content-between gap-2 w-100 py-2">
+                        <ControlButtons t-if="!ui.isSmall" onClickMore.bind="displayAllControlPopup"/>
+                    </div>
+                    <div class="subpads d-flex flex-column gap-2">
+                        <Numpad t-if="!currentOrder?.is_empty() and pos.get_order()?.uiState.selected_orderline_uuid"
+                                class="'d-grid m-n1'" buttons="getNumpadButtons()" onClick.bind="onNumpadClick"/>
+                        <ActionpadWidget
+                                partner="currentOrder?.get_partner()"
+                                onClickMore.bind="displayAllControlPopup"
+                                actionName.translate="Payment"
+                                actionToTrigger="() => pos.pay()"
+                                showActionButton="!currentOrder?.is_empty()"
+                        />
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </t>
+</templates>

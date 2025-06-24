@@ -1,0 +1,34 @@
+<odoo>
+    <record model="ir.ui.view" id="product_scrap_wizard_form_view">
+        <field name="name">product.scrap.wizard.form.view</field>
+        <field name="model">product.scrap.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="product_id" readonly="True" options="{'no_create_edit': True, 'no_create': True}" invisible="1"/>
+                        <field name="scrap_qty" required="True" string="Waste"/>
+                        <field name="reason_id" required="True"/>
+                        <field name="void_reason_id" invisible="context.get('only_srcap')" required="not context.get('only_srcap')"/>
+                        <field name="extra_note"/>
+                        <field name="location_id" readonly="True" domain="[('usage', '=', 'internal')]" options="{'no_create_edit': True, 'no_create': True}" invisible="1"/>
+                        <field name="scrap_location_id" readonly="True" options="{'no_create_edit': True, 'no_create': True}" invisible="1"/>
+                    </group>
+                    <footer>
+                        <button name="action_validate" string="Waste" class="oe_highlight" type="object" invisible="not context.get('only_srcap') or context.get('from_void')"/>
+                        <button name="action_validate_scrap" string="Waste" class="oe_highlight" type="object" invisible="not context.get('from_void')"/>
+                        <button name="action_validate_waste_and_void" string="Waste &amp;Void" class="oe_highlight" type="object" invisible="context.get('only_srcap')"/>
+                        <button string="Cancel" type="object" name="cancel" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="product_scrap_wizard_action">
+        <field name="name">Product Scrap</field>
+        <field name="res_model">product.scrap.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

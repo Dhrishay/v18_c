@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="receipt_design_custom_form_view" model="ir.ui.view">
+            <field name="name">Receipt Design custom</field>
+            <field name="model">receipt.design.custom</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string='Receipt Design'>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="company_id"/>
+                            <field name="receipt_type"/>
+                            <field name='receipt_design_text' widget="ace" options="{'mode': 'xml'}"
+                                   string="Receipt XML"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="receipt_design_custom_tree_view" model="ir.ui.view">
+            <field name="name">Receipt Design Custom</field>
+            <field name="model">receipt.design.custom</field>
+            <field name="type">list</field>
+            <field name="arch" type="xml">
+                <list string='Receipt Design'>
+                    <field name="name"/>
+                    <field name="company_id"/>
+                    <field name="receipt_type"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="receipt_design_custom_action_window" model="ir.actions.act_window">
+            <field name="name">Receipt Designs Custom</field>
+            <field name="res_model">receipt.design.custom</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="lo_pos_tcp_escpos_printer.receipt_design_custom_tree_view"/>
+        </record>
+
+        <menuitem id="menu_receipt_design_custom"
+                  sequence="60"
+                  parent="point_of_sale.menu_point_config_product"
+                  action="lo_pos_tcp_escpos_printer.receipt_design_custom_action_window"/>
+    </data>
+
+</odoo>

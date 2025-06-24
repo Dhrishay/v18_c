@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="stock_prepare_count_view_tree" model="ir.ui.view">
+        <field name="name">stock.prepare.count.view.list</field>
+        <field name="model">stock.prepare.count</field>
+        <field name="arch" type="xml">
+            <list string="Stock Prepare Count" multi_edit="1">
+                <field name="barcode" />
+                <field name="product_name" />
+                <field name="location_id" />
+                <field name="state" />
+            </list>
+        </field>
+    </record>
+
+    <record id="stock_prepare_count_view_form" model="ir.ui.view">
+        <field name="name">stock.prepare.count.view.form</field>
+        <field name="model">stock.prepare.count</field>
+        <field name="arch" type="xml">
+            <form string="Stock Prepare Count">
+                <header>
+                    <button string="Set Ready Count" name="action_set_ready_count" type="object" class="oe_highlight"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,updated"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="barcode" />
+                        <field name="product_name" />
+                        <field name="location_id" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="stock_prepare_count_action" model="ir.actions.act_window">
+        <field name="name">Stock Prepare Count</field>
+        <field name="res_model">stock.prepare.count</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem
+        id="stock_prepare_count_menu"
+        action="stock_prepare_count_action"
+        name="Stock Prepare Count"
+        parent="stock.menu_stock_adjustments"
+        sequence="24"/>
+
+
+    <record id="action_set_ready_count" model="ir.actions.server">
+        <field name="name">Set Ready Count</field>
+        <field name="model_id" ref="model_stock_prepare_count"/>
+        <field name="binding_model_id" ref="model_stock_prepare_count"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+        if records:
+            records.action_set_ready_count()
+        </field>
+    </record>
+
+<!--    <menuitem-->
+<!--        id="stock_prepare_count_menu"-->
+<!--        action="stock_prepare_count_action"-->
+<!--        parent="stock_physical_count"-->
+<!--        sequence="30"/>-->
+
+</odoo>

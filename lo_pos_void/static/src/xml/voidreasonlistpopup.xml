@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="lo_pos_void.voidLineListPopup">
+        <Dialog size="'md'">
+            <div class="opening-notes-container d-flex flex-column align-items-start">
+                <table style="text-align: center; height:100%; width:100%; border:1px solid black">
+                    <tr style="border:1px solid black">
+                            <th style="border:1px solid black"><span class="fw-bold" style="font-size: 15pt;">Product Name</span></th>
+                            <th style="border:1px solid black"><span class="fw-bold" style="font-size: 15pt;">Quantity</span></th>
+                            <th style="border:1px solid black" ><span class="fw-bold" style="font-size: 15pt;">Price</span></th>
+                            <th style="border:1px solid black"><span class="fw-bold" style="font-size: 15pt;">Extra Note</span></th>
+                            <th style="border:1px solid black"><span class="fw-bold" style="font-size: 15pt;">Reason</span></th>
+                    </tr>
+                     <t t-foreach="props.list" t-as="line" t-key="line.id">
+                        <tr style="border:1px solid black">
+                            <td style="border:1px solid black"><span style="font-size: 10pt;"><t t-esc="line.product_id.name"/></span></td>
+                            <td style="border:1px solid black"><span style="font-size: 10pt;"><t t-esc="line.qty"/></span></td>
+                            <td style="border:1px solid black"><span style="font-size: 10pt;"><t t-esc="line.price"/></span></td>
+                            <td style="border:1px solid black"><span style="font-size: 10pt;"><t t-esc="line.extra_note"/></span></td>
+                            <td style="border:1px solid black"><span style="font-size: 10pt;"><t t-esc="line.reason_id.name"/></span></td>
+                        </tr>
+                     </t>
+                </table>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-secondary btn-lg lh-lg o-default-button" t-on-click="close">Discard</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>

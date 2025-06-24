@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_pos_kitchen_note_tree" model="ir.ui.view">
+        <field name="name">Ktchen Note Models</field>
+        <field name="model">pos.note</field>
+        <field name="arch" type="xml">
+            <list string="Kitchen Note Models" editable="bottom">
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+            </list>
+        </field>
+    </record>
+
+    <record id="action_pos_kitchen_note" model="ir.actions.act_window">
+        <field name="name">Kitchen Note</field>
+        <field name="res_model">pos.note</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('kitechen_note', '=', True)]</field>
+        <field name="context">{'default_kitechen_note' : True}</field>
+    </record>
+
+    <menuitem id="menu_pos_kitchen_note"
+        name="Kitchen Note"
+        parent="point_of_sale.menu_point_config_product"
+        action="action_pos_kitchen_note"
+        sequence="11"/>
+
+    <record id="view_pos_sticker_note_tree" model="ir.ui.view">
+        <field name="name">Sticker Note Models</field>
+        <field name="model">pos.note</field>
+        <field name="arch" type="xml">
+            <list string="Sticker Note Models" editable="bottom">
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+            </list>
+        </field>
+    </record>
+
+    <record id="action_pos_sticker_note" model="ir.actions.act_window">
+        <field name="name">Sticker Note</field>
+        <field name="res_model">pos.note</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('sticker_note', '=', True)]</field>
+        <field name="context">{'default_sticker_note' : True}</field>
+    </record>
+
+    <menuitem id="menu_pos_sticker_note"
+        name="Sticker Note"
+        parent="point_of_sale.menu_point_config_product"
+        action="action_pos_sticker_note"
+        sequence="11"/>
+
+    <record id="point_of_sale.action_pos_note_model" model="ir.actions.act_window">
+        <field name="name">General Note</field>
+        <field name="res_model">pos.note</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('kitechen_note', '=', False), ('sticker_note', '=', False)]</field>
+    </record>
+
+    <menuitem id="point_of_sale.menu_pos_note_model"
+        name="General Note"
+        parent="point_of_sale.menu_point_config_product"
+        action="point_of_sale.action_pos_note_model"
+        sequence="11"/>
+
+</odoo>

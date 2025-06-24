@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="pos_restaurant_enhancement.controlButtons" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('control-buttons-modal')]/button[1]" position="after">
+            <t t-if="this.visible_void_button">
+               <button class="btn btn-secondary btn-lg py-5" t-on-click="() => this.clickvoid()"
+                t-att-class="{'disabled': !this.button_void}">
+                    <i class="fa fa-trash me-1" role="img" /> Void
+                </button>
+            </t>
+            <t t-if="this.voidListLen">
+               <button class="btn btn-secondary btn-lg py-5" t-on-click="() => this.ShowVoidList()">
+                    <i class="fa fa-trash me-1" role="img" /> Void List
+                </button>
+            </t>
+        </xpath>
+    </t>
+    <t t-name="lo_pos_void.OrderSummary" t-inherit="point_of_sale.OrderSummary" t-inherit-mode="extension">
+        <xpath expr="//Orderline" position="attributes">
+            <attribute name="class">
+                { ...line.getDisplayClasses(), 'selected' : line.isSelected(),'bg-secondary': line.status == 'void' }
+            </attribute>
+        </xpath>
+    </t>
+</templates>

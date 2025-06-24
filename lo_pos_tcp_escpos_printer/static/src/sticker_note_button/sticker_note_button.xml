@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates id="template" xml:space="preserve">
+
+    <t t-name="cr_gaga_custom.ControlButtons" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension">
+        <xpath expr="//SelectPartnerButton[@partner='partner']" position="after">
+            <button class="btn btn-light btn-lg flex-shrink-0 ms-auto"
+                t-if="!props.showRemainingButtons || (ui.isSmall and props.showRemainingButtons)"
+                t-att-disabled="!pos.get_order()?.get_selected_orderline()"
+                t-on-click="() => this.onClickStickerNote()">
+                Sticker Note
+            </button>
+        </xpath>
+
+        <xpath expr="//button[hasclass('o_fiscal_position_button')]" position="after">
+            <button
+                t-attf-class="btn-secondary btn btn-lg py-5"
+                t-on-click="clickPrintSticker">
+                <i t-attf-class="fa fa-print me-1"></i>
+                <span >Print Sticker</span>
+            </button>
+        </xpath>
+    </t>
+</templates>

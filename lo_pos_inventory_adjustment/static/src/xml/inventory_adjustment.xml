@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="lo_pos_inventory_adjustment.ControlButtons" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension" owl="1">
+        <xpath expr="//button[hasclass('o_pricelist_button')]" position="before">
+            <button class="o_add_header_button btn btn-secondary btn-lg py-5" t-if="this.pos.config.is_inventory_adjustment and this.pos.config.adjst_location_id" t-on-click="() => this.clickAddHeader()">
+                Add Header
+            </button>
+            <button class=" btn btn-secondary btn-lg py-5" t-if="this.pos.config.is_inventory_adjustment and this.pos.config.adjst_location_id" t-on-click="() => this.clickAdjustInventory()">
+                Adjust Inventory
+            </button>
+        </xpath>
+    </t>
+
+    <t t-name="lo_pos_inventory_adjustment.InventoryLocationPopupWidget" owl="1">
+        <Dialog size="'md'" title="props.title">
+            <h4> Add Header </h4>
+            <div class="mb-3 row">
+                <label class="col-md-3 col-form-label" for="locataion">Location</label>
+                <div class="col-md-8">
+                    <input type="text" id='locataion' class="locataion form-control" required="required" name='locataion'/>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-md-3 col-form-label" for="pda">Scanner/PDA</label>
+                <div class="col-md-8">
+                     <input type="text" id='pda' class="pda form-control" required="required" name='pda'/>
+                </div>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-lg btn-primary" t-on-click="this.confirm">Confirm</button>
+                <button class="btn btn-lg btn-secondary" t-on-click="this.cancel">Cancel</button>
+            </t>
+        </Dialog>
+    </t>
+
+    <t t-name="lo_pos_inventory_adjustment.InventoryAdjustmentsPopupWidget" owl="1">
+        <Dialog size="'md'" title="props.title">
+            <div class="div">
+                <p>
+                    <span>Are you sure, you want to adjust inventory?</span>
+                </p>
+            </div>
+            <div class="row" style="font-size: 1rem;">
+                <div>
+                    <span style="font-weight: 500;">Warehouse Name: </span>
+                    <span style="font-weight: 700; color: #714B67;"><t t-esc="props.warehouse_no" /></span>
+                </div>
+                <div>
+                    <span style="font-weight: 500;">Location No: </span>
+                    <span style="font-weight: 700; color: #714B67;"><t t-esc="props.location_no" /></span>
+                    </div>
+                <div>
+                        <span style="font-weight: 500;">PDA No: </span>
+                    <span style="font-weight: 700; color: #714B67;"><t t-esc="props.pda" /></span>
+                    </div>
+                <div>
+                        <span style="font-weight: 500;">Total Item: </span>
+                    <span style="font-weight: 700; color: #714B67;"><t t-esc="props.orderlines_length" /></span>
+                    </div>
+                </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-lg btn-primary" t-on-click="this.confirm">Draft</button>
+                <button class="btn btn-lg btn-secondary" t-on-click="this.cancel">Cancel</button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>

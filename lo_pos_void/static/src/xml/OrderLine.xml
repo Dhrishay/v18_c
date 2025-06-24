@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="pos_sale.Orderline" t-inherit="point_of_sale.Orderline" t-inherit-mode="extension">
+        <xpath expr="//ul[hasclass('info-list')]/li[hasclass('price-per-unit')]" position="after" >
+            <span t-if="line.barcode" class="qty px-1 text-bg-view fw-bolder me-1">
+            <t t-esc="line.barcode" />
+            </span>        
+            <div t-if="line.status == 'confirm' or line.status == 'void' or line.status == 'waste'" class="product-price price fw-bolder" style="margin-left:250px">
+                <t t-if="line.status == 'void'">
+                    <span class="qty px-1 border rounded text-bg-view fw-bolder me-1">Waste</span>
+                </t>
+                <t t-elif="line.status == 'confirm'">
+                    <span class="qty px-1 border rounded text-bg-view fw-bolder me-1">Order</span>
+                </t>
+                <t t-else="">
+                    <span class="qty px-1 border rounded text-bg-view fw-bolder me-1" t-esc="line.status"/>
+                </t>
+            </div>
+            <t t-if="line.show_product_line">
+                <div class="product-price price fw-bolder" style="text-align:right">
+                    <t t-esc="line.cashier_name" />
+                </div>
+            </t>
+        </xpath>
+    </t>
+</templates>

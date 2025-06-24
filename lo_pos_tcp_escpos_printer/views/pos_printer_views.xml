@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pos_printer_form" model="ir.ui.view">
+        <field name="name">pos.iot.config.form.view</field>
+        <field name="model">pos.printer</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_printer_form"/>
+        <field name="arch" type="xml">
+            <field name="printer_type" position="after">
+                <field name="company_id"/>
+                <field name="escpos_printer_ip" invisible="printer_type != 'escpos_printer'"/>
+                <field name="espos_printer_port" invisible="printer_type != 'escpos_printer'"/>
+                <field name="order_receipt_type" invisible="printer_type != 'escpos_printer'" widget="radio"
+                       options="{'horizontal': True}"/>
+                
+                <field name="sticker_printer"/>
+                <field name="receipt_design" options="{'no_create' : True}"/>
+                <field name="receipt_design_text" invisible="1"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_pos_printer_tree_pos_tcp_escpos_printer" model="ir.ui.view">
+        <field name="name">pos.iot.config.form.tree</field>
+        <field name="model">pos.printer</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_printer"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="escpos_printer_ip" invisible="printer_type != 'escpos_printer'"
+                       required="printer_type == 'escpos_printer'"/>
+                <field name="espos_printer_port" invisible="printer_type != 'escpos_printer'"/>
+                <field name="order_receipt_type" invisible="printer_type != 'escpos_printer'"/>
+            </field>
+            <xpath expr="//field[@name='product_categories_ids']" position="attributes">
+                <attribute name="required">printer_type == 'escpos_printer'</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <menuitem id="printer_menu_custom" name="Printers"
+              parent="point_of_sale.menu_point_config_product"
+              action="point_of_sale.action_pos_printer_form"
+              sequence="50"/>
+
+</odoo>

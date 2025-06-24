@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="inherit_product_product_view_form_normal" model="ir.ui.view">
+        <field name="name">product.product.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_variant_id']" position="after">
+                <field name="is_takeaway"/>
+                <field name="takeaway_bom_id" invisible="not is_takeaway" domain="[('product_id', '=', id)]"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

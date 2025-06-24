@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_picking_report_extended" inherit_id="stock.report_picking">
+        <xpath expr="//td[@t-if='has_barcode']" position="replace">
+            <td class="text-center" t-if="ml.move_id and ml.move_id.product_packaging_id and ml.move_id.product_packaging_id.barcode">
+                <span>
+                    <div t-field="ml.move_id.product_packaging_id.barcode" t-options="{'widget': 'barcode', 'symbology': 'auto', 'width': 400, 'height': 100, 'quiet': 0, 'img_style': 'height:35px;'}">
+                        <div class="bg-light border-1 rounded d-flex flex-column align-items-center justify-content-center px-1 py-2 opacity-75 text-muted text-center">
+                            (package barcode)
+                        </div>
+                    </div>
+                </span>
+            </td>
+            <td class="text-center" t-elif="has_barcode">
+                <t t-if="product_barcode != ml.product_id.barcode">
+                    <span t-if="ml.product_id and ml.product_id.barcode">
+                        <div t-field="ml.product_id.barcode"
+                             t-options="{'widget': 'barcode', 'symbology': 'auto', 'width': 400, 'height': 100, 'quiet': 0, 'img_style': 'height:35px;'}">
+                            <div class="bg-light border-1 rounded d-flex flex-column align-items-center justify-content-center px-1 py-2 opacity-75 text-muted text-center">
+                                (product barcode)
+                            </div>
+                        </div>
+                    </span>
+                    <t t-set="product_barcode" t-value="ml.product_id.barcode"/>
+                </t>
+            </td>
+        </xpath>
+    </template>
+</odoo>

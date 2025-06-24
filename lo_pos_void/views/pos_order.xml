@@ -1,0 +1,34 @@
+<odoo>
+    <record id="pos_order_form_inherit_void" model="ir.ui.view">
+        <field name="name">pos.order.form.inherit.void</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='notes']" position="after">
+                    <page id="void"
+                          string="Order Void"
+                          name="order_void">
+                        <field name="void_ids">
+                            <list create="false" delete="false" edit="false" decoration-info="status == 'void'" decoration-muted="status != 'void'">
+                                <field name="pos_order_id" readonly="1"/>
+                                <field name="order_no" readonly="1"/>
+                                <field name="table_no" readonly="1"/>
+                                <field name="session_id" readonly="1"/>
+                                <field name="reason_id" readonly="1"/>
+                                <field name="date" readonly="1"/>
+                                <field name="product_id" readonly="1"/>
+                                <field name="price" readonly="1"/>
+                                <field name="qty" readonly="1"/>
+                                <field name="pos_config_id" readonly="1"/>
+                                <field name="extra_note" readonly="1"/>
+                                <field name="user_id" readonly="1"/>
+                                <field name="employee_id" readonly="1"/>
+                                <button name="scrap_product" string="Waste" type="object" class="btn-primary" invisible="scrap_id"/>
+                                <field name="scrap_id" readonly="1"/>
+                            </list>
+                        </field>
+                    </page>
+                </xpath>
+        </field>
+    </record>
+</odoo>

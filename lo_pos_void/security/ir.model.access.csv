@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_void_reasons,access_void_reasons,model_void_reasons,base.group_user,1,1,1,1
+access_pos_void_reason_history,access_pos_void_reason_history,model_pos_void_reason_history,base.group_user,1,1,1,1
+access_product_scrap_wizard,access_product_scrap_wizard,model_product_scrap_wizard,base.group_user,1,1,1,1

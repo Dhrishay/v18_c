@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="paperformat_stock_counted_report" model="report.paperformat">
+        <field name="name">A4 stock_counted_report</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">7</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">20</field>
+        <field name="dpi">120</field>
+    </record>
+
+    <record id="paperformat_stock_summary_report" model="report.paperformat">
+        <field name="name">A4 stock_ending_report</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">7</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">20</field>
+        <field name="dpi">100</field>
+    </record>
+
+    <record id="action_stock_counted_report" model="ir.actions.report">
+        <field name="name">Stock Counted Report</field>
+        <field name="model">stock.counted.wizard.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lo_pos_inventory_adjustment.stock_counted_template</field>
+        <field name="report_file">lo_pos_inventory_adjustment.stock_counted_template</field>
+        <field name="paperformat_id" ref="paperformat_stock_counted_report"/>
+        <field name="print_report_name">Stock Counted Report</field>
+        <field name="binding_model_id" ref="model_stock_counted_wizard_report"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_stock_diff_amount_report" model="ir.actions.report">
+        <field name="name">Stock Diff Amount Report</field>
+        <field name="model">stock.counted.wizard.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lo_pos_inventory_adjustment.stock_diff_amount_template</field>
+        <field name="report_file">lo_pos_inventory_adjustment.stock_diff_amount_template</field>
+        <field name="paperformat_id" ref="paperformat_stock_counted_report"/>
+        <field name="print_report_name">Stock Diff Amount Report</field>
+        <field name="binding_model_id" ref="model_stock_counted_wizard_report"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_stock_diff_report_xlsx" model="ir.actions.report">
+        <field name="name">Stock Diff Report Excel</field>
+        <field name="model">stock.counted.wizard.report</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">lo_pos_inventory_adjustment.stock_diff_template_excel</field>
+        <field name="print_report_name">Stock Diff Report Excel</field>
+        <field name="binding_model_id" ref="model_stock_counted_wizard_report"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_stock_summary_report" model="ir.actions.report">
+        <field name="name">Stock Summary Report</field>
+        <field name="model">stock.counted.wizard.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lo_pos_inventory_adjustment.stock_summary_template</field>
+        <field name="report_file">lo_pos_inventory_adjustment.stock_summary_template</field>
+        <field name="paperformat_id" ref="paperformat_stock_summary_report"/>
+        <field name="print_report_name">Stock Summary Report</field>
+        <field name="binding_model_id" ref="model_stock_counted_wizard_report"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_stock_summary_report_xlsx" model="ir.actions.report">
+        <field name="name">Stock Summary Report Excel</field>
+        <field name="model">stock.counted.wizard.report</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">lo_pos_inventory_adjustment.stock_summary_template_excel</field>
+        <field name="print_report_name">Stock Summary Report Excel</field>
+        <field name="binding_model_id" ref="model_stock_counted_wizard_report"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_stock_corrected_report" model="ir.actions.report">
+        <field name="name">Stock Corrected Report</field>
+        <field name="model">stock.counted.wizard.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lo_pos_inventory_adjustment.stock_corrected_template</field>
+        <field name="report_file">lo_pos_inventory_adjustment.stock_corrected_template</field>
+        <field name="paperformat_id" ref="paperformat_stock_counted_report"/>
+        <field name="print_report_name">Stock Corrected Report</field>
+        <field name="binding_model_id" ref="model_stock_counted_wizard_report"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_stock_notscan_report" model="ir.actions.report">
+        <field name="name">Stock Not Scan Report</field>
+        <field name="model">stock.counted.wizard.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lo_pos_inventory_adjustment.stock_notscan_template</field>
+        <field name="report_file">lo_pos_inventory_adjustment.stock_notscan_template</field>
+        <field name="paperformat_id" ref="paperformat_stock_summary_report"/>
+        <field name="print_report_name">Stock Not Scan Report</field>
+        <field name="binding_model_id" ref="model_stock_counted_wizard_report"/>
+        <field name="binding_type">report</field>
+    </record>
+        	
+</odoo>

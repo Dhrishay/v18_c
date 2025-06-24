@@ -1,0 +1,67 @@
+<odoo>
+    <record id="view_pos_void_reason_history_tree" model="ir.ui.view">
+        <field name="name">Pos Void Reason History</field>
+        <field name="model">pos.void.reason.history</field>
+        <field name="arch" type="xml">
+            <list string="Voip Reason" create="false" delete="false" edit="false">
+                <field name="pos_order_id" readonly="True"/>
+                <field name="order_no" readonly="True"/>
+                <field name="table_no" readonly="True"/>
+                <field name="session_id" readonly="True"/>
+                <field name="user_id" readonly="True"/>
+                <field name="employee_id" readonly="True"/>
+                <field name="reason_id" readonly="True"/>
+                <field name="date" readonly="True"/>
+                <field name="product_id" readonly="True"/>
+                <field name="price" readonly="True"/>
+                <field name="qty" readonly="True"/>
+                <field name="pos_config_id" readonly="True"/>
+                <field name="scrap_id" readonly="True"/>
+            </list>
+        </field>
+    </record>
+     <record id="view_pos_void_reason_history_form_view" model="ir.ui.view">
+        <field name="name">Pos Void Reason History form</field>
+        <field name="model">pos.void.reason.history</field>
+        <field name="arch" type="xml">
+            <form string="Pos Void Reason History">
+                <sheet>
+                    <group>
+                        <field name="order_no"/>
+                        <field name="table_no" />
+                        <field name="session_id" />
+                        <field name="pos_order_id"/>
+                        <field name="reason_id"/>
+                        <field name="date" />
+                        <field name="product_id"/>
+                        <field name="price"/>
+                        <field name="qty"/>
+                        <field name="pos_config_id"/>
+                        <field name="extra_note"/>
+                         <field name="user_id" />
+                        <field name="employee_id" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_pos_void_reason_history" model="ir.actions.act_window">
+        <field name="name">Pos Void Reason History</field>
+        <field name="res_model">pos.void.reason.history</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="pos_void_reason_add_pos" model="ir.actions.act_window">
+        <field name="name">Pos Void Reason</field>
+        <field name="res_model">pos.void.reason.history</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context" eval="{'dialog_size': 'medium'}"/>
+        <field name="view_id" ref="view_pos_void_reason_history_form_view"/>
+    </record>
+
+    <menuitem id="menu_pos_void_reason_history"
+             parent="point_of_sale.menu_point_config_product"
+             action="action_pos_void_reason_history"
+             sequence="11"/>
+</odoo>

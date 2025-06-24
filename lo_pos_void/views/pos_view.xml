@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="res_config_settings_view_form_voip" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.voip</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//block[@id='pos_payment_section']" position="after">
+                    <block title="Void" id="pos_payment_section" invisible="not pos_module_pos_restaurant">
+                        <setting id="void_reason_ids" string="Void Reasons">
+                            <field name="pos_void_reasons_ids" colspan="4" widget="many2many_tags"
+                                    options="{'no_create': True}"/>
+                        </setting>
+<!--                        <setting id="scrap_product" string="Scrap Product">-->
+<!--                            <field name="pos_scrap_product" colspan="4" readonly="0"/>-->
+<!--                        </setting>-->
+                        <setting id="on_void" string="On Void">
+                            <field name="pos_on_void" colspan="4" readonly="0"/>
+                        </setting>
+                    </block>
+                </xpath>
+
+                <xpath expr="//block[@id='pos_interface_section']/setting[last()]" position="after">
+                    <setting id="scrap_product" string="Show Employee In Line">
+                        <field name="pos_show_employee" colspan="4" readonly="0"/>
+                    </setting>
+                </xpath>
+
+
+
+            </field>
+        </record>
+        <record id="view_pos_pos_form_inherit_void" model="ir.ui.view">
+            <field name="name">pos.order.form.inherit.void</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='products']/field[@name='lines']/list/field[@name='qty']" position="after">
+                    <field name="id" invisible="1"/>
+                    <field name="cashier_id"/>
+                    <field name="status"/>
+                    <field name="same_line_id" invisible="1"/>
+                </xpath>
+                <xpath expr="//page[@name='products']/field[@name='lines']/list/field[@name='price_subtotal_incl']"
+                       position="after">
+                    <button name="button_scrap" string="Waste" type="object" class="btn-primary"
+                            invisible="is_scraped"/>
+                     <button name="button_scrap_and_void" string="Waste &amp;Void" type="object" class="btn-primary"
+                            invisible="is_scraped"/>
+                    <field name="is_scraped" readonly="True"/>
+                    <field name="scrap_id" readonly="True"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
