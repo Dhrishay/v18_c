@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="paperformat_label_a4_blank" model="report.paperformat">
+        <field name="name">Label A4</field>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">5</field>
+        <field name="margin_bottom">5</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="disable_shrinking" eval="True"/>
+        <field name="dpi">96</field>
+        <field name="default" eval="False"/>
+    </record>
+    <record id="paperformat_label_a4_blankfull" model="report.paperformat">
+        <field name="name">Label A4</field>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="disable_shrinking" eval="True"/>
+        <field name="dpi">96</field>
+        <field name="default" eval="False"/>
+    </record>
+     
+    <record id="paperformat_label_a4_blank_landscape" model="report.paperformat">
+        <field name="name">Label A4 Landscape</field>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">2</field>
+        <field name="margin_bottom">2</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="disable_shrinking" eval="True"/>
+        <field name="dpi">96</field>
+        <field name="default" eval="False"/>
+    </record>
+
+    <record id="paperformat_label_50x38" model="report.paperformat">
+        <field name="name">Label 50x38 mm</field>
+        <field name="format">custom</field>
+        <field name="page_height">38</field>
+        <field name="page_width">50</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">1</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="disable_shrinking" eval="True"/>
+        <field name="dpi">96</field>
+        <field name="default" eval="False"/>
+    </record>
+ 
+    <record id="action_report_product_label_from_template" model="ir.actions.report">
+        <field name="name">Product Label from your own template</field>
+        <field name="model">print.product.label.line</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="paperformat_id" ref="garazd_product_label.paperformat_label_a4_blank"/>
+        <field name="report_name">garazd_product_label.report_product_label_from_template</field>
+        <field name="report_file">garazd_product_label.report_product_label_from_template</field>
+        <field name="print_report_name">'Product Labels Custom Design'</field>
+    </record>
+    
+    <record id="action_report_product_A4_50x38" model="ir.actions.report">
+        <field name="name">Product Labels 50x38mm (A4, 21 pcs)</field>
+        <field name="model">print.product.label.line</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="paperformat_id" ref="paperformat_label_a4_blank"/>
+        <field name="report_name">garazd_product_label.report_product_label_kkm_50x38</field>
+        <field name="report_file">garazd_product_label.report_product_label_kkm_50x38</field>
+        <field name="print_report_name">'Product Labels 50x38'</field>
+    </record>
+
+    <record id="action_report_product_A4_50x40" model="ir.actions.report">
+        <field name="name">Product Labels 50x40mm (A4, 18 pcs)</field>
+        <field name="model">print.product.label.line</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="paperformat_id" ref="paperformat_label_a4_blank"/>
+        <field name="report_name">garazd_product_label.report_product_label_kkm_50x40</field>
+        <field name="report_file">garazd_product_label.report_product_label_kkm_50x40</field>
+        <field name="print_report_name">'Product Labels 50x40'</field>
+    </record>
+    
+    <record id="action_report_product_A4_58x38" model="ir.actions.report">
+        <field name="name">Product Labels 58x38mm (A4, 18 pcs)</field>
+        <field name="model">print.product.label.line</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="paperformat_id" ref="paperformat_label_a4_blank"/>
+        <field name="report_name">garazd_product_label.report_product_label_kkm_58x38</field>
+        <field name="report_file">garazd_product_label.report_product_label_kkm_58x38</field>
+        <field name="print_report_name">'Product Labels 58x38'</field>
+    </record> 
+    
+    <record id="action_report_product_A4_80x38" model="ir.actions.report">
+        <field name="name">Product Labels 80x38mm (A4, 12 pcs)</field>
+        <field name="model">print.product.label.line</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="paperformat_id" ref="paperformat_label_a4_blank"/>
+        <field name="report_name">garazd_product_label.report_product_label_kkm_80x38</field>
+        <field name="report_file">garazd_product_label.report_product_label_kkm_80x38</field>
+        <field name="print_report_name">'Product Labels 80x38'</field>
+    </record>
+    
+    <record id="action_report_product_101x38" model="ir.actions.report">
+        <field name="name">Product Labels 101x38mm (A4, 14 pcs)</field>
+        <field name="model">print.product.label.line</field>
+        <field name="report_type">qweb-pdf</field> 
+        <field name="paperformat_id" ref="paperformat_label_a4_blank"/>
+        <field name="report_name">garazd_product_label.report_product_label_kkm_101x38</field>
+        <field name="report_file">garazd_product_label.report_product_label_kkm_101x38</field>
+        <field name="print_report_name">'Product Labels 101x38'</field>
+    </record>
+    
+    <record id="action_report_product_A4_100x70" model="ir.actions.report">
+        <field name="name">Product Labels 100x70mm (A4, 6 pcs)</field>
+        <field name="model">print.product.label.line</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="paperformat_id" ref="paperformat_label_a4_blank"/>
+        <field name="report_name">garazd_product_label.report_product_label_kkm_100x70</field>
+        <field name="report_file">garazd_product_label.report_product_label_kkm_100x70</field>
+        <field name="print_report_name">'Product Labels 100x70'</field>
+    </record> 
+    
+    <record id="action_report_product_A4_210x100" model="ir.actions.report">
+        <field name="name">Product Labels 210x100mm (A4, 2 pcs)</field>
+        <field name="model">print.product.label.line</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="paperformat_id" ref="paperformat_label_a4_blank_landscape"/>
+        <field name="report_name">garazd_product_label.report_product_label_kkm_210x100</field>
+        <field name="report_file">garazd_product_label.report_product_label_kkm_210x100</field>
+        <field name="print_report_name">'Product Labels 210x100'</field>
+    </record> 
+    
+     <record id="action_report_product_A4_210x290" model="ir.actions.report">
+        <field name="name">Product Labels 210x290mm (A4, 1 pcs)</field>
+        <field name="model">print.product.label.line</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="paperformat_id" ref="paperformat_label_a4_blankfull"/>
+        <field name="report_name">garazd_product_label.report_product_label_kkm_210x290</field>
+        <field name="report_file">garazd_product_label.report_product_label_kkm_210x290</field>
+        <field name="print_report_name">'Product Labels 210x290'</field>
+    </record> 
+
+</odoo>

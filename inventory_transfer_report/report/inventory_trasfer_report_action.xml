@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="paperformat_transfer_custom" model="report.paperformat">
+        <field name="name">Transfer</field>
+        <field name="default" eval="True" />
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">50</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+    </record>
+
+    <record id="action_transfer_pdf_report" model="ir.actions.report">
+        <field name="name">Inventory Transfer PDF</field>
+        <field name="model">report.inventory.transfer</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">inventory_transfer_report.report_inventory_transfer</field>
+        <field name="report_file">inventory_transfer_report.report_inventory_transfer</field>
+        <field name="print_report_name">'Transfer Details'</field>
+        <field name="paperformat_id" ref="inventory_transfer_report.paperformat_transfer_custom" />
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

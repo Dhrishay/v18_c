@@ -1,0 +1,1035 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="label_57x35">
+        <table class="table" style="margin: 0; padding: 0;">
+            <tr height="144px" style="border:0;margin:0;padding:0;">
+                <td class="col-xs-4 text-center" style="border:0;margin:0;padding:0;">
+                    <div style="overflow:hidden; height:65px !important; padding: 5px 5px 0; line-height: 1.2;">
+                        <span t-field="label.product_id.name" style="line-height: 1.2;"/>
+                        <span t-if="label.product_id.product_template_attribute_value_ids" t-esc="u', '.join(map(lambda x: x.attribute_line_id.attribute_id.name + u': ' + x.name, label.product_id.product_template_attribute_value_ids))" class="badge"/>
+                    </div>
+                    <div style="width: 100%; padding: 0; margin: 0; font-size: 21px; font-weight: bold;">
+                        <span t-if="label.product_id.currency_id.position == 'before'" t-field="label.product_id.currency_id.symbol"/>
+                        <span t-field="label.product_id.lst_price"/>
+                        <span t-if="label.product_id.currency_id.position == 'after'" t-field="label.product_id.currency_id.symbol"/>
+                    </div>
+                    <div t-if="label.product_id.default_code" style="width: 100%; padding: 0; margin: 0; font-size: 12px;">
+                        <span t-field="label.product_id.default_code"/>
+                    </div>
+                    <t t-if="label.product_id.barcode">
+                        <div t-out="label.product_id.barcode" t-options="{'widget': 'barcode', 'symbology': 'auto', 'img_style': 'overflow: hidden; width: 100%; height: 1.4rem;', 'humanreadable': label.wizard_id.humanreadable}" class="px-1"/>
+                    </t>
+                </td>
+            </tr>
+        </table>
+    </template>
+
+    <template id="label_garazd_nobrand">
+        <div t-set="bg_color" t-value="label.company_id.label_bg_color or 'rgb(0, 0, 0)'" />
+        <div t-att-style="'border: 1px solid rgba(0, 0, 0, 0.6); width: %s; height: %s; margin-top: 10px; padding: 2px;  background-color: %s;' % (label_width or '120mm', label_height or '60mm', bg_color)">
+                <div style="border: 0px solid rgb(255, 255, 255);margin:3px;">
+                <div class="row" t-attf-style="height:#{bottom_block_height_no};" t-att-style="'font-size:%s;'%font_size_head" style="padding: 3px;">
+                    <div style="width: 25%;" class="d-flex justify-content-center align-items-center">
+                        <img t-att-src="'data:image/png;base64,%s' % (label.company_id.logo.decode('utf-8') or '')" t-att-style="' width: %s;' % ( logo_size)" />
+                    </div>
+                    <div style="width: 75%; background-color: rgb(255, 255, 255); border-radius: 5px; border: 2px solid #000000; text-align: center;margin-top:{{padding_price}};">
+                        <t t-set="product_lo" t-value="label.product_id.with_context(lang='lo_LA').product_tmpl_id.name" />
+                        <t t-set="product_en" t-value="label.product_id.with_context(lang='en_US').product_tmpl_id.name"/>
+                        <span class="d-inline-block text-truncate" t-att-style="'font-size: %s; font-family: Noto Sans Lao; max-width: %s;' % (font_size_kkm,font_width)" t-esc="product_lo"/>
+                        <br/>
+                        <span class="d-inline-block text-truncate" t-att-style="'font-size: %s; font-family: Monserrat; max-width: %s;' % (font_size_kkm,font_width)" t-esc="product_en"/>
+                    </div>
+                </div>
+                <div t-attf-style="width:100%; background-color:rgb(255,255,255); margin-top:{{padding_price}}; border-radius:10px 10px 0px 0px; border:2px solid #000000;height:{{height_Bar}};">
+                    <t t-set="bgColor" t-value="'#008bff'"/>
+                    <t t-if="label.product_id.product_tmpl_id.top_pog == 'A'">
+                        <t t-set="bgColor" t-value="'#00FF00'"/>
+                    </t>
+                    <t t-elif="label.product_id.product_tmpl_id.top_pog == 'B'">
+                        <t t-set="bgColor" t-value="'#0000FF'"/>
+                    </t>
+                    <t t-elif="label.product_id.product_tmpl_id.top_pog == 'C'">
+                        <t t-set="bgColor" t-value="'#ff8300'"/>
+                    </t>
+                    <t t-else="">
+                        <t t-set="bgColor" t-value="''"/>
+                    </t>
+                    <div class="row">
+                        <div style="width: 90%;padding:2px;">
+                            <t t-if="label.wizard_id.use_pro">
+                                <b t-attf-style=" font-size:{{font_size_date}}px;padding:2px;">
+                                    <t t-if="label.wizard_id.start_at.strftime('%m%Y') == label.wizard_id.end_at.strftime('%m%Y')">
+                                        <span style="float:right" t-esc="label.wizard_id.start_at.strftime('%-d') + '-' + label.wizard_id.end_at.strftime('%-d') + '/' + label.wizard_id.end_at.strftime('%m/%Y')"/>
+                                    </t>
+                                    <t t-else="">
+                                        <span class="d-inline-block text-truncate" style="float:right" t-esc="label.wizard_id.start_at.strftime('%-d/%m/%Y') + ' - ' + label.wizard_id.end_at.strftime('%-d/%m/%Y')"/>
+                                    </t>
+                                </b>
+                            </t>
+                            <t t-else="">
+                                <span t-attf-style="padding:5px; float:right;font-size:{{font_size_date}}px" t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>
+
+                            </t>
+                        </div>
+                        <div style="width: 10%;padding-top:1px; ">
+                            <span class="d-flex justify-content-center align-items-center " t-attf-style="float:right;background-color:{{ bgColor }};height:{{ heightB }}px;width: {{ heightB }}px; border-radius: 50%;">
+                                <span t-attf-style=" font-size:{{font_size_kkm}};" class="d-flex justify-content-center align-items-center ">
+                                    <t t-out="label.product_id.product_tmpl_id.top_pog"/>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row" t-att-style="'font-size:%s;margin-top: %s;white-space: nowrap;'%(font_size_price,margin_price)">
+                        <div style="width: 100%;" class="d-flex justify-content-left align-items-top">
+                            <span style="font-family: Noto Sans Lao;">ລາຄາ</span>:
+                            <span style="padding-left:2px;font-family: Monserrat;">
+                                <strong class="o_label_price" t-field="label.product_id.lst_price" t-options="{'widget': 'monetary', 'label_price': True}"/>/<strong t-esc="label.product_id.uom_id.name"/>
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div t-attf-style="width:100%; background-color:rgb(255,255,255); border-radius:0px 0px 10px 10px; border:2px solid #000000;height:{{height_Bar}};margin-top:-10px;">
+
+                    <div t-attf-style="width: 100%; border-radius: 0px 0px 10px 10px;font-size:{{font_size_head}}" class="row">
+                        <t t-if="label.wizard_id.humanreadable==True">
+                            <t t-set="insible_none" t-value="1"/>
+                            <t t-set="display_code" t-value="1"/>
+                        </t>
+                        <t t-else="">
+                            <t t-set="insible_none" t-value="0"/>
+                            <t t-set="display_code" t-value="'none'"/>
+                        </t>
+                        <t t-if="label_height == '100mm'">
+                            <div class="text-center col-5 p-2" style="display: flex;   justify-content: center;padding-top: 20px;">
+                                <img alt="Barcode" t-if="len(label.product_id.barcode) == 13" t-att-src="'/report/barcode?barcode_type=EAN13&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 4em;width:90% ; padding: 0px;"/>
+                                <img alt="Barcode" t-elif="len(label.product_id.barcode) == 8" t-att-src="'/report/barcode?barcode_type=EAN8&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 4em;width:90% ; padding: 0px;"/>
+                                <img alt="Barcode" t-else="" t-att-src="'/report/barcode?barcode_type=Code128&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 4em;padding: 0px;"/>
+                                <p class="text-white"   t-attf-style="display:{{display_code}};font-size:1rem;letter-spacing: 0.3rem;">
+                                    <t t-esc="label.product_id.barcode"/>
+                                </p>
+                            </div>
+                            <div class="col-7 text-center" style="text-wrap: balance;justify-content: center;padding-left: 10px;">
+                                <span t-field="label.product_id.description" style=" font-size:1.3rem;  font-family: Times New Roman;  "/>
+                            </div>
+
+
+                        </t>
+
+                        <t t-elif="label_height == '38mm'">
+                            <div class="text-center col-6 p-1" style="display: flex;   justify-content: top;margin-top:-3px;">
+                                <img alt="Barcode" t-if="len(label.product_id.barcode) == 13" t-att-src="'/report/barcode?barcode_type=EAN13&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 1.2rem; width:90% ;padding: 0px;"/>
+                                <img alt="Barcode" t-elif="len(label.product_id.barcode) == 8" t-att-src="'/report/barcode?barcode_type=EAN8&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 1.2rem;width:90% ; padding: 0px;"/>
+                                <img alt="Barcode" t-else="" t-att-src="'/report/barcode?barcode_type=Code128&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 1.2rem;width:90% ; padding: 0px;"/>
+                                <p class="text-white"  t-attf-style="display:{{display_code}};font-size:0.3rem;letter-spacing: 0.12rem;">
+                                    <t t-esc="label.product_id.barcode"/>
+                                </p>
+                            </div>
+                            <div class="col-6" style="text-wrap: balance;justify-content: center;padding-left: 10px;">
+                                <span t-field="label.product_id.description" style=" font-size:0.5rem;  font-family: Times New Roman;  "/>
+                            </div>
+
+                        </t>
+                        <t t-elif="label_height == '40mm'">
+                            <div class="text-center col-5 p-1" style="display: flex;   justify-content: left;">
+                                <img alt="Barcode" t-if="len(label.product_id.barcode) == 13" t-att-src="'/report/barcode?barcode_type=EAN13&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 1.5rem;width:90% ; padding: 0px;"/>
+                                <img alt="Barcode" t-elif="len(label.product_id.barcode) == 8" t-att-src="'/report/barcode?barcode_type=EAN8&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 1.5rem;width:90% ; padding: 0px;"/>
+                                <img alt="Barcode" t-else="" t-att-src="'/report/barcode?barcode_type=Code128&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 1.5rem;width:90% ;padding: 0px;"/>
+                                <p class="text-white" t-attf-style="display:{{display_code}};font-size:0.3rem;letter-spacing: 0.12rem;">
+                                    <t t-esc="label.product_id.barcode"/>
+                                </p>
+                            </div>
+                            <div class="col-7" style="text-wrap: balance;justify-content: center;padding-left: 10px;">
+                                <span t-field="label.product_id.description" style=" font-size:0.5rem;  font-family: Times New Roman;  "/>
+                            </div>
+
+                        </t>
+                        <t t-elif="label_height == '70mm'">
+                            <div class="text-center col-5 p-1" style="display: flex;   justify-content: left;">
+                                <img alt="Barcode" t-if="len(label.product_id.barcode) == 13" t-att-src="'/report/barcode?barcode_type=EAN13&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 3rem;width:90% ; padding: 0px;"/>
+                                <img alt="Barcode" t-elif="len(label.product_id.barcode) == 8" t-att-src="'/report/barcode?barcode_type=EAN8&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 3rem;width:90% ; padding: 0px;"/>
+                                <img alt="Barcode" t-else="" t-att-src="'/report/barcode?barcode_type=Code128&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 3rem;width:90% ;padding: 0px;"/>
+                                <p class="text-white"   t-attf-style="display:{{display_code}};font-size:0.6rem;letter-spacing: 0.12rem;">
+                                    <t t-esc="label.product_id.barcode"/>
+                                </p>
+                            </div>
+                            <div class="col-7 " style="text-wrap: balance;justify-content: center;padding-left: 10px;">
+                                <span t-field="label.product_id.description" style=" font-size:1rem;  font-family: Times New Roman;  "/>
+                            </div>
+
+                        </t>
+
+                        <t t-elif="label_height == '210mm'"> 
+                            <div class="text-center col-5 p-2" style="display: flex;   justify-content: left;">
+                                <img alt="Barcode" t-if="len(label.product_id.barcode) == 13" t-att-src="'/report/barcode?barcode_type=EAN13&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 13rem; padding: 0px;"/>
+                                <img alt="Barcode" t-elif="len(label.product_id.barcode) == 8" t-att-src="'/report/barcode?barcode_type=EAN8&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 13rem; padding: 0px;"/>
+                                <img alt="Barcode" t-else="" t-att-src="'/report/barcode?barcode_type=Code128&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 13rem;padding: 0px;"/>
+                                <p class="text-white"   t-attf-style="display:{{display}};font-size:1.5rem;letter-spacing: 0.8rem;">
+                                    <t t-esc="label.product_id.barcode"/>
+                                </p>
+                            </div>
+                            <div class="col-7 text-center" style="text-wrap: balance;justify-content: center;padding-left: 10px;">
+                                <span t-field="label.product_id.description" style=" font-size:1.8rem;  font-family: Times New Roman;  "/>
+                            </div>
+
+                        </t>
+                        <t t-else="">
+                            <!-- <div t-field="label.product_id.barcode" t-attf-style=" float: left;  margin-top: -10px; float: left;" t-options="{'widget': 'barcode', 'img_style': 'overflow: hidden; width: 88%; ', 'humanreadable': humanreadable}" class="mt-1"/> -->
+                            <!-- <span t-field="label.product_id.description" style=" font-size:8px;float: right; margin-top: -20px; width: 50%; text-align: center; font-family: Times New Roman;"/> -->
+                        </t>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="label_garazd_kkm">
+        <div t-set="bg_color" t-value="label.company_id.label_bg_color or 'rgb(0, 0, 0)'" />
+        <div t-att-style="'border: 1px solid rgba(0, 0, 0, 0.6); width: %s; height: %s; margin-top: 10px; padding: 2px;  background-color: %s;' % (label_width or '120mm', label_height or '60mm', bg_color)">
+            <div style="border: 0px solid rgb(255, 255, 255);margin:3px;">
+                <div class="row" t-attf-style="height:#{bottom_block_height_no};" t-att-style="'font-size:%s;'%font_size_head" style="padding: 3px;">
+                    <div style="width: 25%;" class="d-flex justify-content-center align-items-center">
+                        <img t-att-src="'data:image/png;base64,%s' % (label.company_id.logo.decode('utf-8') or '')" t-att-style="' width: %s;' % ( logo_size)" />
+                    </div>
+                    <div style="width: 75%; background-color: rgb(255, 255, 255); border-radius: 5px; border: 2px solid #000000; text-align: center;margin-top:{{padding_price}};">
+                        <t t-set="product_lo" t-value="label.product_id.with_context(lang='lo_LA').product_tmpl_id.name" />
+                        <t t-set="product_en" t-value="label.product_id.with_context(lang='en_US').product_tmpl_id.name"/>
+                        <span class="d-inline-block text-truncate" t-att-style="'font-size: %s; font-family: Noto Sans Lao; max-width: %s;' % (font_size_kkm,font_width)" t-esc="product_lo"/>
+                        <br/>
+                        <span class="d-inline-block text-truncate" t-att-style="'font-size: %s; font-family: Monserrat; max-width: %s;' % (font_size_kkm,font_width)" t-esc="product_en"/>
+                    </div>
+                </div>
+                <div t-attf-style="width:100%; background-color:rgb(255,255,255); margin-top:{{padding_price}}; border-radius:10px 10px 0px 0px; border:2px solid #000000;height:{{height_Bar}};">
+                    <t t-set="bgColor" t-value="'#008bff'"/>
+                    <t t-if="label.product_id.product_tmpl_id.top_pog == 'A'">
+                        <t t-set="bgColor" t-value="'#00FF00'"/>
+                    </t>
+                    <t t-elif="label.product_id.product_tmpl_id.top_pog == 'B'">
+                        <t t-set="bgColor" t-value="'#0000FF'"/>
+                    </t>
+                    <t t-elif="label.product_id.product_tmpl_id.top_pog == 'C'">
+                        <t t-set="bgColor" t-value="'#ff8300'"/>
+                    </t>
+                    <t t-else="">
+                        <t t-set="bgColor" t-value="''"/>
+                    </t>
+                    <div class="row">
+                        <div style="width: 90%;padding:2px;">
+                            <t t-if="label.wizard_id.use_pro">
+                                <b t-attf-style=" font-size:{{font_size_date}}px;padding:2px;">
+                                    <t t-if="label.wizard_id.start_at.strftime('%m%Y') == label.wizard_id.end_at.strftime('%m%Y')">
+                                        <span style="float:right" t-esc="label.wizard_id.start_at.strftime('%-d') + '-' + label.wizard_id.end_at.strftime('%-d') + '/' + label.wizard_id.end_at.strftime('%m/%Y')"/>
+                                    </t>
+                                    <t t-else="">
+                                        <span class="d-inline-block text-truncate" style="float:right" t-esc="label.wizard_id.start_at.strftime('%-d/%m/%Y') + ' - ' + label.wizard_id.end_at.strftime('%-d/%m/%Y')"/>
+                                    </t>
+                                </b>
+                            </t>
+                            <t t-else="">
+                                <span t-attf-style="padding:5px; float:right;font-size:{{font_size_date}}px" t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>
+
+                            </t>
+                        </div>
+                        <div style="width: 10%;padding-top:1px; ">
+                            <span class="d-flex justify-content-center align-items-center " t-attf-style="float:right;background-color:{{ bgColor }};height:{{ heightB }}px;width: {{ heightB }}px; border-radius: 50%;">
+                                <span t-attf-style=" font-size:{{font_size_kkm}};" class="d-flex justify-content-center align-items-center ">
+                                    <t t-out="label.product_id.product_tmpl_id.top_pog"/>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row" t-att-style="'font-size:%s;margin-top: %s;white-space: nowrap;'%(font_size_price,margin_price)">
+                        <div style="width: 100%;" class="d-flex justify-content-left align-items-top">
+                            <span style="font-family: Noto Sans Lao;">ລາຄາ</span>:
+                            <span style="padding-left:2px;font-family: Monserrat;">
+                                <strong class="o_label_price" t-field="label.product_id.lst_price" t-options="{'widget': 'monetary', 'label_price': True}"/>/<strong t-esc="label.product_id.uom_id.name"/>
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div t-attf-style="width:100%; background-color:rgb(255,255,255); border-radius:0px 0px 10px 10px; border:2px solid #000000;height:{{height_Bar}};margin-top:-10px;">
+
+                    <div t-attf-style="width: 100%; border-radius: 0px 0px 10px 10px;font-size:{{font_size_head}}" class="row">
+                        <t t-if="label.wizard_id.humanreadable==True">
+                            <t t-set="insible_none" t-value="1"/>
+                            <t t-set="display_code" t-value="1"/>
+                        </t>
+                        <t t-else="">
+                            <t t-set="insible_none" t-value="0"/>
+                            <t t-set="display_code" t-value="'none'"/>
+                        </t>
+                        <t t-if="label_height == '100mm'">
+                            <div class="text-center col-5 p-2" style="display: flex;   justify-content: center;padding-top: 20px;">
+                                <img alt="Barcode" t-if="len(label.product_id.barcode) == 13" t-att-src="'/report/barcode?barcode_type=EAN13&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 4em;width:90% ; padding: 0px;"/>
+                                <img alt="Barcode" t-elif="len(label.product_id.barcode) == 8" t-att-src="'/report/barcode?barcode_type=EAN8&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 4em;width:90% ; padding: 0px;"/>
+                                <img alt="Barcode" t-else="" t-att-src="'/report/barcode?barcode_type=Code128&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 4em;padding: 0px;"/>
+                                <p class="text-white"   t-attf-style="display:{{display_code}};font-size:1rem;letter-spacing: 0.3rem;">
+                                    <t t-esc="label.product_id.barcode"/>
+                                </p>
+                            </div>
+                            <div class="col-7 text-center" style="text-wrap: balance;justify-content: center;padding-left: 10px;">
+                                <span t-field="label.product_id.description" style=" font-size:1.3rem;  font-family: Times New Roman;  "/>
+                            </div>
+
+
+                        </t>
+
+                        <t t-elif="label_height == '38mm'">
+                            <div class="text-center col-6 p-1" style="display: flex;   justify-content: top;margin-top:-3px;">
+                                <img alt="Barcode" t-if="len(label.product_id.barcode) == 13" t-att-src="'/report/barcode?barcode_type=EAN13&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 1.2rem; width:90% ;padding: 0px;"/>
+                                <img alt="Barcode" t-elif="len(label.product_id.barcode) == 8" t-att-src="'/report/barcode?barcode_type=EAN8&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 1.2rem;width:90% ; padding: 0px;"/>
+                                <img alt="Barcode" t-else="" t-att-src="'/report/barcode?barcode_type=Code128&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 1.2rem;width:90% ; padding: 0px;"/>
+                                <p class="text-white"  t-attf-style="display:{{display_code}};font-size:0.3rem;letter-spacing: 0.12rem;">
+                                    <t t-esc="label.product_id.barcode"/>
+                                </p>
+                            </div>
+                            <div class="col-6" style="text-wrap: balance;justify-content: center;padding-left: 10px;">
+                                <span t-field="label.product_id.description" style=" font-size:0.5rem;  font-family: Times New Roman;  "/>
+                            </div>
+
+                        </t>
+                        <t t-elif="label_height == '40mm'">
+                            <div class="text-center col-5 p-1" style="display: flex;   justify-content: left;">
+                                <img alt="Barcode" t-if="len(label.product_id.barcode) == 13" t-att-src="'/report/barcode?barcode_type=EAN13&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 1.5rem;width:90% ; padding: 0px;"/>
+                                <img alt="Barcode" t-elif="len(label.product_id.barcode) == 8" t-att-src="'/report/barcode?barcode_type=EAN8&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 1.5rem;width:90% ; padding: 0px;"/>
+                                <img alt="Barcode" t-else="" t-att-src="'/report/barcode?barcode_type=Code128&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 1.5rem;width:90% ;padding: 0px;"/>
+                                <p class="text-white" t-attf-style="display:{{display_code}};font-size:0.3rem;letter-spacing: 0.12rem;">
+                                    <t t-esc="label.product_id.barcode"/>
+                                </p>
+                            </div>
+                            <div class="col-7" style="text-wrap: balance;justify-content: center;padding-left: 10px;">
+                                <span t-field="label.product_id.description" style=" font-size:0.5rem;  font-family: Times New Roman;  "/>
+                            </div>
+
+                        </t>
+                        <t t-elif="label_height == '70mm'">
+                            <div class="text-center col-5 p-1" style="display: flex;   justify-content: left;">
+                                <img alt="Barcode" t-if="len(label.product_id.barcode) == 13" t-att-src="'/report/barcode?barcode_type=EAN13&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 3rem;width:90% ; padding: 0px;"/>
+                                <img alt="Barcode" t-elif="len(label.product_id.barcode) == 8" t-att-src="'/report/barcode?barcode_type=EAN8&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 3rem;width:90% ; padding: 0px;"/>
+                                <img alt="Barcode" t-else="" t-att-src="'/report/barcode?barcode_type=Code128&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 3rem;width:90% ;padding: 0px;"/>
+                                <p class="text-white"   t-attf-style="display:{{display_code}};font-size:0.6rem;letter-spacing: 0.12rem;">
+                                    <t t-esc="label.product_id.barcode"/>
+                                </p>
+                            </div>
+                            <div class="col-7 " style="text-wrap: balance;justify-content: center;padding-left: 10px;">
+                                <span t-field="label.product_id.description" style=" font-size:1rem;  font-family: Times New Roman;  "/>
+                            </div>
+
+                        </t>
+
+                        <t t-elif="label_height == '210mm'"> 
+                            <div class="text-center col-5 p-2" style="display: flex;   justify-content: left;">
+                                <img alt="Barcode" t-if="len(label.product_id.barcode) == 13" t-att-src="'/report/barcode?barcode_type=EAN13&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 13rem; padding: 0px;"/>
+                                <img alt="Barcode" t-elif="len(label.product_id.barcode) == 8" t-att-src="'/report/barcode?barcode_type=EAN8&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 13rem; padding: 0px;"/>
+                                <img alt="Barcode" t-else="" t-att-src="'/report/barcode?barcode_type=Code128&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 13rem;padding: 0px;"/>
+                                <p class="text-white"   t-attf-style="display:{{display}};font-size:1.5rem;letter-spacing: 0.8rem;">
+                                    <t t-esc="label.product_id.barcode"/>
+                                </p>
+                            </div>
+                            <div class="col-7 text-center" style="text-wrap: balance;justify-content: center;padding-left: 10px;">
+                                <span t-field="label.product_id.description" style=" font-size:1.8rem;  font-family: Times New Roman;  "/>
+                            </div>
+
+                        </t>
+                        <t t-else="">
+                            <!-- <div t-field="label.product_id.barcode" t-attf-style=" float: left;  margin-top: -10px; float: left;" t-options="{'widget': 'barcode', 'img_style': 'overflow: hidden; width: 88%; ', 'humanreadable': humanreadable}" class="mt-1"/> -->
+                            <!-- <span t-field="label.product_id.description" style=" font-size:8px;float: right; margin-top: -20px; width: 50%; text-align: center; font-family: Times New Roman;"/> -->
+                        </t>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+    <template id="label_garazd_joah">
+
+    <div t-set="bg_color" t-value="label.company_id.label_bg_color or 'rgb(255, 226, 188)'" />
+        <div t-att-style="'border: 1px solid rgba(0, 0, 0, 0.6); width: %s; height: %s; margin-top: 10px; padding: 2px;  background-color:rgb(255, 226, 188);' % (label_width or '120mm', label_height or '60mm')">
+            <div style="border: 0px solid rgb(255, 255, 255);margin:3px;">
+                <div class="row" t-attf-style="height:#{bottom_block_height_no};" t-att-style="'font-size:%s;'%font_size_head" style="padding: 3px;">
+                    <div style="width: 25%;" class="d-flex justify-content-center align-items-center">
+                        <img t-att-src="'data:image/png;base64,%s' % (label.company_id.logo.decode('utf-8') or '')" t-att-style="' width: %s;' % ( logo_size)" />
+                    </div>
+                    <div style="width: 55%;">
+                    </div>
+                    <t t-set="bgColor" t-value="'#008bff'"/>
+                    <t t-if="label.product_id.product_tmpl_id.top_pog == 'A'">
+                        <t t-set="bgColor" t-value="'#00FF00'"/>
+                    </t>
+                    <t t-elif="label.product_id.product_tmpl_id.top_pog == 'B'">
+                        <t t-set="bgColor" t-value="'#0000FF'"/>
+                    </t>
+                    <t t-elif="label.product_id.product_tmpl_id.top_pog == 'C'">
+                        <t t-set="bgColor" t-value="'#ff8300'"/>
+                    </t>
+                    <t t-else="">
+                        <t t-set="bgColor" t-value="''"/>
+                    </t>
+                    <div style="width: 20%;padding-top:1px; ">
+                        <span class="d-flex justify-content-center align-items-center " t-attf-style="float:right;background-color:{{ bgColor }};height:{{ heightB }}px;width: {{ heightB }}px; border-radius: 50%;">
+                                <span t-attf-style=" font-size:{{font_size_kkm}};" class="d-flex justify-content-center align-items-center ">
+                                    <t t-out="label.product_id.product_tmpl_id.top_pog"/>
+                                </span>
+                            </span>
+                    </div>
+                </div>
+                <div t-attf-style="width:100%;   margin-top:{{padding_price}};  ">
+
+                    <div class="row " t-att-style="'font-size:%s;margin-top: %s;white-space: nowrap;'%(font_size_price,margin_price)">
+
+                        <div style="width: 100%;" class="d-flex justify-content-center align-items-top">
+                            <t t-set="product_lo" t-value="label.product_id.with_context(lang='lo_LA').product_tmpl_id.name" />
+                            <t t-set="product_en" t-value="label.product_id.with_context(lang='en_US').product_tmpl_id.name"/>
+                            <span class="d-inline-block text-truncate" t-att-style="'font-size: %s; font-family: Noto Sans Lao; max-width: %s;' % (font_size,font_width_joah)" t-esc="product_lo"/>
+                            <br/>
+                            <span class="d-inline-block text-truncate" t-att-style="'font-size: %s; font-family: Monserrat; max-width: %s;' % (font_size,font_width_joah)" t-esc="product_en"/>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <div t-attf-style="width:100%; background-color:{{bg_color}}; border-radius:0px 0px 10px 10px; border:2px solid #000000;height:{{height_joah}};">
+                    <div class="row">
+                        <div style="width: 99%;padding-top:1px">
+                            <t t-if="label.wizard_id.use_pro">
+                                <b t-attf-style=" font-size:{{font_size_date}}px;padding:2px ">
+                                    <t t-if="label.wizard_id.start_at.strftime('%m%Y') == label.wizard_id.end_at.strftime('%m%Y')">
+                                        <span  style="float:left" t-esc="label.wizard_id.start_at.strftime('%-d') + '-' + label.wizard_id.end_at.strftime('%-d') + '/' + label.wizard_id.end_at.strftime('%m/%Y')"/>
+                                    </t>
+                                    <t t-else="">
+                                        <span class="d-inline-block text-truncate" style="float:right" t-esc="label.wizard_id.start_at.strftime('%-d/%m/%Y') + ' - ' + label.wizard_id.end_at.strftime('%-d/%m/%Y')"/>
+                                    </t>
+                                </b>
+                            </t>
+                            <t t-else="">
+                                <span t-attf-style="padding:1px; float:right;font-size:{{font_size_date}}px" t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>
+
+                            </t>
+                        </div>
+
+                    </div>
+                    <div t-attf-style="width: 100%; border-radius: 0px 0px 10px 10px;font-size:{{font_size_head}};margin-top:0px" class="row">
+                        <t t-set="humanreadable" t-value="0"/>
+                        <t t-if="label.wizard_id.humanreadable">
+                            <t t-set="humanreadable" t-value="1"/>
+                        </t>
+                        <t t-else="">
+                            <t t-set="humanreadable" t-value="0"/>
+                        </t>
+                        <t t-if="label_height == '100mm'">
+                            <div class="col-6" style="text-wrap: balance;justify-content: center;padding-left: 10px;">
+                                <span t-attf-style="padding-left:2%;font-family: Monserrat;font-size:{{font_size_price}}">
+                                    <strong class="o_label_price" t-esc=" '{0:,.0f}'.format(label.product_id.lst_price)" />
+                                    <span t-attf-style=" font-size:{{font_size_date}}px">.00</span>
+                                    <br/>
+                                    <strong class="o_label_price" t-field="label.product_id.currency_id.symbol" />/<strong t-esc="label.product_id.uom_id.name"/>
+                                </span>
+                            </div>
+                            <div class="text-center col-6" style="display: flex;   justify-content: center;">
+                                <img alt="Barcode" t-if="len(label.product_id.barcode) &lt;= 8" t-att-src="'/report/barcode?barcode_type=EAN8&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(insible_none) + '&amp;quiet=0'" style="height: 5em;width:90% ; padding: 0px;"/>
+                                <img alt="Barcode" t-elif="len(label.product_id.barcode) &lt;= 13" t-att-src="'/report/barcode?barcode_type=EAN13&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 5em; width:90% ;padding: 0px;"/>
+                                <img alt="Barcode" t-else="" t-att-src="'/report/barcode?barcode_type=Code128&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(insible_none) + '&amp;quiet=0'" style="height: 5em;width:90% ;padding: 0px;"/>
+                                <p class="text-white" t-if="len(label.product_id.barcode) &lt;= 13" t-attf-style="font-size:1.4rem;letter-spacing: 0.4rem;">
+                                    <t t-esc="label.product_id.barcode"/>
+                                </p>
+                            </div>
+                        </t>
+                        <t t-elif="label_height == '38mm'">
+                            <div class="col-7" style="text-wrap: balance;justify-content: center;padding-left: 10px;margin-top:-15px">
+                                <span t-attf-style="padding-left:2%;font-family: Monserrat;font-size:{{font_size_price}}">
+                                    <strong class="o_label_price" t-esc=" '{0:,.0f}'.format(label.product_id.lst_price)" />
+                                    <span t-attf-style=" font-size:{{font_size_date}}px">.00</span>
+                                    <br/>
+                                    <strong class="o_label_price" t-field="label.product_id.currency_id.symbol" style="margin-top:-20px" />/<strong t-esc="label.product_id.uom_id.name"/>
+                                </span>
+                            </div>
+                            <div class="text-center col-5" style="display: flex;   justify-content: center;">
+                                <img alt="Barcode" t-if="len(label.product_id.barcode) &lt;= 8" t-att-src="'/report/barcode?barcode_type=EAN8&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(insible_none) + '&amp;quiet=0'" style="height: 2rem; width:90% ;padding: 0px;"/>
+                                <img alt="Barcode" t-elif="len(label.product_id.barcode) &lt;= 13" t-att-src="'/report/barcode?barcode_type=EAN13&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 2rem;width:90% ; padding: 0px;"/>
+                                <img alt="Barcode" t-else="" t-att-src="'/report/barcode?barcode_type=Code128&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(insible_none) + '&amp;quiet=0'" style="height: 2rem;width:90% ;padding: 0px;"/>
+                                <p class="text-white" t-if="len(label.product_id.barcode) &lt;= 13" t-attf-style="font-size:0.33rem;letter-spacing: 0.13rem;">
+                                    <t t-esc="label.product_id.barcode"/>
+                                </p>
+                            </div>
+
+                        </t>
+                        <t t-elif="label_height == '40mm'">
+                            <div class="col-7" style="text-wrap: balance;justify-content: center;padding-left: 10px;">
+
+                                <span t-attf-style="padding-left:2%;font-family: Monserrat;font-size:{{font_size_price}}">
+                                    <strong class="o_label_price" t-esc=" '{0:,.0f}'.format(label.product_id.lst_price)" />
+                                    <span t-attf-style=" font-size:{{font_size_date}}px">.00</span>
+                                    <br/>
+                                    <strong class="o_label_price" t-field="label.product_id.currency_id.symbol" />/<strong t-esc="label.product_id.uom_id.name"/>
+                                </span>
+                            </div>
+                            <div class="text-center col-5" style="display: flex;   justify-content: left;">
+                                <img alt="Barcode" t-if="len(label.product_id.barcode) &lt;= 8" t-att-src="'/report/barcode?barcode_type=EAN8&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(insible_none) + '&amp;quiet=0'" style="height: 2rem; width:90% ;   padding: 0px;"/>
+                                <img alt="Barcode" t-elif="len(label.product_id.barcode) &lt;= 13" t-att-src="'/report/barcode?barcode_type=EAN13&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 2rem; width:90% ;   padding: 0px;"/>
+                                <img alt="Barcode" t-else="" t-att-src="'/report/barcode?barcode_type=Code128&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(insible_none) + '&amp;quiet=0'" style="height: 2rem;width:90% ;   padding: 0px;"/>
+                                <p class="text-white" t-if="len(label.product_id.barcode) &lt;= 13" t-attf-style="font-size:0.3rem;letter-spacing: 0.12rem;">
+                                    <t t-esc="label.product_id.barcode"/>
+                                </p>
+                            </div>
+
+                        </t>
+                        <t t-elif="label_height == '70mm'">
+                            <div class="col-7" style="text-wrap: balance;justify-content: center;padding-left: 10px;margin-top:-15px">
+                                <span t-attf-style="padding-left:2%;font-family: Monserrat;font-size:{{font_size_price}}">
+                                    <strong class="o_label_price" t-esc=" '{0:,.0f}'.format(label.product_id.lst_price)" t-attf-style=" font-size:{{font_size_head}}"/>
+                                    <span t-attf-style=" font-size:{{font_size_date}}">.00</span>
+                                    <br/>
+                                    <strong class="o_label_price" t-field="label.product_id.currency_id.symbol" />/<strong t-esc="label.product_id.uom_id.name"/>
+                                </span>
+                            </div>
+                            <div class="text-center col-5" style="display: flex;   justify-content: left;">
+                                <img alt="Barcode" t-if="len(label.product_id.barcode) &lt;= 8" t-att-src="'/report/barcode?barcode_type=EAN8&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(insible_none) + '&amp;quiet=0'" style="height: 3.5rem;width:90% ; padding: 0px;"/>
+                                <img alt="Barcode" t-elif="len(label.product_id.barcode) &lt;= 13" t-att-src="'/report/barcode?barcode_type=EAN13&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 3.5rem; width:90% ;padding: 0px;"/>
+                                <img alt="Barcode" t-else="" t-att-src="'/report/barcode?barcode_type=Code128&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(insible_none) + '&amp;quiet=0'" style="height: 3.5rem;width:90% ;padding: 0px;"/>
+                                <p class="text-white" t-if="len(label.product_id.barcode) &lt;= 13" t-attf-style="font-size:0.6rem;letter-spacing: 0.16rem;">
+                                    <t t-esc="label.product_id.barcode"/>
+                                </p>
+                            </div>
+
+                        </t>
+
+                        <t t-elif="label_height == '210mm'">
+                            <div class="col-7" style="text-wrap: balance;justify-content: center;padding-left: 10px;margin-top:-15px">
+                                <span t-attf-style="padding-left:2%;font-family: Monserrat; ">
+                                    <strong class="o_label_price" t-esc=" '{0:,.0f}'.format(label.product_id.lst_price)" t-attf-style=" font-size:{{font_size_price_joah}}"/>
+                                    <span t-attf-style="font-size:{{font_size_date}}px">.00</span>
+                                    <br/>
+                                    <strong class="o_label_price" t-esc="label.product_id.currency_id.symbol + ' / '" t-attf-style=" font-size:{{font_size_price_joah}}"> /</strong><strong t-esc="label.product_id.uom_id.name" t-attf-style=" font-size:{{font_size_price_joah}}"/>
+                                </span>
+                            </div>
+                            <div class="text-left col-5 text-center" style="display: flex;   justify-content: left;">
+                                <img alt="Barcode" t-if="len(label.product_id.barcode) &lt;= 8" t-att-src="'/report/barcode?barcode_type=EAN8&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(insible_none) + '&amp;quiet=0'" style="height: 11rem; padding: 0px;"/>
+                                <img alt="Barcode" t-elif="len(label.product_id.barcode) &lt;= 13" t-att-src="'/report/barcode?barcode_type=EAN13&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(0) + '&amp;quiet=0'" style="height: 11rem; padding: 0px;"/>
+                                <img alt="Barcode" t-else="" t-att-src="'/report/barcode?barcode_type=Code128&amp;value=' + label.product_id.barcode + '&amp;width=310&amp;height=130&amp;humanreadable=' + str(insible_none) + '&amp;quiet=0'" style="height: 11rem;padding: 0px;"/>
+                                <p class="text-white" t-if="len(label.product_id.barcode) &lt;= 13" t-attf-style="font-size:2rem;letter-spacing: 0.3rem;">
+                                    <t t-esc="label.product_id.barcode"/>
+                                </p>
+                            </div>
+
+                        </t>
+
+                        <t t-else="">
+                            <!-- <div t-field="label.product_id.barcode" t-attf-style=" float: left;  margin-top: -10px; float: left;" t-options="{'widget': 'barcode', 'img_style': 'overflow: hidden; width: 88%; ', 'humanreadable': humanreadable}" class="mt-1"/> -->
+                            <!-- <span t-field="label.product_id.description" style=" font-size:8px;float: right; margin-top: -20px; width: 50%; text-align: center; font-family: Times New Roman;"/> -->
+                        </t>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="report_product_label_kkm_50x38">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <t t-set="count" t-value="0" />
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <t t-foreach="docs.sudo()" t-as="label">
+                        <t t-set="qty" t-value="label.qty or 1" />
+                        <t t-foreach="list(range(qty))" t-as="index_qty">
+                            <div t-if="count % 21 == 0" style="page-break-after:always;"/>
+                            <div t-if="count % 3 == 0" style="clear:both;"/>
+
+                            <!-- ✅ ส่งค่า width/height เข้าไป -->
+                            <t t-set="label_width" t-value="'50mm'" />
+                            <t t-set="label_height" t-value="'38mm'" />
+
+
+                            <t t-set="heightB" t-value="'15'"/>
+                            <t t-set="height_Bar" t-value="'11.7mm'"/>
+                            <t t-set="height_joah" t-value="'15.5mm'"/>
+                            <t t-set="width_Bar" t-value="'15'"/>
+                            <t t-set="redius" t-value="'50'"/>
+                            <t t-set="label_height_value" t-value="15" />
+                            <t t-set="bottom_block_height" t-value="'10mm'" />
+                            <t t-set="bottom_block_height_no" t-value="'13mm'" />
+                            <t t-set="logo_size" t-value="'95%'" />
+                            <t t-set="font_size" t-value="'%dpx' % int(10)" />
+                            <t t-set="font_size_kkm" t-value="'%dpx' % int(10)" />
+                            <t t-set="font_width" t-value="'7rem'" />
+                            <t t-set="font_width_joah" t-value="'10rem'" />
+                            <t t-set="font_size_head" t-value="'0.8em'" />
+                            <t t-set="margin_price" t-value="'-10px'" />
+                            <!-- <t t-set="margin_price" t-value="'-5px'" /> -->
+                            <t t-set="margin_top_head" t-value="'12px'" />
+                            <t t-set="font_size_date" t-value="'6'" />
+                            <t t-set="font_size_price" t-value="'0.8em'" />
+                            <t t-set="font_size_price_top" t-value="'1'" />
+                            <t t-set="font_size_unit" t-value="'%dpx' % int(label_height_value * 0.2)" />
+                            <t t-set="padding_price" t-value="'3px'"/>
+                            <div t-att-style="'float: left; margin: 0 4px 4px; border: {};'.format('%dpx solid #777;' % label.wizard_id.border_width if label.wizard_id.border_width else '0')">
+
+                                <t t-if="label.wizard_id.company_id.product_label_template_name == 'garazd_product_label.label_garazd_kkm'">
+                                    <t t-call="garazd_product_label.label_garazd_kkm"/>
+
+                                </t>
+                                <t t-elif="label.wizard_id.company_id.product_label_template_name == 'garazd_product_label.label_garazd_joah'">
+                                    <t t-call="garazd_product_label.label_garazd_joah"/>
+
+                                </t>
+                                <t t-elif="label.wizard_id.company_id.product_label_template_name == 'garazd_product_label.label_garazd_nobrand'">
+                                    <t t-call="garazd_product_label.label_garazd_nobrand"/>
+
+                                </t>
+                                <t t-else="">
+                                    <t t-call="garazd_product_label.label_garazd_kkm"/>
+                                </t>
+                            </div>
+
+                            <t t-set="count" t-value="count+1" />
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+    <template id="report_product_label_kkm_50x40">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <t t-set="count" t-value="0" />
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <t t-foreach="docs.sudo()" t-as="label">
+                        <t t-set="qty" t-value="label.qty or 1" />
+                        <t t-foreach="list(range(qty))" t-as="index_qty">
+                            <div t-if="count % 18 == 0" style="page-break-after:always;"/>
+                            <div t-if="count % 3 == 0" style="clear:both;"/>
+                            <t t-set="label_width" t-value="'50mm'" />
+                            <t t-set="label_height" t-value="'40mm'" />
+
+                            <t t-set="heightB" t-value="15"/>
+                            <t t-set="height_Bar" t-value="'11.3mm'"/>
+                            <t t-set="height_joah" t-value="'17.5mm'"/>
+                            <t t-set="font_width_joah" t-value="'11rem'" />
+                            <t t-set="width_Bar" t-value="8"/>
+                            <t t-set="redius" t-value="50"/>
+                            <t t-set="font_width" t-value="'7rem'" />
+                            <t t-set="label_height_value" t-value="15" />
+                            <t t-set="bottom_block_height" t-value="'9.8mm'" />
+                            <t t-set="bottom_block_height_no" t-value="'14.5mm'" />
+                            <t t-set="logo_size" t-value="'95%'" />
+                            <t t-set="font_size" t-value="'%dpx' % int(12)" />
+                            <t t-set="font_size_kkm" t-value="'10px'" />
+                            <t t-set="font_size_head" t-value="'0.3'" />
+                            <t t-set="margin_price" t-value="'-10px'" />
+                            <!-- <t t-set="margin_price" t-value="'-5px'" /> -->
+                            <t t-set="margin_top_head" t-value="'12px'" />
+                            <t t-set="font_size_date" t-value="'7'" />
+                            <t t-set="font_size_price" t-value="'0.8rem'" />
+                            <t t-set="font_size_price_top" t-value="'1'" />
+                            <t t-set="font_size_unit" t-value="'%dpx' % int(label_height_value * 0.2)" />
+                            <t t-set="padding_price" t-value="'%dpx' % int(30 * 0.15)" />
+                            <div t-att-style="' float: left;   margin: 0 4px 4px; border: {};'.format('%dpx solid #777;' % label.wizard_id.border_width if label.wizard_id.border_width else '0')">
+
+                                <t t-if="label.wizard_id.company_id.product_label_template_name == 'garazd_product_label.label_garazd_kkm'">
+                                    <t t-call="garazd_product_label.label_garazd_kkm"/>
+
+                                </t>
+                                <t t-elif="label.wizard_id.company_id.product_label_template_name == 'garazd_product_label.label_garazd_joah'">
+                                    <t t-call="garazd_product_label.label_garazd_joah"/>
+
+                                </t>
+                                <t t-elif="label.wizard_id.company_id.product_label_template_name == 'garazd_product_label.label_garazd_nobrand'">
+                                    <t t-call="garazd_product_label.label_garazd_nobrand"/>
+
+                                </t>
+                                <t t-else="">
+                                    <t t-call="garazd_product_label.label_garazd_nobrand"/>
+                                </t>
+                            </div>
+
+                            <t t-set="count" t-value="count+1" />
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_product_label_kkm_58x38">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <t t-set="count" t-value="0" />
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <t t-foreach="docs.sudo()" t-as="label">
+                        <t t-set="qty" t-value="label.qty or 1" />
+                        <t t-foreach="list(range(qty))" t-as="index_qty">
+                            <div t-if="count % 18 == 0" style="page-break-after:always;"/>
+                            <div t-if="count % 3 == 0" style="clear:both;"/>
+                            <t t-set="label_width" t-value="'58mm'" />
+                            <t t-set="label_height" t-value="'38mm'" />
+
+                            <t t-set="heightB" t-value="15"/>
+                            <t t-set="height_Bar" t-value="'10.2mm'"/>
+                            <t t-set="height_joah" t-value="'14mm'"/>
+                            <t t-set="font_width_joah" t-value="'11rem'" />
+                            <t t-set="width_Bar" t-value="4"/>
+                            <t t-set="redius" t-value="50"/>
+                            <t t-set="label_height_value" t-value="15" />
+                            <t t-set="bottom_block_height" t-value="'8.9mm'" />
+                            <t t-set="bottom_block_height_no" t-value="'12.3mm'" />
+                            <t t-set="logo_size" t-value="'95%'" />
+                            <t t-set="font_size" t-value="'%dpx' % int(12)" />
+                            <t t-set="font_size_kkm" t-value="'%dpx' % int(12)" />
+                            <t t-set="font_size_head" t-value="'0.5'" />
+                            <t t-set="margin_top_head" t-value="'5px'" />
+                            <t t-set="font_width" t-value="'9rem'" />
+                            <t t-set="margin_price" t-value="'-13px'" />
+                            <!-- <t t-set="margin_price" t-value="'-5px'" /> -->
+                            <t t-set="font_size_date" t-value="'6'" />
+                            <t t-set="font_size_price" t-value="'0.8rem'" />
+                            <t t-set="font_size_price_top" t-value="'1'" />
+                            <t t-set="font_size_unit" t-value="'%dpx' % int(label_height_value * 0.2)" />
+                            <t t-set="padding_price" t-value="'%dpx' % int(30 * 0.15)" />
+                            <div t-att-style="' float: left;   margin: 0 4px 4px; border: {};'.format('%dpx solid #777;' % label.wizard_id.border_width if label.wizard_id.border_width else '0')">
+
+                                <t t-if="label.wizard_id.company_id.product_label_template_name == 'garazd_product_label.label_garazd_kkm'">
+                                    <t t-call="garazd_product_label.label_garazd_kkm"/>
+
+                                </t>
+                                <t t-elif="label.wizard_id.company_id.product_label_template_name == 'garazd_product_label.label_garazd_joah'">
+                                    <t t-call="garazd_product_label.label_garazd_joah"/>
+
+                                </t>
+                                <t t-elif="label.wizard_id.company_id.product_label_template_name == 'garazd_product_label.label_garazd_nobrand'">
+                                    <t t-call="garazd_product_label.label_garazd_nobrand"/>
+
+                                </t>
+                                <t t-else="">
+                                    <t t-call="garazd_product_label.label_garazd_nobrand"/>
+                                </t>
+
+                            </div>
+
+                            <t t-set="count" t-value="count+1" />
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+    <template id="report_product_label_kkm_80x38">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <t t-set="count" t-value="0" />
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <t t-foreach="docs.sudo()" t-as="label">
+                        <t t-set="qty" t-value="label.qty or 1" />
+                        <t t-foreach="list(range(qty))" t-as="index_qty">
+                            <div t-if="count % 12 == 0" style="page-break-after:always;"/>
+                            <div t-if="count % 2 == 0" style="clear:both;"/>
+                            <t t-set="label_width" t-value="'80mm'" />
+                            <t t-set="label_height" t-value="'38mm'" />
+
+                            <t t-set="heightB" t-value="15"/>
+                            <t t-set="height_Bar" t-value="'10mm'"/>
+                            <t t-set="height_joah" t-value="'15.5mm'"/>
+                            <t t-set="font_width_joah" t-value="'11rem'" />
+                            <t t-set="width_Bar" t-value="30"/>
+                            <t t-set="redius" t-value="40"/>
+                            <t t-set="label_height_value" t-value="15" />
+                            <t t-set="bottom_block_height" t-value="'8.9mm'" />
+                            <t t-set="bottom_block_height_no" t-value="'12.3mm'" />
+                            <t t-set="logo_size" t-value="'85%'" />
+                            <t t-set="font_size" t-value="'%dpx' % int(10)" />
+                            <t t-set="font_size_kkm" t-value="'%dpx' % int(10)" />
+                            <t t-set="font_width" t-value="'9rem'" />
+                            <t t-set="margin_price" t-value="'-20px'" />
+                            <!-- <t t-set="margin_price" t-value="'-10px'" /> -->
+                            <t t-set="font_size_head" t-value="'0.5'" />
+                            <t t-set="margin_top_head" t-value="'-5px'" />
+                            <t t-set="font_size_date" t-value="'6'" />
+                            <t t-set="font_size_price" t-value="'0.8rem'" />
+                            <t t-set="font_size_price_top" t-value="'1'" />
+                            <t t-set="font_size_unit" t-value="'%dpx' % int(label_height_value * 0.2)" />
+                            <t t-set="padding_price" t-value="'%dpx' % int(30 * 0.15)" />
+                            <div t-att-style="' float: left;   margin: 0 4px 4px; border: {};'.format('%dpx solid #777;' % label.wizard_id.border_width if label.wizard_id.border_width else '0')">
+
+                                <t t-if="label.wizard_id.company_id.product_label_template_name == 'garazd_product_label.label_garazd_kkm'">
+                                    <t t-call="garazd_product_label.label_garazd_kkm"/>
+
+                                </t>
+                                <t t-elif="label.wizard_id.company_id.product_label_template_name == 'garazd_product_label.label_garazd_joah'">
+                                    <t t-call="garazd_product_label.label_garazd_joah"/>
+
+                                </t>
+                                <t t-elif="label.wizard_id.company_id.product_label_template_name == 'garazd_product_label.label_garazd_nobrand'">
+                                    <t t-call="garazd_product_label.label_garazd_nobrand"/>
+
+                                </t>
+                                <t t-else="">
+                                    <t t-call="garazd_product_label.label_garazd_nobrand"/>
+                                </t>
+
+                            </div>
+
+                            <t t-set="count" t-value="count+1" />
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+    <template id="report_product_label_kkm_101x38">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <t t-set="count" t-value="0" />
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <t t-foreach="docs.sudo()" t-as="label">
+                        <t t-set="qty" t-value="label.qty or 1" />
+                        <t t-foreach="list(range(qty))" t-as="index_qty">
+                            <div t-if="count % 14 == 0" style="page-break-after:always;"/>
+                            <div t-if="count % 2 == 0" style="clear:both;"/>
+                            <t t-set="label_width" t-value="'101mm'" />
+                            <t t-set="label_height" t-value="'38mm'" />
+
+                            <t t-set="heightB" t-value="20"/>
+                            <t t-set="height_Bar" t-value="'11mm'"/>
+                            <t t-set="height_joah" t-value="'14mm'"/>
+                            <t t-set="font_width_joah" t-value="'15rem'" />
+                            <t t-set="width_Bar" t-value="60"/>
+                            <t t-set="redius" t-value="50"/>
+                            <t t-set="label_height_value" t-value="15" />
+                            <t t-set="bottom_block_height" t-value="'9.5mm'" />
+                            <t t-set="bottom_block_height_no" t-value="'10mm'" />
+                            <t t-set="logo_size" t-value="'85%'" />
+                            <t t-set="font_size" t-value="'%dpx' % int(14)" />
+                            <t t-set="font_size_kkm" t-value="'%dpx' % int(14)" />
+                            <t t-set="font_size_head" t-value="'1.7'" />
+                            <t t-set="font_size_date" t-value="'6'" />
+                            <t t-set="margin_top_head" t-value="'1.5em'" />
+                            <t t-set="font_width" t-value="'15rem'" />
+                            <t t-set="margin_price" t-value="'-25px'" />
+                            <!-- <t t-set="margin_price" t-value="'-20px'" /> -->
+                            <t t-set="font_size_price" t-value="'1.2rem'" />
+                            <t t-set="font_size_unit" t-value="'30px'" />
+                            <t t-set="font_size_price_top" t-value="'1'" />
+                            <t t-set="padding_price" t-value="'%dpx' % int(30 * 0.1)" />
+                            <div t-att-style="'width: 376px; float: left;   margin: -5px 0 4px 4px; border: {};'.format('%dpx solid #777;' % label.wizard_id.border_width if label.wizard_id.border_width else '0')">
+
+                                <t t-if="label.wizard_id.company_id.product_label_template_name == 'garazd_product_label.label_garazd_kkm'">
+                                    <t t-call="garazd_product_label.label_garazd_kkm"/>
+
+                                </t>
+                                <t t-elif="label.wizard_id.company_id.product_label_template_name == 'garazd_product_label.label_garazd_joah'">
+                                    <t t-call="garazd_product_label.label_garazd_joah"/>
+
+                                </t>
+                                <t t-elif="label.wizard_id.company_id.product_label_template_name == 'garazd_product_label.label_garazd_nobrand'">
+                                    <t t-call="garazd_product_label.label_garazd_nobrand"/>
+
+                                </t>
+                                <t t-else="">
+                                    <t t-call="garazd_product_label.label_garazd_nobrand"/>
+                                </t>
+
+                            </div>
+
+                            <t t-set="count" t-value="count+1" />
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+    <template id="report_product_label_kkm_100x70">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <t t-set="count" t-value="0" />
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <t t-foreach="docs.sudo()" t-as="label">
+                        <t t-set="qty" t-value="label.qty or 1" />
+                        <t t-foreach="list(range(qty))" t-as="index_qty">
+                            <div t-if="count % 6 == 0" style="page-break-after:always;"/>
+                            <div t-if="count % 2 == 0" style="clear:both;"/>
+                            <t t-set="label_width" t-value="'100mm'" />
+                            <t t-set="label_height" t-value="'70mm'" />
+
+                            <t t-set="heightB" t-value="40"/>
+                            <t t-set="height_Bar" t-value="'24mm'"/>
+                            <t t-set="height_joah" t-value="'28mm'"/>
+                            <t t-set="font_width_joah" t-value="'20rem'" />
+                            <t t-set="width_Bar" t-value="60"/>
+                            <t t-set="redius" t-value="50"/>
+                            <t t-set="label_height_value" t-value="15" />
+                            <t t-set="bottom_block_height" t-value="'18.6mm'" />
+                            <t t-set="bottom_block_height_no" t-value="'23.9mm'" />
+                            <t t-set="logo_size" t-value="'95%'" />
+                            <t t-set="font_size" t-value="'23px'" />
+                            <t t-set="font_size_kkm" t-value="'20px'" />
+                            <t t-set="font_width" t-value="'15rem'" />
+                            <t t-set="margin_price" t-value="'-5px'" />
+                            <t t-set="font_size_price" t-value="'1.3rem'" />
+                            <t t-set="font_size_head" t-value="'1.5em'" />
+                            <t t-set="margin_top_head" t-value="'5px'" />
+                            <t t-set="font_size_date" t-value="'10'" />
+                            <t t-set="font_size_price_top" t-value="'1'" />
+                            <t t-set="font_size_unit" t-value="'%dpx' % int(label_height_value * 0.2)" />
+                            <t t-set="padding_price" t-value="'%dpx' % int(30 * 0.25)" />
+                            <div t-att-style="' width: 372px;float: left;   margin: 0 4px 4px; border: {};'.format('%dpx solid #777;' % label.wizard_id.border_width if label.wizard_id.border_width else '0')">
+
+                                <t t-if="label.wizard_id.company_id.product_label_template_name == 'garazd_product_label.label_garazd_kkm'">
+                                    <t t-call="garazd_product_label.label_garazd_kkm"/>
+
+                                </t>
+                                <t t-elif="label.wizard_id.company_id.product_label_template_name == 'garazd_product_label.label_garazd_joah'">
+                                    <t t-call="garazd_product_label.label_garazd_joah"/>
+
+                                </t>
+                                <t t-elif="label.wizard_id.company_id.product_label_template_name == 'garazd_product_label.label_garazd_nobrand'">
+                                    <t t-call="garazd_product_label.label_garazd_nobrand"/>
+
+                                </t>
+                                <t t-else="">
+                                    <t t-call="garazd_product_label.label_garazd_nobrand"/>
+                                </t>
+
+                            </div>
+
+                            <t t-set="count" t-value="count+1" />
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+    <template id="report_product_label_kkm_210x100">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <t t-set="count" t-value="0" />
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <t t-foreach="docs.sudo()" t-as="label">
+                        <t t-set="qty" t-value="label.qty or 1" />
+                        <t t-foreach="list(range(qty))" t-as="index_qty">
+                            <div t-if="count % 2 == 0" style="page-break-after:always;"/>
+                            <div t-if="count % 1 == 0" style="clear:both;"/>
+                            <t t-set="label_width" t-value="'210mm'" />
+                            <t t-set="label_height" t-value="'100mm'" />
+
+                            <t t-set="heightB" t-value="50"/>
+                            <t t-set="height_Bar" t-value="'29.6mm'"/>
+                            <t t-set="height_joah" t-value="'38mm'"/>
+                            <t t-set="font_width_joah" t-value="'30rem'" />
+                            <t t-set="width_Bar" t-value="30"/>
+                            <t t-set="redius" t-value="50"/>
+                            <t t-set="label_height_value" t-value="16" />
+                            <t t-set="bottom_block_height" t-value="'28mm'" />
+                            <t t-set="bottom_block_height_no" t-value="'30mm'" />
+                            <t t-set="logo_size" t-value="'90%'" />
+                            <t t-set="font_size" t-value="'1em'" />
+                            <t t-set="font_size_kkm" t-value="'1.5em'" />
+                            <t t-set="font_size_head" t-value="'1em'" />
+                            <t t-set="margin_top_head" t-value="'5px'" />
+                            <t t-set="font_size_date" t-value="'20'" />
+                            <t t-set="font_width" t-value="'35rem'" />
+                            <t t-set="margin_price" t-value="'-20px'" />
+                            <t t-set="font_size_price" t-value="'2em'" />
+                            <!-- <t t-set="font_size_price" t-value="'2rem'" /> -->
+                            <t t-set="font_size_price_top" t-value="'1'" />
+                            <t t-set="font_size_unit" t-value="'%dpx' % int(label_height_value * 0.2)" />
+                            <t t-set="padding_price" t-value="'%dpx' % int(30 * 0.25)" />
+                            <div t-att-style="'width: 200px; float: left;   margin: 0 4px 4px; border: {};'.format('%dpx solid #777;' % label.wizard_id.border_width if label.wizard_id.border_width else '0')">
+
+                                <t t-if="label.wizard_id.company_id.product_label_template_name == 'garazd_product_label.label_garazd_kkm'">
+                                    <t t-call="garazd_product_label.label_garazd_kkm"/>
+
+                                </t>
+                                <t t-elif="label.wizard_id.company_id.product_label_template_name == 'garazd_product_label.label_garazd_joah'">
+                                    <t t-call="garazd_product_label.label_garazd_joah"/>
+
+                                </t>
+                                <t t-elif="label.wizard_id.company_id.product_label_template_name == 'garazd_product_label.label_garazd_nobrand'">
+                                    <t t-call="garazd_product_label.label_garazd_nobrand"/>
+
+                                </t>
+                                <t t-else="">
+                                    <t t-call="garazd_product_label.label_garazd_nobrand"/>
+                                </t>
+                            </div>
+
+                            <t t-set="count" t-value="count+1" />
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+    <template id="report_product_label_kkm_210x290">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <t t-set="count" t-value="0" />
+                <div class="page" style="width: 210mm; height: 297mm; padding: 0; margin: 0;">
+                    <div class="oe_structure"/>
+                    <t t-foreach="docs.sudo()" t-as="label">
+                        <t t-set="qty" t-value="label.qty or 1" />
+                        <t t-foreach="list(range(qty))" t-as="index_qty">
+                            <div t-if="count % 1 == 0" style="page-break-after:always;"/>
+                            <div t-if="count % 1 == 0" style="clear:both;"/>
+                            <t t-set="label_height" t-value="'210mm'" />
+                            <t t-set="label_width" t-value="'297mm'" />
+                            <t t-set="heightB" t-value="100"/>
+                            <t t-set="height_Bar" t-value="'78mm'"/>
+                            <t t-set="height_joah" t-value="'100mm'"/>
+                            <t t-set="font_width_joah" t-value="'55rem'" />
+                            <t t-set="width_Bar" t-value="90"/>
+                            <t t-set="redius" t-value="50"/>
+                            <t t-set="label_height_value" t-value="10" />
+                            <t t-set="bottom_block_height" t-value="'57mm'" />
+                            <t t-set="bottom_block_height_no" t-value="'72mm'" />
+                            <t t-set="logo_size" t-value="'85%'" />
+                            <t t-set="font_size" t-value="'3rem'" />
+                            <t t-set="font_size_kkm" t-value="'3rem'" />
+                            <t t-set="font_size_head" t-value="'0.3rem'" />
+                            <t t-set="margin_top_head" t-value="'5px'" />
+                            <t t-set="font_size_date" t-value="'30'" />
+                            <t t-set="font_size_date_joah" t-value="'5'" />
+                            <t t-set="font_width" t-value="'50rem'" />
+                            <t t-set="margin_price" t-value="'-20px'" />
+                            <t t-set="font_size_price" t-value="'5rem'" />
+                            <t t-set="font_size_price_joah" t-value="'6rem'" />
+                            <t t-set="font_size_price_top" t-value="'2'" />
+                            <t t-set="font_size_unit" t-value="'%dpx' % int(label_height_value * 0.2)" />
+                            <t t-set="padding_price" t-value="'5px'" />
+                            <div t-att-style="'width: 200px;margin: -1px 1px 1px -16px ; float: left;border: {};'.format('%dpx solid #777;' % label.wizard_id.border_width if label.wizard_id.border_width else '0')">
+                                <t t-if="label.wizard_id.company_id.product_label_template_name == 'garazd_product_label.label_garazd_kkm'">
+                                    <t t-call="garazd_product_label.label_garazd_kkm"/>
+                                </t>
+                                <t t-elif="label.wizard_id.company_id.product_label_template_name == 'garazd_product_label.label_garazd_joah'">
+                                    <t t-call="garazd_product_label.label_garazd_joah"/>
+                                </t>
+                                <t t-elif="label.wizard_id.company_id.product_label_template_name == 'garazd_product_label.label_garazd_nobrand'">
+                                    <t t-call="garazd_product_label.label_garazd_nobrand"/>
+                                </t>
+                                <t t-else="">
+                                    <t t-call="garazd_product_label.label_garazd_nobrand"/>
+                                </t>
+                            </div>
+                            <t t-set="count" t-value="count+1" />
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+    <template id="report_product_label_from_template">
+        <t t-call="web.basic_layout"/>
+    </template>
+
+</odoo>

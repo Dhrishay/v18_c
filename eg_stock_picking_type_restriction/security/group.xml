@@ -1,0 +1,22 @@
+<odoo>
+
+    <record id="stock_picking_type_creation_restriction" model="res.groups">
+        <field name="name">Operation Type Create Restriction</field>
+    </record>
+
+    <record id="stock_picking_type_edit_restriction" model="res.groups">
+        <field name="name">Operation Type Edit Restriction</field>
+    </record>
+
+    <record id="stock_picking_type_restriction_for_partner" model="res.groups">
+        <field name="name">Operation Type Restriction</field>
+    </record>
+
+    <record id="stock_picking_type_for_users" model="ir.rule">
+        <field name="name">Operation Type Restriction</field>
+        <field ref="model_stock_picking_type" name="model_id"/>
+        <field name="domain_force">[('id','in',user.picking_type_ids.ids)]</field>
+        <field name="groups" eval="[(4, ref('eg_stock_picking_type_restriction.stock_picking_type_restriction_for_partner'))]"/>
+    </record>
+
+</odoo>
