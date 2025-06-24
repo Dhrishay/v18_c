@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="cart_time_restriction_error" name="Cart Time Restriction Error">
+        <div id="cart_time_restriction_error_container" class="d-none">
+            <div class="alert alert-danger">
+                <strong>Time Restriction:</strong> You cannot add products to cart between <span id="restriction_start_time"></span> and <span id="restriction_end_time"></span>.
+            </div>
+        </div>
+    </template>
+</odoo>
