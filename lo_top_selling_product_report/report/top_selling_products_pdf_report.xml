@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <template id="template_top_selling_products_pdf">
+        <t t-call="web.external_layout">
+            <div class="page">
+                <h2>
+                    Top Selling Report
+                </h2>
+                <p>
+                    <strong>Store Name:</strong>
+                    <t t-esc="store_name"/>
+                </p>
+                <p>
+                    <strong>Date:</strong>
+                    <t t-esc="start_date"/>
+                    to
+                    <t t-esc="end_date"/>
+                </p>
+                <table t-if="datas" class="table table-bordered">
+                    <thead style="display: table-row-group">
+                        <tr>
+                            <th style="text-align: center;">
+                                No
+                            </th>
+                            <th>
+                                Div Name
+                            </th>
+                            <th>
+                                Dept Name
+                            </th>
+                            <th>
+                                Sub-dept Name
+                            </th>
+                            <th>
+                                Vendor Code
+                            </th>
+                            <th>
+                                Vendor Name
+                            </th>
+                            <th>
+                                Product ID
+                            </th>
+                            <th>Barcode</th>
+                            <th>
+                                Description
+                            </th>
+                            <th>
+                                Sale Qty
+                            </th>
+                            <th>
+                                Sale AMT
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="index" t-value="0"/>
+                        <t t-foreach="datas" t-as="data">
+                            <tr>
+                                <td style="text-align: center;">
+                                    <t t-esc="index + 1"/>
+                                    <t t-set="index" t-value="index + 1"/>
+                                </td>
+                                <td>
+                                    <t t-esc="data['division_name'] or ''"/>
+                                </td>
+                                <td>
+                                    <t t-esc="data['department_name'] or ''"/>
+                                </td>
+                                <td>
+                                    <t t-esc="data['sub_department_name'] or ''"/>
+                                </td>
+                                <td>
+                                    <t t-esc="data['vendor_code'] or ''"/>
+                                </td>
+                                <td>
+                                    <t t-esc="data['vendor_name'] or ''"/>
+                                </td>
+                                <td>
+                                    <t t-esc="data['product_code'] or ''"/>
+                                </td>
+                                <td>
+                                    <t t-esc="data['barcode'] or ''"/>
+                                </td>
+                                <td>
+                                    <t t-esc="data['product_name']['en_US'] or ''"/>
+                                </td>
+                                <td>
+                                    <t t-esc="data['total_quantity']"/>
+                                </td>
+                                <td>
+                                    <t t-esc="data['total_amount']"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+
+    <template id="top_selling_products_pdf">
+        <t t-call="web.html_container">
+            <t t-call="lo_top_selling_product_report.template_top_selling_products_pdf">
+            </t>
+        </t>
+    </template>
+
+
+    <record id="top_selling_report_paperformat_a4" model="report.paperformat">
+        <field name="name">A4 Landscape Never Sold Report</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">9</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">14</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">35</field>
+        <field name="dpi">90</field>
+    </record>
+
+
+    <record id="action_top_selling_products_pdf" model="ir.actions.report">
+        <field name="name">Top Selling Report PDF </field>
+        <field name="model">top.selling.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lo_top_selling_product_report.top_selling_products_pdf</field>
+        <field name="report_file">lo_top_selling_product_report.top_selling_products_pdf</field>
+        <field name="binding_model_id" ref="model_top_selling_wizard"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'Top Selling Report'</field>
+        <field name="paperformat_id" ref="top_selling_report_paperformat_a4"/>
+    </record>
+
+    <record id="action_top_selling_products_xlsx" model="ir.actions.report">
+        <field name="name">Top Selling Report XLSX </field>
+        <field name="model">top.selling.wizard</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">lo_top_selling_product_report.top_selling_products_xlsx</field>
+        <field name="report_file">lo_top_selling_product_report.top_selling_products_xlsx</field>
+        <field name="binding_model_id" ref="model_top_selling_wizard"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'Top Selling Report'</field>
+    </record>
+
+
+</odoo>
