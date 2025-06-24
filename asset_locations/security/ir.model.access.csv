@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_serial_number_wizard,serial.number.wizard,model_serial_number_wizard,base.group_user,1,1,1,1
+access_serial_numbers,serial.numbers,model_serial_numbers,base.group_user,1,1,1,1
+access_asset_change_location_wizard,asset.change.location.wizard,model_asset_change_location_wizard,base.group_user,1,1,1,1
+access_asset_serial_number,asset.serial.number,model_asset_serial_number,base.group_user,1,1,1,1

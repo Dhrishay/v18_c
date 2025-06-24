@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.ui.view" id="asset_modify_form_inherit">
+        <field name="name">wizard.asset.modify.form</field>
+        <field name="model">asset.modify</field>
+        <field name="inherit_id" ref="account_asset.asset_modify_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@invisible='not modify_action']/group/field[@name='invoice_ids']" position="before"> 
+                <field name="product_id" readonly="1" invisible="modify_action != 'sell'"/>
+                <field name="partner_id" invisible="modify_action != 'sell'"/>
+            </xpath>
+            <xpath expr="//group[@invisible='not modify_action']/group/field[@name='invoice_ids']" position="attributes">
+                <attribute name="required">not partner_id and modify_action == 'sell'</attribute>
+                <attribute name="invisible">partner_id and modify_action == 'sell'</attribute>
+            </xpath>
+            <xpath expr="//group[@invisible='not modify_action']/group/field[@name='invoice_line_ids']" position="attributes">
+                <attribute name="required">not partner_id and modify_action == 'sell'</attribute>
+                <attribute name="invisible">partner_id and modify_action == 'sell'</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

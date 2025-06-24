@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="bi_pos_reports.ReportsButton" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension">
+        <xpath expr="//t[@t-if='!props.showRemainingButtons || (ui.isSmall and props.showRemainingButtons)']" position="after">
+            
+            <button class="btn btn-light btn-lg flex-shrink-0 ms-auto" t-if="(this.pos.config.order_summery || this.pos.config.product_categ_summery || this.pos.config.loc_summery || this.pos.config.product_summery || this.pos.config.payment_summery) and !props.showRemainingButtons" t-on-click="this.clickReports">
+                Reports
+            </button>
+        </xpath>
+    </t>
+
+    <t t-name="bi_pos_reports.ReportsButton">
+        <div class="control-buttons control-buttons-modal d-grid gap-2 mt-2">
+            <button class="btn btn-secondary btn-lg py-5" t-on-click="() => this.clickAuditReport()" t-if="pos.config.loc_summery">
+                <i class="fa fa-shopping-cart me-1" role="img" aria-label="Audit Report" title="Audit Report" /> Audit Report
+            </button>
+            <button class="btn btn-secondary btn-lg py-5" t-on-click="() => this.clickCategorySummary()" t-if="pos.config.product_categ_summery">
+                <i class="fa fa-shopping-cart me-1" role="img" aria-label="Category Summary" title="Category Summary" /> Category Summary
+            </button>
+            <button class="btn btn-secondary btn-lg py-5" t-on-click="() => this.clickProductSummary()" t-if="pos.config.product_summery">
+                <i class="fa fa-shopping-cart me-1" role="img" aria-label="Product Summary" title="Product Summary" /> Product Summary
+            </button>
+            <button class="btn btn-secondary btn-lg py-5" t-on-click="() => this.clickOrderSummary()" t-if="pos.config.order_summery">
+                <i class="fa fa-shopping-cart me-1" role="img" aria-label="Order Summary" title="Order Summary" /> Order Summary
+            </button>
+            <button class="btn btn-secondary btn-lg py-5" t-on-click="() => this.clickPaymentSummary()" t-if="pos.config.payment_summery">
+                <i class="fa fa-shopping-cart me-1" role="img" aria-label="Payment Summary" title="Payment Summary" /> Payment Summary
+            </button>
+        </div>
+    </t>
+</templates>

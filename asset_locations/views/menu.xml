@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root Menu -->
+    <menuitem id="asset_locations_root"
+    name="Assets Location"
+    web_icon="asset_locations,static/description/icon.png"
+    sequence="1"/>
+
+    <!-- Child Menu: Rental Space Details -->
+    <menuitem id="asset_locations_menu"
+    name="Assets"
+    parent="asset_locations_root"
+    action="account_asset.action_account_asset_form"
+    sequence="5"/>
+
+    <menuitem id="asset_locations_tranfers_menu"
+    name="Tranfers"
+    parent="asset_locations.asset_locations_root"
+    action="asset_locations.action_asset_transfer"
+    sequence="6" />
+
+</odoo>

@@ -1,0 +1,139 @@
+<odoo>
+    <odoo>
+        <template id="credit_negative_report_template_data">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <t t-foreach="company_grouped.items()" t-as="cg">
+                    
+                        <div class="page">
+                            <h2>Credit Negative Stock Report&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;<t t-esc="cg[0].name"/></h2>
+                            <p>
+                                <strong>Date:</strong>
+                                <t t-esc="docs.start_date.strftime('%Y-%m-%d') if docs.start_date else ''"/>
+                                to
+                                <t t-esc="docs.end_date.strftime('%Y-%m-%d') if docs.end_date else ''"/>
+                            </p>
+
+                            <t t-if="cg[1]">
+                                <table style="width:100%; border-collapse: collapse; border: 1px solid black; "
+                                        class="table table-bordered">
+                                    <thead>
+                                        <tr style="font-weight: bold; background-color: #D3D3D3; white-space: nowrap;">
+                                            <th style="border-collapse: collapse; border: 1px solid black; text-align: center;">
+                                                No
+                                            </th>
+                                            <th style="border-collapse: collapse; border: 1px solid black;">Div Name
+                                            </th>
+                                            <th style="border-collapse: collapse; border: 1px solid black;">Dept Name
+                                            </th>
+                                            <th style="border-collapse: collapse; border: 1px solid black;">Sub-dept
+                                                Name
+                                            </th>
+                                                <th style="border-collapse: collapse; border: 1px solid black;">Store code
+                                            </th>
+                                            <th style="border-collapse: collapse; border: 1px solid black;">Product ID
+                                            </th>
+                                            <th style="border-collapse: collapse; border: 1px solid black;">Barcode</th>
+                                            <th style="border-collapse: collapse; border: 1px solid black;">Product
+                                                Name
+                                            </th>
+                                            <th style="border-collapse: collapse; border: 1px solid black;">COGS</th>
+                                            <th style="border-collapse: collapse; border: 1px solid black;">Stock Qty
+                                            </th>
+                                            <th style="border-collapse: collapse; border: 1px solid black;">Stock
+                                                Amount
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-set="index" t-value="0"/>
+                                        <t t-foreach="cg[1].items()" t-as="category">
+                                            <t t-foreach="category[1]" t-as="product">
+                                                <tr>
+                                                    <td style="border-collapse: collapse; border: 1px solid black; text-align: center;">
+                                                        <t t-esc="index + 1"/>
+                                                        <t t-set="index" t-value="index + 1"/>
+                                                    </td>
+                                                    <td style="border-collapse: collapse; border: 1px solid black;">
+                                                        <t t-esc="product['div_name'] or ''"/>
+                                                    </td>
+                                                    <td style="border-collapse: collapse; border: 1px solid black;">
+                                                        <t t-esc="product['dept_name'] or ''"/>
+                                                    </td>
+                                                    <td style="border-collapse: collapse; border: 1px solid black;">
+                                                        <t t-esc="product['sub_dept_name'] or ''"/>
+                                                    </td>
+                                                        <td style="border-collapse: collapse; border: 1px solid black;">
+                                                        <t t-esc="product['store_code'] or ''"/>
+                                                    </td>
+                                                    <td style="border-collapse: collapse; border: 1px solid black;">
+                                                        <t t-esc="product['product_id'] or ''"/>
+                                                    </td>
+                                                    <td style="border-collapse: collapse; border: 1px solid black;">
+                                                        <t t-esc="product['barcode'] or ''"/>
+                                                    </td>
+                                                    <td style="border-collapse: collapse; border: 1px solid black;">
+                                                        <t t-esc="product['product_name'] or ''"/>
+                                                    </td>
+                                                    <td style="border-collapse: collapse; border: 1px solid black;">
+                                                        <t t-esc="product['cogs']"/>
+                                                    </td>
+                                                    <td style="border-collapse: collapse; border: 1px solid black;">
+                                                        <t t-esc="product['stock_qty']"/>
+                                                    </td>
+                                                    <td style="border-collapse: collapse; border: 1px solid black;">
+                                                        <t t-esc="product['stock_amount']"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </t>
+                            <t t-else="">
+                                <p>No Negative Products Found For This Company.</p>
+                            </t>
+                        </div>
+                        <div style="page-break-after: always"></div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </odoo>
+
+
+    <template id="credit_negative_report">
+        <t t-call="web.html_container">
+            <t t-call="credit_negative_report.credit_negative_report_template_data"/>
+        </t>
+    </template>
+
+    <record id="paperformat_a4_kokkok" model="report.paperformat">
+        <field name="name">A4 Landscape kokkok</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">9</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">14</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">35</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_credit_negative_report" model="ir.actions.report">
+        <field name="name">Credit Negative Stock Report</field>
+        <field name="model">credit.negative.stock.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="binding_model_id" ref="model_credit_negative_stock_wizard"/>
+        <field name="report_name">credit_negative_report.credit_negative_report</field>
+        <field name="report_file">credit_negative_report.credit_negative_report</field>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="paperformat_a4_kokkok"/>
+        <field name="print_report_name">
+            'Credit Negative Stock Report - %s to %s' % (object.start_date.strftime('%Y-%m-%d') if object.start_date
+            else '', object.end_date.strftime('%Y-%m-%d') if object.end_date else '')
+        </field>
+    </record>
+</odoo>

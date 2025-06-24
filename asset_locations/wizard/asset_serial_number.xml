@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="view_asset_serial_number_wizard" model="ir.ui.view">
+        <field name="name">asset.serial.number.form</field>
+        <field name="model">asset.serial.number</field>
+        <field name="arch" type="xml">
+            <form string="Asset Serial Number">
+                <group>
+                    <field name="asset_id" invisible="1"/>
+                    <field name="check_lot" invisible="1"/>
+                    <field name="serial_number" invisible="check_lot == True"/>
+                    <field name="serial_numbers" invisible="check_lot == False"/>
+                    <field name="location_id" domain="[('company_id', '=', company_id), ('usage', '=', 'internal')]" invisible="check_lot != False" string="Location" options="{'no_open': True, 'no_create': True}"/>
+                </group>
+                <footer>
+                    <button name="action_confirm" string="Confirm" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

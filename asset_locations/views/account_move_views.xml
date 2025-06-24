@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_form_asset_inherit_asset_location" model="ir.ui.view">
+        <field name="name">account.account.form</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account_asset.view_account_form_asset_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='page_automation']/group/group/field[@name='multiple_assets_per_line']" position="after">
+               <field name="class_code"/>
+            </xpath>
+            <xpath expr="//page[@name='page_automation']/group/group/field[@name='asset_model_ids']" position="after">
+                <field name="is_create_model" invisible="1"/>
+               <button name="generate_asset_model" type="object" string="Create Model" invisible="is_create_model == True"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

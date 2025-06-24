@@ -1,0 +1,42 @@
+<odoo>
+    <record id="view_credit_negative_stock_report_form" model="ir.ui.view">
+        <field name="name">credit.negative.stock.wizard.form</field>
+        <field name="model">credit.negative.stock.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="supplier_type"/>
+                    <field name="company_ids" widget="many2many_tags"/>
+                    <field name="export_format"/>
+                    <field name="show_has_child_field" invisible="1"/>
+                    <field name="has_child" invisible="show_has_child_field != True"/>
+                </group>
+                <footer>
+                    <button name="action_download_report" type="object" string="Download Report" class="oe_highlight"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action to Open the Wizard -->
+    <record id="action_never_sold_wizard" model="ir.actions.act_window">
+        <field name="name">Credit Negative Stock Report</field>
+        <field name="res_model">credit.negative.stock.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_credit_negative_stock_report_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Main Menu -->
+    <menuitem id="menu_view_credit_negative_stock_report_main" name="Credit Negative Stock Report" sequence="10" />
+
+    <!-- Submenu -->
+    <menuitem id="menu_never_sold_report"
+        name="Credit Negative Stock Report"
+        parent="stock.menu_warehouse_report"
+        action="action_never_sold_wizard"
+        sequence="20"/>
+</odoo>
