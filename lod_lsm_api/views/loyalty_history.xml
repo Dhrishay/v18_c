@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="loyalty_history_view_tree" model="ir.ui.view">
+        <field name="name">loyalty.history.view.tree</field>
+        <field name="model">loyalty.history</field>
+        <field name="arch" type="xml">
+            <list string="Loyalty History">
+                <field name="description"/>
+                <field name="issued"/>
+                <field name="used"/>
+                <field name="card_id"/>
+                <field name="create_date"/>
+                <field name="partner_id"/>
+              
+            </list>
+        </field>
+    </record>
+    <record id="loyalty_history_view_form" model="ir.ui.view">
+        <field name="name">loyalty.history.view.form</field>
+        <field name="model">loyalty.history</field>
+        <field name="arch" type="xml">
+            <form string="Loyalty History">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="description" />
+                            <field name="issued" />
+                            <field name="used" />
+                        </group>
+                        <group>
+                        <field name="partner_id"/>
+                        <field name="create_date"/>
+                        <field name="card_id"/>
+                        
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="lod_loyalty_point_history_action" model="ir.actions.act_window">
+        <field name="name">Loyalty History</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">loyalty.history</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem
+        id="menu_loyalty_point_history"
+        name="Loyalty History"
+        action="lod_loyalty_point_history_action"
+        parent="point_of_sale.pos_config_menu_catalog"
+        sequence="10"/>
+</odoo>

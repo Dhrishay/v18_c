@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="check_product_template" name="Check Product">
+        <t t-call="website.layout">
+            <style>
+                .oe_main_menu_navbar {
+                    display: none;
+                }
+                <!-- .o_header_standard {
+                    display: none;
+                } -->
+                .o_footer {
+                    display: none;
+                }
+                .o_main_navbar {
+                    display: none;
+                } 
+                .oe_main_menu_navbar,
+                <!-- .o_header_standard,
+                .o_footer, -->
+                
+                .table td, .table th {
+                    padding: 0.2rem;
+                }
+                
+            </style>
+            <!-- <t t-call="lod_check_pro_loc_dc.header_navbar"/> -->
+            <!-- <div id="wrap" class="oe_structure oe_empty mt-4 mb-2"> -->
+            <div id="wrap" class="oe_structure oe_empty mt-5 mb-2">
+                <div class="container pl-0 pr-0" style="font-size: 0.9rem;">
+                    <section>
+                        <form class="px-3" t-attf-action="/check_product" role="search" method="get">
+                            <div class="row d-flex justify-content-center align-items-center">
+                                <div class="col-md-6 head_title pt-5">
+                                    <h3>
+                                        Search Product
+                                    </h3>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="barcode_pro"
+                                            placeholder="Search Products"/>
+                                        <button class="btn btn-primary" type="submit" aria-label="Search" title="Search">
+                                            <i class="fa fa-search"/>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="card check_location mt-2" style="font-size:0.6rem">
+                            <div t-att-class="'row m-0 border border-primary rounded' if s_quant else ''">
+                                <div t-if="s_quant" class="col-12 font-weight-bold text-center" style="font-size:22px;">
+                                    <t t-esc="s_quant.product_id.name"/>
+                                    <br/>
+                                    <t t-esc="s_quant.product_id.product_name_la"/>
+                                </div>
+                                <div t-if="s_quant" class='col-4 text-center p-1'>
+                                    <img t-att-src="image_data_uri(s_quant.product_id.image_1920) if s_quant.product_id.image_1920 else '/web/static/img/placeholder.png'"
+                                         style="width:90%"
+                                    />
+                                </div>
+                                <div t-if="s_quant" class="col-8 pl-0 pr-0"
+                                     style="font-size:0.5rem; align-self: center;">
+                                    <table class="table text-truncate" style="font-size: 10px;">
+                                        <tr>
+                                            <th>Barcode</th>
+                                            <th>Packing Size</th>
+                                            <th class="text-right">Onhand</th>
+                                            <th>UoM</th>
+                                        </tr>
+                                        <tr t-foreach="relations" t-as="rel">
+                                            <td>
+                                                <t t-esc="rel['barcode']"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="rel['p_size']"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <t t-esc="'{:,.0f}'.format(rel['onhand'])"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="rel['uom']"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- <t t-foreach="stock_quants" t-as="quant"> -->
+                            <t t-set="i" t-value="1"/>
+                            <table class="table pr-2 h6">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Location Name</th>
+                                    <th class="text-right">On Hand</th>
+                                    <th>UoM</th>
+                                </tr>
+                                <tr t-foreach="stock_quants" t-as="quant">
+                                    <td>
+                                        <t t-esc="i"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="quant.location_id.display_name"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <t t-esc="'{:,.0f}'.format(quant.quantity)"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="quant.product_uom_id.name"/>
+                                    </td>
+                                    <t t-set="i" t-value="i+1"/>
+                                </tr>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <t t-call="lod_check_pro_loc_dc.footer_navbar"/>
+        </t>
+    </template>
+</odoo>

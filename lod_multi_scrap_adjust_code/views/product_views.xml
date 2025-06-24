@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="product_template_only_form2_view_inherited" model="ir.ui.view">
+            <field name="name">product.template.product.form2.inherited</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+    
+                <field name="to_weight" position="after">
+                    <field name="plu" invisible="not to_weight"/>
+                </field>
+            </field>
+        </record>
+      
+    </data>
+</odoo>

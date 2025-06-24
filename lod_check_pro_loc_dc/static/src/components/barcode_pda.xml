@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="MainMenu" t-inherit="stock_barcode.MainMenu" t-inherit-mode="extension" owl="1">
+        <!-- Changes in Manimenu buttins layout changes       -->
+        <xpath expr="//button[hasclass('o_button_operations')]" position="attributes">
+            <attribute name="class">o_button_operations btn btn-block btn-primary mb-2 p-2 w-100</attribute>
+        </xpath>
+        <xpath expr="//button[hasclass('o_button_inventory')]" position="attributes">
+            <attribute name="class">o_button_inventory btn btn-block btn-primary mb-2 p-2 w-100</attribute>
+        </xpath>
+        <xpath expr="//footer" position="inside">
+            <button class="o_button_inventory btn btn-block btn-primary mb-2 p-2 w-100" t-on-click="() => this.actionService.doAction('lod_check_pro_loc_dc.stock_barcode_check_product_and_location_client_action')">
+                Check Product And Location
+            </button>
+            <button class="o_button_batch_operations btn btn-block btn-info mb-3 p-2 w-100" t-on-click="() => this.actionService.doAction('lod_check_pro_loc_dc.stock_picking_batch_action_kanban')">
+                BATCH OPERATIONS
+            </button>
+        </xpath>
+        <xpath expr="//div[hasclass('my-5')]" position="attributes">
+            <attribute name="class">text-center</attribute>
+         </xpath>
+    </t>
+    <t t-name="MainComponent" t-inherit="stock_barcode.MainComponent" t-inherit-mode="extension" owl="1">
+        <!--  Add button 'Free Location'    -->
+        <xpath expr="//footer" position="inside">
+            <button class="o_add_line_free btn btn-secondary text-uppercase" t-on-click="openFreeLocation">
+                <i class="fa fa-check mr-1"/>
+                Free Location
+            </button>
+            <t t-if="config.is_confirm_mapping">
+
+
+  <!--           <button class="o_add_line_confirm_mapping btn btn-secondary text-uppercase" t-on-click="clickConfirmMapping">
+                
+                Confirm Mapping
+            </button> -->
+            </t>
+
+            
+        </xpath>
+    </t>
+</templates>

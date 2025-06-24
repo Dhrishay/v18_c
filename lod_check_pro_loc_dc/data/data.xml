@@ -1,0 +1,60 @@
+<odoo>
+    <record id="stock_barcode_check_product_and_location_client_action" model="ir.actions.client">
+        <field name="name">Check Product And Location Client Action</field>
+        <field name="tag">stock_barcode_check_product_and_location_action</field>
+        <field name="res_model">stock.quant</field>
+        <field name="target">fullscreen</field>
+    </record>
+    <record model="ir.actions.server" id="action_genrate_sequence_product_category">
+        <field name="name">Generate Sequence</field>
+        <field name="model_id" ref="product.model_product_category"/>
+        <field name="binding_model_id" ref="product.model_product_category" />
+        <field name="state">code</field>
+        <field name="binding_view_types">list,form</field>
+        <field name="code">
+            records.action_genrate_sequence()
+        </field>
+    </record>
+    <record model="ir.actions.server" id="action_genrate_item_code_product">
+        <field name="name">Generate Item Code </field>
+        <field name="model_id" ref="product.model_product_template"/>
+        <field name="binding_model_id" ref="product.model_product_template" />
+        <field name="state">code</field>
+        <field name="binding_view_types">list,form</field>
+        <field name="code">
+            records.action_generate_item_code()
+        </field>
+    </record>
+    <record model="ir.actions.server" id="action_genrate_item_code_product_variant">
+        <field name="name">Generate Item Code </field>
+        <field name="model_id" ref="product.model_product_product"/>
+        <field name="binding_model_id" ref="product.model_product_product" />
+        <field name="state">code</field>
+        <field name="binding_view_types">list,form</field>
+        <field name="code">
+            records.action_generate_item_code()
+        </field>
+    </record>
+    <record model="ir.actions.server" id="action_genrate_sku_code_product">
+        <field name="name">Generate SKU Code </field>
+        <field name="model_id" ref="product.model_product_product"/>
+        <field name="binding_model_id" ref="product.model_product_product" />
+        <field name="state">code</field>
+        <field name="binding_view_types">list,form</field>
+        <field name="code">
+            records.action_generate_sku_code()
+        </field>
+    </record>
+
+    <record model="ir.actions.server" id="action_genrate_costing_product_category">
+        <field name="name">Generate Costing</field>
+        <field name="model_id" ref="product.model_product_category"/>
+        <field name="binding_model_id" ref="product.model_product_category" />
+        <field name="state">code</field>
+        <field name="binding_view_types">list,form</field>
+        <field name="code">
+            records.action_genrate_costing_method()
+        </field>
+    </record>
+
+</odoo>

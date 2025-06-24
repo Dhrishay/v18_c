@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="check_location_page" model="ir.ui.view">
+        <field name="name">Check Location</field>
+        <field name="type">qweb</field>
+        <field name="key">lod_check_pro_loc_dc.check_location_page</field>
+        <field name="arch" type="xml">
+            <t name="Check Location" priority="10" t-name="lod_check_pro_loc_dc.check_location_page">
+                <t t-call="website.layout">
+                    <div id="oe_structure_pr_submit_page" class="oe_structure oe_empty"/>
+                    <p>Check Location</p>
+                </t>
+            </t>
+        </field>
+    </record>
+
+    <record id="menu_check_location_page" model="website.page">
+        <field name="url">/check_location</field>
+        <field name="is_published">True</field>
+        <field name="view_id" ref="check_location_page"/>
+        <field name="track">True</field>
+    </record>
+
+    <record id="check_product_page" model="ir.ui.view">
+        <field name="name">Check Product</field>
+        <field name="type">qweb</field>
+        <field name="key">lod_check_pro_loc_dc.check_product_page</field>
+        <field name="arch" type="xml">
+            <t name="Check Product" priority="10" t-name="lod_check_pro_loc_dc.check_product_page">
+                <t t-call="website.layout">
+                    <div id="oe_structure_pr_submit_page" class="oe_structure oe_empty"/>
+                    <p>Check Product</p>
+                </t>
+            </t>
+        </field>
+    </record>
+
+    <record id="menu_check_product_page" model="website.page">
+        <field name="url">/check_product</field>
+        <field name="is_published">True</field>
+        <field name="view_id" ref="check_product_page"/>
+        <field name="track">True</field>
+    </record>
+
+    <record id="check_free_location_page" model="ir.ui.view">
+        <field name="name">Check Free Location</field>
+        <field name="type">qweb</field>
+        <field name="key">lod_check_pro_loc_dc.check_free_location_page</field>
+        <field name="arch" type="xml">
+            <t name="Check Free Location" priority="10" t-name="lod_check_pro_loc_dc.check_free_location_page">
+                <t t-call="website.layout">
+                    <div id="oe_structure_pr_submit_page" class="oe_structure oe_empty"/>
+                    <p>Check Free Location</p>
+                </t>
+            </t>
+        </field>
+    </record>
+
+    <record id="menu_check_free_location_page" model="website.page">
+        <field name="url">/check_free_location</field>
+        <field name="is_published">True</field>
+        <field name="view_id" ref="check_free_location_page"/>
+        <field name="track">True</field>
+    </record>
+
+</odoo>

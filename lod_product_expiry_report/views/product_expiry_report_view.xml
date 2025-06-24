@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <menuitem action="report_download_wizard_view_action" 
+        id="menu_product_expiry_report" 
+        name="Product Expiry Report"
+        parent="stock.menu_warehouse_report"
+        sequence="151"/>
+</odoo>

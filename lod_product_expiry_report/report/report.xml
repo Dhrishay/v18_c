@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="paperformat_accounting_report_lanscape" model="report.paperformat">
+        <field name="name">Accounting report</field>
+        <field name="default" eval="True" />
+        <field name="format">custom</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">35</field>
+        <field name="dpi">90</field>
+    </record>
+    <record id="product_expiry_report" model="ir.actions.report">
+        <field name="name">Product Expiry Report</field>
+        <field name="model">report.download.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lod_product_expiry_report.product_exp_report</field>
+        <field name="report_file">lod_product_expiry_report.product_exp_report</field>
+        <field name="print_report_name">'Product Expiry Report'</field>
+        <field name="binding_model_id" ref="model_report_download_wizard" />
+        <field name="paperformat_id"
+            ref="lod_product_expiry_report.paperformat_accounting_report_lanscape" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="product_exp_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <t t-if="doc.group_by=='category'">
+                            <h2>
+                                <center>Product Expiry Report</center>
+                            </h2>
+                            <div class="oe_structure" />
+                            <div class="row">
+                                <div style='width:70%;padding-left: 16px;'>
+                                    <strong>Product Expiry In Next</strong>
+                                    <span t-esc="doc.num_expiry_days" />
+                                    <span>Days</span>
+                                </div>
+                                <div style='width:30%;'>
+                                    User <t t-foreach="request.env.user.company_ids" t-as="user">
+                                            <t t-esc="user.name"/>
+                                        </t>
+                                        
+                                        <br/>
+                                    <strong>Date</strong>
+                                    <t t-set="todays" t-value="today" />
+                                    <span t-esc="datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')" />
+                                </div>
+                            </div>
+                            <br />
+                            <h5>
+                                <strong>
+                                    Category:
+                                </strong> 
+                                <t t-foreach="doc.category_ids" t-as="loca">
+                                </t>
+                            </h5>
+                            <br />
+
+                            <table class="table table-sm o_main_table" style='font-size: 12px;'>
+                                <tr>
+                                    <th style="border:1px solid #15130F;">Lot/Serial number</th>
+                                    <th style="border:1px solid #15130F;">Barcode</th>
+                                    <th style="border:1px solid #15130F;">Product</th>
+                                    <th style="border:1px solid #15130F;">Category</th>
+                                    <th style="border:1px solid #15130F;">Expiry Date</th>
+                                    <th style="border:1px solid #15130F;">Remaining days</th>
+                                    <th style="border:1px solid #15130F;text-align: right;">Available
+                                        Quantity</th>
+                                </tr>
+                                <t t-foreach="expiry_move" t-as="line">
+                                    <tr>
+                                        <td style="border:1px solid #15130F;">
+                                            <span t-esc="line.lot_id.name" />
+                                        </td>
+                                        <td style="border:1px solid #15130F;">
+                                            <span t-esc="line.product_id.barcode" />
+                                        </td>
+                                        <td style="border:1px solid #15130F;">
+                                            <span t-esc="line.product_id.name" />
+                                        </td>
+                                        <td style="border:1px solid #15130F;">
+                                            <span t-esc="line.product_id.categ_id.name" />
+                                        </td>
+                                        <td style="border:1px solid #15130F;">
+                                            <span t-esc="line.lot_id.expiration_date.strftime('%Y-%m-%d %H:%M:%S')" />
+                                        </td>
+                                        <td style="border:1px solid #15130F;text-align:right;">
+                                            <t t-esc="(line.lot_id.expiration_date)-todays" />
+                                        </td>
+                                        <td style="border:1px solid #15130F;text-align:right;">
+                                            <span t-esc="line.quantity"></span>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </table>
+                        </t>
+                        <t t-if="doc.group_by=='location'">
+                            <h2>
+                                <center>Product Expiry Report</center>
+                            </h2>
+                            <div class='row'>
+                                <div style='width:70%;padding-left: 16px;'>
+                                    <strong>Product Expiry In Next</strong>
+                                    <span t-esc="doc.num_expiry_days" />
+                                    <span>Days</span>
+                                </div>
+                                <div style='width:30%;'>
+                                    User <t t-foreach="request.env.user.company_ids" t-as="user">
+                                            <t t-esc="user.name"/>
+                                        </t>
+                                        
+                                        <br/>
+                                    <strong>Date</strong>
+                                    <t t-set="todayd" t-value="today" />
+                                    <span t-esc="datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')" />
+                                </div>
+                            </div>
+                            <h5>
+                                        <strong>
+                                            Location:
+                                        </strong>
+                                        <t t-foreach="doc.location_ids" t-as="loca">
+                                            <!-- <span t-field="loca.name"/>,  -->
+                                            </t>
+                                    </h5> 
+                            <br />
+                            <table class="table table-sm o_main_table">
+                                <tr>
+                                    <th style="border:1px solid #15130F;">Lot/Serial number</th>
+                                    <th style="border:1px solid #15130F;">Barcode</th>
+                                    <th style="border:1px solid #15130F;">Product</th>
+                                    <th style="border:1px solid #15130F;">Location</th>
+                                    <th style="border:1px solid #15130F;">Expiry Date</th>
+                                    <th style="border:1px solid #15130F;">Remaining days</th>
+                                    <th style="border:1px solid #15130F;text-align: right;">Available
+                                        Quantity</th>
+                                </tr>
+                                <t t-foreach="expiry_move" t-as="line">
+                                    <tr>
+                                        <td style="border:1px solid #15130F;">
+                                            <span t-esc="line.lot_id.name" />
+                                        </td>
+                                        <td style="border:1px solid #15130F;">
+                                            <span t-esc="line.product_id.barcode" />
+                                        </td>
+                                        <td style="border:1px solid #15130F;">
+                                            <span t-esc="line.product_id.name" />
+                                        </td>
+                                        <td style="border:1px solid #15130F;">
+                                            <span t-field="line.location_id"/>
+                                        </td>
+                                        <td style="border:1px solid #15130F;">
+                                            <span t-esc="line.lot_id.expiration_date.strftime('%Y-%m-%d %H:%M:%S')" />
+                                        </td>
+                                        <td style="border:1px solid #15130F;text-align: right;">
+                                            <t t-set="remain" t-value="(line.lot_id.expiration_date)-todayd" />
+                                            <t t-esc="remain"/>
+                                        </td>
+                                        <td style="border:1px solid #15130F;text-align: right;">
+                                            <span t-esc="line.quantity"></span>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </table>
+                        </t>
+                        <t t-if="doc.group_by=='product'">
+                            <h2>
+                                <center>Product Expiry Report</center>
+                            </h2>
+                            <div class='row'>
+                                <div style='width:70%;padding-left: 16px;'>
+                                    <strong>Product Expiry In Next</strong>
+                                    <span t-esc="doc.num_expiry_days" />
+                                    <span>Days</span>
+                                </div>
+                                <div style='width:30%;'>
+                                    User <t t-foreach="request.env.user.company_ids" t-as="user">
+                                            <t t-esc="user.name"/>
+                                        </t>
+                                        
+                                            <br/>
+                                    <strong>Date</strong>
+                                    <t t-set="todayd" t-value="today" />
+                                    <span t-esc="datetime.datetime.today().strftime('%Y-%m-%d %H:%M:%S')" />
+                                </div>
+                            </div>
+                            <h5>
+                                <strong>
+                                    Product:
+                                </strong>
+                                <t t-foreach="doc.product_ids" t-as="loca">
+                                </t>
+                            </h5>
+
+                            <br />
+                            <table class="table table-sm o_main_table">
+                                <tr>
+                                    <th style="border:1px solid #15130F;">Lot/Serial number</th>
+                                    <th style="border:1px solid #15130F;">Barcode</th>
+                                    <th style="border:1px solid #15130F;">Product</th>
+                                    <th style="border:1px solid #15130F;">Location</th>
+                                    <th style="border:1px solid #15130F;">Category</th>
+                                    <th style="border:1px solid #15130F;">Expiry Date</th>
+                                    <th style="border:1px solid #15130F;">Remaining days</th>
+                                    <th style="border:1px solid #15130F;text-align: right;">Available
+                                        Quantity</th>
+                                </tr>
+                                <t t-foreach="expiry_move" t-as="line">
+                                    <tr>
+                                        <td style="border:1px solid #15130F;">
+                                            <span t-esc="line.lot_id.name" />
+                                        </td>
+                                        <td style="border:1px solid #15130F;">
+                                            <span t-esc="line.product_id.barcode" />
+                                        </td>
+                                        <td style="border:1px solid #15130F;">
+                                            <span t-esc="line.product_id.name" />
+                                        </td>
+                                        <td style="border:1px solid #15130F;">
+                                            <span t-field="line.location_id" />
+                                        </td>
+                                        <td style="border:1px solid #15130F;">
+                                            <span t-field="line.product_id.categ_id.name" />
+                                        </td>
+                                        <td style="border:1px solid #15130F;">
+                                            <span t-esc="line.lot_id.expiration_date.strftime('%Y-%m-%d %H:%M:%S')" />
+                                        </td>
+                                        <td style="border:1px solid #15130F;text-align: right;">
+                                            <t t-esc="(line.lot_id.expiration_date)-todayd" />
+                                        </td>
+                                        <td style="border:1px solid #15130F;text-align: right;">
+                                            <span t-esc="line.quantity"></span>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </table>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

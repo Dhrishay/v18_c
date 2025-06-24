@@ -1,0 +1,37 @@
+.tnr{
+    font-family: 'Times New Roman Cyr';
+}
+.saysettha{
+    font-family: 'Saysettha OT';
+}
+.phetsarath{
+    font-family: 'Phetsarath OT';
+}
+
+table td,th {
+    font-family: Saysettha OT;
+    padding: 5px;
+    font-size: 14px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+td,
+th {
+    border: 1px solid #000;
+}
+.border-c {
+    border: 1px solid rgb(0, 0, 0);
+    padding: 1px;
+    width: auto;
+}
+.textmiddle {
+    vertical-align: middle;
+}
+.pl-3{
+    padding-left: 30px;
+}
+.t-v-center {
+    vertical-align: middle;
+}

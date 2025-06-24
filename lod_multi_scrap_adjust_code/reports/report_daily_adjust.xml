@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_daily_adjust">
+        <style>
+            .td_middle {vertical-align:middle;}
+        </style>
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id"></t>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"></t>
+        </t>
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.basic_layout">
+                    <div class="page" style='font-family: Montserrat, Saysettha OT; font-size: 14px;'>
+                        <div class="oe_structure"/>
+                        <div class='row'>
+                            <div class='col-4 pl-0'>
+                                <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" style="max-height: 50px;" alt="Logo"/>
+                            </div>
+                            <div class='col-2'>
+                            </div>
+                            <div class='col-6'>
+                                <div class='row text-right'>
+                                    <div class='col-5' style="font-weight: 700">
+                                        <div><span>STORE CODE:</span></div>
+                                        <div><span>STORE NAME:</span></div>
+                                    </div>
+                                    <div class='col-7'>
+                                        <div><span><t t-esc="doc.company_id.merchant_id"/></span></div>
+                                        <div><span><t t-esc="doc.company_id.name"/></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='row mt-4'>
+                            <div class='col-12 text-center'>
+                                <span style="font-size: 24px; font-weight: 900">Daily Stock Count Report</span>
+                            </div>
+                        </div>
+                        <div class='row mt-4'>
+                            <div class='col-7'>
+                                <div class='row mt-4'>
+                                    <div class='col-3' style="font-weight: 700">
+                                        <div><span>Doc No: </span></div>
+                                        <div><span>Description: </span></div>
+                                        <div><span>Code: </span></div>
+                                    </div>
+                                    <div class='col-9 pl-0'>
+                                        <div><span><t t-if="doc.name" t-esc="doc.name"/><t t-else="">-</t></span></div>
+                                        <div><span><t t-if="doc.description" t-esc="doc.description"/><t t-else="">-</t></span></div>
+                                        <div><span><t t-if="doc.reason_code_id" t-esc="doc.reason_code_id.name"/><t t-else="">-</t></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='col-5'>
+                                <div class='row mt-4'>
+                                    <div class='col-4 text-right' style="font-weight: 900">
+                                        <div><span>Status: </span></div>
+                                        <div><span>Create By: </span></div>
+                                        <div><span>Date: </span></div>
+                                    </div>
+                                    <div class='col-8'>
+                                        <div><span><t t-if="doc.state" t-esc="doc.state.upper().replace('_', ' ')"/><t t-else="">-</t></span></div>
+                                        <div><span><t t-if="doc.user_id" t-esc="doc.user_id.name"/><t t-else="">-</t></span></div>
+                                        <div><span t-if="doc.create_date" t-field="doc.create_date" t-options='{"format": "dd/MM/yyyy HH:mm:ss"}'/><t t-else="">-</t></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <t t-set="i" t-value="1"/>
+                        <t t-set="total_onhand" t-value="0"/>
+                        <t t-set="total_quantity" t-value="0"/>
+                        <t t-set="total_stock_value" t-value="0"/>
+                        <t t-set="total_diff_amount" t-value="0"/>
+                        <t t-set="total_diff_qty" t-value="0"/>
+                        <t t-set="total_cost" t-value="0"/>
+                        <t t-set="total_retail" t-value="0"/>
+                        <table class="table table-striped w-100 mt-4">
+                            <thead>
+                                <tr class="bg-secondary">
+                                    <th width="5%" class="text-center" style="vertical-align: middle; border-left: 1px solid white;" rowspan='2'>No</th>
+                                    <th width="15%" class="text-center" style="vertical-align: middle; border-left: 1px solid white;;" rowspan='2'>Barcode</th>
+                                    <th width="25%" class="text-center" style="vertical-align: middle; border-left: 1px solid white;" rowspan='2'>Description</th>
+                                    <th width="25%" class="text-center pt-0 pb-0" style="vertical-align: middle; border-bottom:0; border-left: 1px solid white;;" colspan='3'>Quantity</th>
+                                    <th width="30%" class="text-center pt-0 pb-0" style="vertical-align: middle; border-bottom:0; border-left: 1px solid white;" colspan='2'>Amount</th>
+                                    <th width="25%" class="text-center" style="vertical-align: middle; border-left: 1px solid white;" rowspan='2'>Code</th>
+                                    <!-- <th class="td_middle text-right" rowspan='2'>Code Type</th> -->
+                                </tr>
+                                <tr class="bg-secondary">
+                                    <th class="text-right pt-0 pb-0" style="vertical-align: middle; border-left: 1px solid white;border-top: 1px solid white;">OnHand</th>
+                                    <th class="text-right pt-0 pb-0" style="vertical-align: middle; border-left: 1px solid white;border-top: 1px solid white;">Count</th>
+                                    <th class="text-right pt-0 pb-0" style="vertical-align: middle; border-left: 1px solid white;border-top: 1px solid white;">Diff</th>
+                                    <th class="text-right pt-0 pb-0" style="vertical-align: middle; border-left: 1px solid white;border-top: 1px solid white;">Cost</th>
+                                    <th class="text-right pt-0 pb-0" style="vertical-align: middle; border-left: 1px solid white;border-top: 1px solid white;">Diff</th>
+                                    <!-- <th class="text-right pt-0 pb-0" style="vertical-align: middle; border-left: 1px solid;">Retail</th> -->
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                <t t-foreach="doc.order_line_ids" t-as="line">
+                                    <tr style="font-size: 12px;">
+                                        <td class="text-center p-1" style="vertical-align: middle;">
+                                            <t t-esc="i"/>
+                                        </td>
+                                        <td class="p-1" style="vertical-align: middle;">
+                                            <t t-esc="line.product_barcode"/>
+                                        </td>
+                                        <td class="p-1" style="vertical-align: middle;">
+                                            <t t-esc="line.product_id.name"/>
+                                        </td>
+                                        <td class="text-right p-1" style="vertical-align: middle;">
+                                            <t t-esc="'{:,.2f}'.format(line.on_hand)"/>
+                                        </td>
+                                        <td class="text-right p-1" style="vertical-align: middle;">
+                                            <t t-esc="'{:,.2f}'.format(line.quantity)"/>
+                                        </td>
+                                        <td class="text-right p-1" style="vertical-align: middle;">
+                                            <t t-esc="'{:,.2f}'.format(line.diff_qty)"/>
+                                        </td>
+                                        <td class="text-right p-1" style="vertical-align: middle;">
+                                            <t t-esc="'{:,.0f}'.format(line.cost)"/>
+                                        </td>
+                                        <td class="text-right p-1" style="vertical-align: middle;">
+                                            <t t-esc="'{:,.0f}'.format(line.diff_amount)"/>
+                                        </td>
+                                        <!-- <td class="text-right" style="vertical-align: middle;"><t t-esc="'{:,.0f}'.format(line.stock_value)"/></td> -->
+                                        <td class="text-right  p-1" style="vertical-align: middle;">
+                                            <t t-esc="line.reason_code_id.code"/>
+                                        </td>
+                                        <!-- <td class="text-right" style="vertical-align: middle;"><t t-esc="line.reason_code_id.code"/></td> -->
+                                        
+                                        <t t-set="total_onhand" t-value="total_onhand + line.on_hand"/>
+                                        <t t-set="total_quantity" t-value="total_quantity + line.quantity"/>
+                                        <!-- <t t-set="total_stock_value" t-value="total_stock_value + line.stock_value"/> -->
+                                        <t t-set="total_diff_qty" t-value="total_diff_qty + line.diff_qty"/>
+                                        <t t-set="total_diff_amount" t-value="total_diff_amount + line.diff_amount"/>
+                                        <t t-set="total_cost" t-value="total_cost + line.cost"/>
+                                        <t t-set="total_retail" t-value="total_retail + line.sale_price"/>
+                                    </tr>
+                                    <t t-set="i" t-value="i+1"/>
+                                </t>
+                                <tr class="boder-bottom" style="font-size: 13px; font-weight: 700;">
+                                    <td colspan="3" class="td_middle text-right p-1">Grand Total:</td>
+                                    <td class="td_middle text-right p-1"><t t-esc="'{:,.2f}'.format(total_onhand)"/></td>
+                                    <td class="td_middle text-right p-1"><t t-esc="'{:,.2f}'.format(total_quantity)"/></td>
+                                    <!-- <td class="td_middle text-right"><t t-esc="'{:,.0f}'.format(total_stock_value)"/></td> -->
+                                    <td class="td_middle text-right p-1"><t t-esc="'{:,.2f}'.format(total_diff_qty)"/></td>
+                                    <td class="td_middle text-right p-1"><t t-esc="'{:,.0f}'.format(total_cost)"/></td>
+                                    <td class="td_middle text-right p-1"><t t-esc="'{:,.0f}'.format(total_diff_amount)"/></td>
+                                    <!-- <td class="td_middle text-right p-1"><t t-esc="'{:,.0f}'.format(total_retail)"/></td> -->
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class='row mt-4'>
+                            <div class='col-4 text-center' style="font-weight: 700">
+                                <u><spn>Request by</spn></u>
+                            </div>
+                            <div class='col-4 text-center' style="font-weight: 700">
+                                <u><spn>Verify by LPS</spn></u>
+                            </div>
+                            <div class='col-4 text-center' style="font-weight: 700">
+                                <u><spn>Approved by</spn></u>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>       
+
+    </template>
+
+    <record id="report_daily_adjust_pdf" model="ir.actions.report">
+        <field name="name">Print Daily Adjust</field>
+        <field name="model">multi.scrap</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">lod_multi_scrap_adjust_code.report_daily_adjust</field>
+        <field name="report_file">lod_multi_scrap_adjust_code.report_daily_adjust</field>
+        <field name="paperformat_id" ref="paperformat_scrap_adjust_report"/>
+        <field name="binding_model_id" ref="model_multi_scrap"/>
+        <field name="binding_type">report</field>
+    </record>  
+
+    <!-- <record id="report_scrap_adjust_excel" model="ir.actions.report">
+        <field name="name">Print Scrap Adjust Excel</field>
+        <field name="model">multi.scrap</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">lod_multi_scrap_adjust_code.report_scrap_adjust_excel</field>
+        <field name="binding_model_id" ref="model_multi_scrap"/>
+        <field name="binding_type">report</field>
+    </record>   -->
+
+</odoo>

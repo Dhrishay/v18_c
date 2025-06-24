@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_multi_scrap,access_multi_scrap,lod_multi_scrap_adjust_code.model_multi_scrap,base.group_user,1,1,1,1
+access_multi_scrap_line,access_multi_scrap_line,lod_multi_scrap_adjust_code.model_multi_scrap_line,base.group_user,1,1,1,1
+access_scrap_reason_code,access_scrap_reason_code,lod_multi_scrap_adjust_code.model_scrap_reason_code,base.group_user,1,1,1,1

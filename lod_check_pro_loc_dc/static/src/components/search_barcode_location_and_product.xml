@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <div t-name="lod_check_pro_loc_dc.BarcodeMainComponent" class="o_content o_barcode_client_action h-100 flex-column">
+        <CountScreenRFID t-if="state.displayCountRFID" receivedRFIDs="receivedRFIDs" totalRFIDs="totalRFIDs" close.bind="closeRFIDCount"/>
+        <ImportBlockUI t-if="state.uiBlocked" message="blockUIMessage"/>
+        <header class="o_barcode_header border-bottom">
+            <div class="navbar navbar-expand p-2 m-1">
+                <nav class="navbar-nav me-auto">
+                    <button t-on-click="exit" class="o_exit btn btn-secondary me-3">
+                        <i class="oi oi-chevron-left"/>
+                    </button>
+                    <button class="o_title btn text-start p-0">
+                        Check Product And Location
+                    </button>
+                </nav>
+                <nav class="navbar-nav">
+                    <button t-if="cameraScannerSupported"
+                            class="o_stock_mobile_barcode btn"
+                            t-att-class="cameraScannerClassState"
+                            t-att-disabled="state.cameraScannedEnabled &amp;&amp; !state.readyToToggleCamera"
+                            t-on-click="toggleCameraScanner">
+                        <i class="fa fa-barcode" role="img"/>
+                    </button>
+                </nav>
+            </div>
+            <div t-if="state.cameraScannedEnabled" class="text-bg-800">
+                <BarcodeVideoScanner t-props="barcodeVideoScannerProps"/>
+            </div>
+            <div class="o_barcode_lines_header py-3 px-1 text-bg-800">
+                <div name="barcode_messages" class="d-flex align-items-center justify-content-center w-100">
+                    <span t-attf-class="fa fa-lg fa-sign-out me-3"/>
+                    <span class="o_scan_message o_scan_src" >Scan a Location or Product</span>
+                </div>
+            </div>
+            <div class="p-2">
+                <div class="input-group">
+                    <input id="manual_barcode" type="text" name="barcode" class="form-control" placeholder="Enter a barcode..." t-ref="manualBarcodeScannerInput" t-on-keydown="(ev) => this._barcodeSearchOnKeydown(ev)" />
+                    <button class="input-group-text" t-on-click="(ev) => this.applyBtnClick(ev)">
+                        Apply
+                    </button>
+                </div>
+            </div>
+        </header>
+        <div id="renderLineOfContent" class="o_barcode_lines list-group flex-grow-1 text-bg-200"/>
+    </div>
+
+     <t t-name="lod_check_pro_loc_dc.location_line_of_content">
+        <div class="o_barcode_location_group o_current_location" style="box-shadow: none;">
+            <!-- Source location separator -->
+            <h4 class="o_barcode_location_line p-1 px-3 border d-flex align-items-center text-bg-800 m-0">
+                <i class="fa fa-map-marker me-2" />
+                <span class="o_location_name" t-out="barcodeData.location" />
+            </h4>
+            <!-- Barcode Product lines -->
+            <t t-foreach="barcodeData.location_stock_quants" t-as="stock_quant" t-key="stock_quant.product_id.id">
+                <div class="d-flex flex-nowrap flex-row list-group-item o_barcode_line o_highlight o_line_not_completed o_selected">
+                    <div class="d-flex flex-column justify-content-between o_barcode_line_details">
+                        <div class=" ">
+                            <div class="o_barcode_line_title">
+                                <h4 class="o_product_label m-0" t-esc="stock_quant.product_id.display_name" />
+                                <p t-if="stock_quant.product_id.barcode" class="m-0" t-esc="stock_quant.product_id.barcode" />
+                            </div>
+                            <div name="lot" t-if="stock_quant.lot_id">
+                                <i class="fa fa-fw fa-barcode" />
+                                <span class="o_line_lot_name ms-1" t-esc="stock_quant.lot_id.name" />
+                            </div>
+                            <div t-if="stock_quant.owner_id">
+                                <i class="fa fa-fw fa-user-o" />
+                                <small class="o_line_owner" t-esc="stock_quant.owner_id.display_name" />
+                            </div>
+                        </div>
+                        <div class="">
+                            <div name="quantity">
+                                <span t-attf-class="o_barcode_scanner_qty font-monospace fs-1">
+                                    <span t-if="stock_quant.quantity" t-esc="stock_quant.quantity" />
+                                </span>
+                                <small t-if="stock_quant.product_uom_id" class="o_line_uom text-muted ms-1" t-out="stock_quant.product_uom_id" />
+                            </div>
+                            <div t-if="stock_quant.package_id" name="package">
+                                <i class="fa fa-fw fa-archive" />
+                                <span class="package" t-esc="stock_quant.package_id" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="o_picture p-0" style="margin-left: auto;" t-if="stock_quant.product_id.has_image">
+                        <img loading="lazy" t-attf-src="/web/image/product.product/{{stock_quant.product_id.id}}/image_128" />
+                    </div>
+                </div>
+            </t>
+        </div>
+    </t>
+
+    <t t-name="lod_check_pro_loc_dc.product_line_of_content">
+        <div class="o_barcode_location_group o_current_location" style="box-shadow: none;">
+            <t t-foreach="barcodeData.product_stock_quants" t-as="line" t-key="line.location_id.id">
+                <!-- Source location separator -->
+                <div class="o_barcode_location_line p-1 px-3 border d-flex align-items-center text-bg-800">
+                    <i class="fa fa-map-marker me-2" />
+                    <span class="o_location_name" t-out="line.location_id.name" />
+                </div>
+
+                <!-- Barcode Product lines -->
+                <t t-foreach="line.product_ids" t-as="product_line" t-key="product_line.product_id.id">
+                    <div class="d-flex flex-nowrap flex-row list-group-item o_barcode_line o_highlight o_line_not_completed o_selected">
+                        <div class="d-flex flex-column justify-content-between o_barcode_line_details">
+                            <div class=" ">
+                                <div class="o_barcode_line_title">
+                                    <h4 class="o_product_label m-0" t-esc="product_line.product_id.display_name" />
+                                    <p class=" m-0" t-esc="product_line.product_id.barcode" />
+                                </div>
+                                <div name="lot" t-if="product_line.lot_id">
+                                    <i class="fa fa-fw fa-barcode" />
+                                    <span class="o_line_lot_name ms-1" t-esc="product_line.lot_id.name" />
+                                </div>
+                                <div t-if="product_line.owner_id">
+                                    <i class="fa fa-fw fa-user-o" />
+                                    <small class="o_line_owner" t-esc="product_line.owner_id.display_name" />
+                                </div>
+                            </div>
+                            <div class="">
+                                <div name="quantity">
+                                    <span t-attf-class="o_barcode_scanner_qty font-monospace fs-1">
+                                        <span t-if="product_line.quantity" t-esc="product_line.quantity" />
+                                    </span>
+                                    <small t-if="product_line.product_uom_id" class="o_line_uom text-muted ms-1" t-out="product_line.product_uom_id" />
+                                </div>
+                                <div t-if="product_line.package_id" name="package">
+                                    <i class="fa fa-fw fa-archive" />
+                                    <span class="package" t-esc="product_line.package_id" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="o_picture p-0" style="margin-left: auto;" t-if="product_line.product_id.has_image">
+                            <img loading="lazy" t-attf-src="/web/image/product.product/{{product_line.product_id.id}}/image_128" />
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </div>
+    </t>
+
+    <t t-name="lod_check_pro_loc_dc.empty_line_of_content">
+        <div class="o_barcode_location_group o_current_location" style="box-shadow: none;">
+            <div class="m-3 text-center"> Sorry, we could not find any Location or Product for this barcode <i><b class="text-800" t-esc="barcode"/></i></div>
+        </div>
+    </t>
+
+</templates>

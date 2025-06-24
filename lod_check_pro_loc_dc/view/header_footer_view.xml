@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="header_navbar">
+		<meta name="theme-color" content="#0353bb"/>
+		<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+		<nav t-att-class="'mobile-top-nav disable mt-5' if user_type == True else 'mobile-top-nav disable'">
+			<div class="mobile-top-nav__item">
+				<div class="mobile-top-nav__item-content ">
+					<div class="row">
+						<div class="col-2" style="font-size:1.2rem">
+							<t t-if="'/orderice?' not in request.httprequest.full_path">
+								<span t-attf-onclick="location.href='/web?debug=1#menu_id=612&amp;cids=1&amp;bids=1&amp;action=872'">
+									<i class="fa fa-arrow-left"/>
+								</span>
+							</t>
+							
+						</div>
+						<div class="col-10 text-center" style="font-size:18px;">
+							<span><t t-esc="title_name"/></span>
+						</div>
+						
+						<!-- <div class="col-2">
+							<span t-attf-onclick="location.href='/web/session/logout?redirect=/'"
+								  style="vertical-align: -webkit-baseline-middle;">
+								<i class="fa fa-power-off"/>
+							</span>
+							
+						</div> -->
+					</div>
+				</div>
+			</div>
+		</nav>
+
+	</template>
+
+	<template id="footer_navbar">
+		<nav class="mobile-bottom-nav disable">
+			<!-- <t t-inherit="stock_barcode.MainComponent" t-inherit-mode="extension" owl="1">
+				<div class="mobile-bottom-nav__item">
+						<div class="mobile-bottom-nav__item-content">					
+							<button t-on-click="exit" class="o_exit btn nav-link mr-4">
+								<i class="fa fa-chevron-left"/>
+							</button>
+						</div>
+				</div>
+			</t> -->			
+			<div class="mobile-bottom-nav__item">
+				<a t-attf-href="/web#menu_id=612&amp;cids=1&amp;bids=1&amp;action={{ action }}">
+					<div t-att-class="'mobile-bottom-nav__item--active' if request.httprequest.full_path == '/?' else None">
+						<div class="mobile-bottom-nav__item-content">
+							<i class="fa fa-home"></i>
+							Back to Home
+						</div>
+					</div>
+				</a>
+			</div>
+			
+		</nav>
+	</template>
+</odoo>

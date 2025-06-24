@@ -1,0 +1,22 @@
+<odoo>
+    <data>
+        <record id="view_users_form_inherit_stock_location" model="ir.ui.view">
+            <field name="name">res.users.form.inherit.restrict.stock.location</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook[last()]" position="inside">
+                    <page string="Allow Stock Location" name="allow_stock_location">
+                        <group>
+                            <button name="data_clear" type="object" class="fa fa-trash-o" title="Clear All Locations"/>
+                        </group>
+                        <group>
+                            <field name="stock_location_ids" nolabel="1" colspan="2" options="{'no_create': True}"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

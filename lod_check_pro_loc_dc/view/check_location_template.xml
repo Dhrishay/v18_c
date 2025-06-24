@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="check_location_template" name="Check Location">
+        <t t-call="website.layout">
+            <style>
+                .oe_main_menu_navbar {
+                    display: none;
+                }
+                <!-- .o_header_standard {
+                    display: none;
+                } -->
+                .o_footer {
+                    display: none;
+                }
+                .o_main_navbar {
+                    display: none;
+                } 
+                .oe_main_menu_navbar,
+                <!-- .o_header_standard,
+                .o_footer, -->
+                         
+                
+            </style>
+            <!-- <t t-call="lod_check_pro_loc_dc.header_navbar"/> -->
+            <!-- <div id="wrap" class="oe_structure oe_empty mt-4 mb-2"> -->
+            <div id="wrap" class="oe_structure oe_empty mt-5 mb-2">
+                <div class="container" style="font-size: 0.9rem;">
+                    <section>
+                        <form class="px-3" t-attf-action="/check_location" role="search" method="get">
+                            <div class="row d-flex justify-content-center align-items-center">
+                                 <div class="col-md-6 head_title pt-5">
+                                    <h3>
+                                        Search Location
+                                    </h3>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group d-flex justify-content-end w-30">
+                                        <input type="text" class="form-control" name="barcode_loc"
+                                               placeholder="Search Locations"/>
+                                        <button class="btn btn-primary" type="submit" aria-label="Search"
+                                                title="Search">
+                                            <i class="fa fa-search"/>
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </form>
+                        <div class="card check_location mt-2" style="font-size:0.6rem">
+                            <div class="text-center font-weight-bold" style="font-size:1rem; color: #ff9c00;">
+                                <div>Location:
+                                    <t t-esc="location"/>
+                                </div>
+                            </div>
+                            <t t-foreach="stock_quants" t-as="quant">
+                                <div class='row m-0 border border-primary rounded'>
+                                    <div class="col-3 col-md-3 col-lg-3 p-0 pl-1">
+                                        <!-- <img t-attf-src="data:image/*;base64,{{quant.product_id.image_1920}}"
+                                            t-att-alt="quant.product_id.image_1920"
+                                            style="width:90%"
+                                        /> -->
+                                        <img t-att-src="image_data_uri(quant.product_id.image_1920) if quant.product_id.image_1920 else '/web/static/img/placeholder.png'"
+                                             style="width:90%"
+                                        />
+                                    </div>
+                                    <div class="col-9 col-md-9 col-lg-9">
+                                        <div class="card-title font-weight-bold text-center" style="font-size:22px;">
+                                            <t t-esc="quant.product_id.name"/>
+                                        </div>
+                                        <div class="card-text h6">
+                                            <span class="font-weight-bold">Barcode:</span>
+                                            <span>
+                                                <t t-esc="quant.barcode"/>
+                                            </span>
+                                            <br/>
+                                        </div>
+                                        <div class="card-text h6">
+                                            <span class="font-weight-bold">On Hand:</span>
+                                            <span>
+                                                <t t-esc="'{:,.0f}'.format(quant.quantity)"/>
+                                                <t t-esc="quant.product_uom_id.name"/>
+                                            </span>
+                                            <br/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <t t-call="lod_check_pro_loc_dc.footer_navbar"/>
+        </t>
+    </template>
+</odoo>

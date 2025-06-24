@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="check_free_location_template" name="Check Free Location">
+        <t t-call="website.layout">
+            <style>
+                <!-- .oe_main_menu_navbar {
+                    display: none;
+                }
+                .o_header_standard {
+                    display: none;
+                }
+                .o_footer {
+                    display: none;
+                }
+                .o_main_navbar {
+                    display: none;
+                } -->
+                .oe_main_menu_navbar,
+                <!-- .o_header_standard,
+                .o_footer, -->
+                .o_main_navbar {
+                    display: none;
+                  }
+                .table td, .table th {
+                    padding: 0.2rem;
+                }
+                
+            </style>
+            <div id="wrap" class="oe_structure oe_empty mb-2">
+                <div class="container pl-0 pr-0" style="font-size: 1.1rem;">
+                    <section class="s_website_form" data-vcss="001" data-snippet="s_website_form">
+                        <div class="text-center mt-2">
+                            <span class="font-weight-bold">Free Location</span>
+                        </div>
+                        <t t-set="i" t-value="1"/>
+                        <table class="table pr-2 mt-2" style="font-size: 0.7rem;">
+                            <tr>
+                                <th>#</th>
+                                <th>Location Name</th>
+                                <!-- <th class="text-right">On Hand</th>
+                                <th>UoM</th> -->
+                            </tr>
+                            <tr t-foreach="location_ids" t-as="locat">
+                                <t t-if="not locat.quant_ids">                                
+                                    <t t-if="not locat.child_ids">
+                                        
+                                    <td class="text-center align-middle"><t t-esc="i"/></td>
+                                    <td>
+                                        <!-- <div class="font-weight-bold"><t t-esc="locat.id"/></div> -->
+                                        <div class="font-weight-bold"><t t-esc="locat.display_name"/></div>
+                                        <div class="text-muted"><i class="fa fa-barcode" style="font-size: 0.7rem;"></i> <t t-esc="locat.barcode"/></div>
+                                    </td>
+                                    <!-- <td class="text-right"><t t-esc="'{:,.0f}'.format(locat.quantity)"/></td>
+                                        <td><t t-esc="locat.product_uom_id.name"/></td> -->
+                                        <t t-set="i" t-value="i+1"/>
+                                    </t>
+                                </t>
+                            </tr>
+                        </table>
+                    </section>
+                </div>
+            </div>
+            <t t-call="lod_check_pro_loc_dc.footer_navbar"/>
+        </t>
+    </template>
+</odoo>

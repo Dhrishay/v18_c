@@ -1,0 +1,39 @@
+@media (max-width: 767.98px) {
+    :lang(LAO) {
+        font-family: "Noto Sans Lao", "Phetsarath OT", "Saysettha OT", sans-serif, monospace;
+    }
+    head {
+        background: black;
+    }
+    .mobile-top-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1050;
+        will-change: transform;
+        transform: translateZ(0);
+        display: flex;
+        height: 45px;
+        box-shadow: 0 -2px 5px -2px #333;
+        background-color: #0353bb;
+        color: white;
+        &__item {
+            flex-grow: 1;
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-left: 5%;
+        }
+        &__item--active {
+            //dev
+            color: white;
+        }
+        &__item-content {
+            color: white;
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}

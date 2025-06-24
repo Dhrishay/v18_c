@@ -1,0 +1,21 @@
+.check_location .detail{
+    font-size: 1.2rem;;
+}
+.check_location .price{
+    font-size: 2rem;
+}
+.check_location .unit{
+    padding: 20px;
+}
+@media screen and (max-width:768px){
+    .check_location .detail{
+        font-size: 0.8rem;
+    }
+    .check_location .price{
+        font-size: 1.5rem;
+    }
+    .check_location .unit{
+        padding: 10px;
+        font-size: 0.6rem;
+    }
+}

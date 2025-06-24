@@ -1,0 +1,269 @@
+<odoo>
+    <data>
+        <!-- Sequence -->
+        <record model="ir.sequence" id="sequence_multi_scrap">
+            <field name="name">Multi Scrap</field>
+            <field name="code">multi.scrap</field>
+            <field name="prefix">ADJ/SCRP -</field>
+            <field name="padding">4</field>
+        </record>
+
+        <!-- Scrap Order Form View -->
+        <record model="ir.ui.view" id="scrap_order_form_view">
+            <field name="name">multi.scrap.form</field>
+            <field name="model">multi.scrap</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_done" string="Approve" type="object" 
+                            invisible="state != 'wait_to_approve'"
+                                class="oe_highlight" context="{'not_unlink_on_discard': True}" data-hotkey="v"/>
+                        <button name="set_to_draft" string="Set to Draft" type="object"  invisible="state == 'wait_to_approve'"
+                                class="oe_highlight" context="{'not_unlink_on_discard': True}"
+                                groups="base.group_erp_manager" data-hotkey="d"/>
+                        <field name="state" widget="statusbar" statusbar_visible="wait_to_approve,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" invisible="name=='/'" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group string="Adjustment Detail">
+                                <field name="type_adjust" readonly="state != 'wait_to_approve'"/>
+                                <field name="reason_code_id" readonly="state != 'wait_to_approve'"/>
+                                <field name="received_loss"/>
+                                <field name="user_id"/>
+                                <field name="date" readonly="state != 'wait_to_approve'"/>
+
+                                <field name="description" readonly="state != 'wait_to_approve'"/>
+                            </group>
+                            <group string="Location">
+                                <field name="location_adjust" readonly="state != 'wait_to_approve'"/>
+                                <field name="company_id" readonly="1"/>
+                                <field name="src_location_id"/>
+                                <field name="dest_location_id"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Order Lines">
+                                <field name="order_line_ids" readonly="state!='wait_to_approve'"
+                                       mode="list">
+                                    <list editable="bottom">
+                                        <field name="type_adjust" column_invisible="True"/>
+                                        <field name="product_barcode"/>
+                                        <field name="product_template_id" required="1"
+                                               options="{'no_open': True, 'no_create': True}"/>
+                                        <!-- <field name="lot_id"/> -->
+                                        <field name="uom_id" readonly="1" string="UoM"/>
+                                        <field name="on_hand" string="Current OnHand"/>
+                                        <button type="object" name="show_stock_quantity" class="btn btn-link"
+                                                icon="fa-bar-chart" invisible="on_hand==0"/>
+                                        <field name="old_on_hand" string="On Hand" readonly="1"/>
+                                        <field name="quantity" required="1" string="Count Qty"
+                                               invisible="type_adjust=='scrap'"/>
+                                        <field name="company_id"/>
+                                        <field name="diff_qty" readonly="0"/>
+                                        <field name="cost"/>
+                                        <!-- <field name="stock_value" string="OnHand Amt"/> -->
+                                        <field name="diff_amount" string="Diff Amt" invisible="type_adjust == 'scrap'"/>
+                                        <!-- <field name="diff_amount" string="Loss Qty" attrs="{'invisible': [('type_adjust','!=','scrap')]}"/> -->
+                                        <!-- <field name="sale_price" string="Retail"/> -->
+                                        <field name="reason_code_id"/>
+                                        <field name="src_location_id" optional="hide"/>
+                                        <field name="dest_location_id" optional="hide"/>
+                                    </list>
+                                    <!-- <form>
+                                        <group>
+                                            <field name="state" visible="1" readonly="0"/>
+                                            <field name="product_template_id" options="{'no_open': True, 'no_create': True}" required="1" />
+                                            <field name="quantity" required="1"/>
+                                            <field name="stock_value" />
+                                            <field name="reason_code_id"/>
+                                            <field name="src_location_id"/>
+                                            <field name="dest_location_id"/>
+                                            <field name="uom_id" readonly="1"/>
+                                        </group>
+                                    </form> -->
+                                </field>
+                            </page>
+                            <page name="stock_move" string="Inventory">
+                                <field name="stock_move_line_ids"
+                                       mode="list,kanban"
+                                       >
+                                    <list editable="bottom">
+                                        <field name="company_id" invisible="1"/>
+                                        <field name="reference"/>
+                                        <field name="date"/>
+                                        <field name="product_id"/>
+                                        <field name="lot_id"/>
+                                        <field name="location_id"/>
+                                        <field name="location_dest_id"/>
+                                        <field name="qty_done"/>
+                                        <field name="state"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+
+                </form>
+                <!--                <form string="Scrap Order">-->
+                <!--                    <field name="order_line_ids" invisible="1" />-->
+                <!--                    <field name="show_confirm" invisible="1"/>-->
+                <!--                    <header>-->
+                <!--                        &lt;!&ndash; <button name="action_confirm" attrs="{'invisible': [('show_confirm', '=', False)]}" string="Confirm" type="object" class="oe_highlight" groups="base.group_user" data-hotkey="x"/>                         &ndash;&gt;-->
+                <!--                        <button name="action_done" string="Approve" type="object" statusbar_visible="wait_to_approve" class="oe_highlight" context="{'not_unlink_on_discard': True}" data-hotkey="v"/>-->
+                <!--                        <button name="set_to_draft" string="Set to Draft" type="object" statusbar_visible="done" class="oe_highlight" context="{'not_unlink_on_discard': True}" groups="base.group_erp_manager" data-hotkey="d"/>-->
+                <!--                        <field name="state" widget="statusbar" statusbar_visible="wait_to_approve,done" />-->
+                <!--                    </header>-->
+                <!--                    <sheet>-->
+                <!--                        <div class="oe_title">-->
+                <!--                            <h1>-->
+                <!--                                <field name="name" invisible="name=='/'" readonly="1"/>-->
+                <!--                            </h1>-->
+                <!--                        </div>-->
+                <!--                        <group>-->
+                <!--                            <group string="Adjustment Detail">-->
+                <!--                                <field name="type_adjust"/>-->
+                <!--                                <field name="reason_code_id"/>-->
+                <!--                                <field name="received_loss"/>-->
+                <!--                                <field name="user_id"/>-->
+                <!--                                <field name="date"/>-->
+                <!--                                <field name="company_id" invisible="1"/>-->
+                <!--                                <field name="description"/>-->
+                <!--                            </group>-->
+                <!--                            <group string="Location">-->
+                <!--                                <field name="location_adjust"/>-->
+                <!--                                <field name="src_location_id"/>-->
+                <!--                                <field name="dest_location_id"/>-->
+                <!--                            </group>-->
+                <!--                        </group>-->
+                <!--                        <notebook>-->
+                <!--                            <page string="Order Lines">-->
+                <!--                                <field name="order_line_ids"-->
+                <!--                                    widget="one2many_list" mode="list">-->
+                <!--                                    <list editable="bottom">-->
+                <!--                                        <field name="type_adjust" invisible="1"/>-->
+                <!--                                        <field name="product_barcode"/>-->
+                <!--                                        <field name="product_template_id" required="1" options="{'no_open': True, 'no_create': True}"/>-->
+                <!--                                        &lt;!&ndash; <field name="lot_id"/> &ndash;&gt;-->
+                <!--                                        <field name="uom_id" readonly="1" string="UoM"/>-->
+                <!--                                        <field name="on_hand" string="Current OnHand"/>-->
+                <!--                                        <button type="object" name="show_stock_quantity" class="btn btn-link" icon="fa-bar-chart" invisible="on_hand==0"/>-->
+                <!--                                        <field name="old_on_hand" readonly="1"/>-->
+                <!--                                        <field name="quantity" required="1" string="Count Qty" invisible="type_adjust=='scrap'"/>-->
+                <!--                                        <field name="diff_qty" readonly="0"/>-->
+                <!--                                        <field name="cost"/>-->
+                <!--                                        &lt;!&ndash; <field name="stock_value" string="OnHand Amt"/> &ndash;&gt;-->
+                <!--                                        <field name="diff_amount" string="Diff Amt" invisible="type_adjust == 'scrap'"/>-->
+                <!--                                        &lt;!&ndash; <field name="diff_amount" string="Loss Qty" attrs="{'invisible': [('type_adjust','!=','scrap')]}"/> &ndash;&gt;-->
+                <!--                                        &lt;!&ndash; <field name="sale_price" string="Retail"/> &ndash;&gt;-->
+                <!--                                        <field name="reason_code_id"/>-->
+                <!--                                        <field name="src_location_id" required="1" optional="hide"/>-->
+                <!--                                        <field name="dest_location_id" required="1" optional="hide"/>-->
+                <!--                                    </list>-->
+                <!--                                    &lt;!&ndash; <form>-->
+                <!--                                        <group>-->
+                <!--                                            <field name="state" visible="1" readonly="0"/>-->
+                <!--                                            <field name="product_template_id" options="{'no_open': True, 'no_create': True}" required="1" />-->
+                <!--                                            <field name="quantity" required="1"/>-->
+                <!--                                            <field name="stock_value" />-->
+                <!--                                            <field name="reason_code_id"/>-->
+                <!--                                            <field name="src_location_id"/>-->
+                <!--                                            <field name="dest_location_id"/>-->
+                <!--                                            <field name="uom_id" readonly="1"/>-->
+                <!--                                        </group>-->
+                <!--                                    </form> &ndash;&gt;-->
+                <!--                                </field>-->
+                <!--                            </page>-->
+                <!--                            <page name="stock_move" string="Inventory">-->
+                <!--                                <field name="stock_move_line_ids"-->
+                <!--                                    widget="one2many_list" mode="list,kanban"-->
+                <!--                                       readonly="state!='wait_to_approve'">-->
+                <!--                                    <list editable="bottom">-->
+                <!--                                        <field name="reference"/>-->
+                <!--                                        <field name="date"/>-->
+                <!--                                        <field name="product_id"/>-->
+                <!--                                        <field name="lot_id"/>-->
+                <!--                                        <field name="location_id"/>-->
+                <!--                                        <field name="location_dest_id"/>-->
+                <!--                                        <field name="qty_done"/>-->
+                <!--                                        <field name="state"/>-->
+                <!--                                    </list>-->
+                <!--                                </field>-->
+                <!--                            </page>-->
+                <!--                        </notebook>-->
+                <!--                    </sheet>-->
+                <!--                    <div class="oe_chatter">-->
+                <!--                        <field name="message_follower_ids" />-->
+                <!--                        <field name="activity_ids" />-->
+                <!--                        <field name="message_ids" />-->
+                <!--                      </div>-->
+                <!--                </form>-->
+            </field>
+        </record>
+
+        <!-- Scrap Order List View -->
+        <record model="ir.ui.view" id="multi_scrap_list_view">
+            <field name="name">multi.scrap.list</field>
+            <field name="model">multi.scrap</field>
+            <field name="arch" type="xml">
+                <list string="Scrap Order List">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="user_id"/>
+                    <!-- <field name="state" /> -->
+                    <field name="state" optional="show" widget="badge" decoration-success="state == 'done'"
+                           decoration-info="state =='confirmed'" decoration-muted="state == 'draft'"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Scrap Lines -->
+        <record id="view_multi_scrap_filter" model="ir.ui.view">
+            <field name="name">multi.scrap.filter</field>
+            <field name="model">multi.scrap</field>
+            <field name="arch" type="xml">
+                <search>
+                    <filter name="state_draft" string="Draft" domain="[('state','=','wait_to_approve')]"/>
+                    <filter name="state_done" string="Done" domain="[('state','=','done')]"/>
+                </search>
+            </field>
+        </record>
+
+
+        <!-- Add Scrap Location Field -->
+        <!-- <record model="ir.ui.view" id="product_product_scrap_location_form_view">
+            <field name="name">product.product.scrap.location.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+        </record> -->
+
+
+        <record id="multi_scrap_action" model="ir.actions.act_window">
+            <field name="name">Multi Scrap Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">multi.scrap</field>
+            <field name="view_mode">list,form,kanban</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Scrap products
+                </p>
+                <p>
+                    Scrapping a product will remove it from your stock. The product will
+                    end up in a scrap location that can be used for reporting purpose.
+                </p>
+            </field>
+        </record>
+
+        <menuitem
+                id="menu_stock_multi_scrap"
+                name="Multi Adjust/Scraps"
+                parent="stock.menu_stock_warehouse_mgmt"
+                action="multi_scrap_action"
+                sequence="100"/>
+    </data>
+</odoo>
