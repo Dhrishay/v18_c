@@ -1,0 +1,23 @@
+{
+    'name': 'Inventory Consignment',
+    'summary': 'Inventory Enhancement',
+    'version': '18.0.1.0.0',
+    'category': 'Inventory',
+    'author': 'laooddoo',
+    'license': 'LGPL-3',
+    'website': 'http://www.laooddoo.com',
+    'description':"""Inventory Enhancement""",
+    'depends': ['product','lo_vendor_master_fields', 'purchase_stock', 'point_of_sale', 'purchase', 'stock', 'product_multiple_barcodes'],
+    'external_dependencies': {},
+    'data': [
+        'data/cron.xml',
+        'views/product_template_views.xml',
+        'views/product_supplierinfo_views.xml',
+        'views/res_config_settings.xml',
+        'views/pos_order_views.xml',
+    ],
+    'demo':[],
+    'application': True,
+    'installable':True,
+    'auto_install': False, 
+}

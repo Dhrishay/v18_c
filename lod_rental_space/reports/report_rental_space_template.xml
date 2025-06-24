@@ -1,0 +1,26 @@
+<odoo>
+    <data>
+        <template id="report_rental_space_template">
+            <t t-call="web.html_container">
+                <h1>รายงานสถานะการเช่าพื้นที่</h1>
+                <p>ช่วงวันที่: ${ report_data['start_date'] } ถึง ${ report_data['end_date'] }</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>สถานะ</th>
+                            <th>จำนวน</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- <t t-foreach="report_data['state_counts']" t-as="state">
+                            <tr>
+                                <td><t t-esc="state[0]"/></td>
+                                <td><t t-esc="state[1]"/></td>
+                            </tr>
+                        </t> -->
+                    </tbody>
+                </table>
+            </t>
+        </template>
+    </data>
+</odoo>

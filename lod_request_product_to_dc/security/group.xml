@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Group: Receive -->
+        <record id="group_receive_stock" model="res.groups">
+            <field name="name">Receive</field>
+            <field name="category_id" ref="base.module_category_inventory"/>
+            <field name="comment">This group allows users to receive stock.</field>
+            <field name="is_receive" eval="True"/>
+        </record>
+
+        <!-- Group: Pick -->
+        <record id="group_pick_stock" model="res.groups">
+            <field name="name">Pick</field>
+            <field name="category_id" ref="base.module_category_inventory"/>
+            <field name="comment">This group allows users to pick stock.</field>
+            <field name="is_pick" eval="True"/>
+        </record>
+
+        <!-- Group: Put Away -->
+        <record id="group_put_away_stock" model="res.groups">
+            <field name="name">Put Away</field>
+            <field name="category_id" ref="base.module_category_inventory"/>
+            <field name="comment">This group allows users to put away stock.</field>
+            <field name="is_put_away" eval="True"/>
+        </record>
+
+        <!-- Group: Delivery -->
+        <record id="group_delivery_stock" model="res.groups">
+            <field name="name">Delivery</field>
+            <field name="category_id" ref="base.module_category_inventory"/>
+            <field name="comment">This group allows users to manage deliveries.</field>
+            <field name="is_delivery" eval="True"/>
+        </record>
+    </data>
+</odoo>

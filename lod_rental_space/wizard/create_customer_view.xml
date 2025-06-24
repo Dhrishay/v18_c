@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<record id="view_create_customer_form" model="ir.ui.view">
+    <field name="name">create.customer.form</field>
+    <field name="model">create.customer.wizard</field>
+    <field name="arch" type="xml">
+        <form>
+            <group>
+                <group>
+                    <field name="partner_id"/>
+                    <field name="location_types"/>
+                    <field name="location_id"/>
+                    <field name="contract_type"/>
+                    <field name="days_values" invisible="contract_type != 'days'"/>
+                </group>	
+
+                <group>
+                    <!-- <field name="rental_space_ids" widget="many2many_tags"/> -->
+                    <field name="rental_space_ids" 
+                            widget="many2many_tags" 
+                            options="{'no_create': True, 'no_edit': True}" 
+                            domain="[('state', '=', 'available')]" 
+                            context="{'default_state': 'available'}"/>
+                    <field name="remark_id"/>
+                </group>
+            </group>
+
+            <footer>
+                <button name="action_sale" string="Create Sale Order" type="object" class="btn-primary" 
+                        data-hotkey="q"/>
+                
+                <button name="action_cancel" 
+                        string="Discard" 
+                        class="btn-secondary" 
+                        special="cancel" 
+                        data-hotkey="z"/>
+            </footer>
+
+        </form>
+    </field>
+</record>
+
+<!-- Share Button in action menu -->
+    <record id="action_create_sale_rental" model="ir.actions.server">
+        <field name="name">Create Sale</field>
+        <field name="model_id" ref="lod_rental_space.model_rental_space"/>
+        <field name="binding_model_id" ref="lod_rental_space.model_rental_space"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+                action = {
+                            'type': 'ir.actions.act_window',
+                            'res_model': 'create.customer.wizard',
+                            'target': 'new',
+                            'views': [(env.ref('lod_rental_space.view_create_customer_form').id, 'form')],
+                            'context': dict(env.context, default_rental_space_ids=env.context.get('active_ids', []))
+                        }
+        </field>
+    </record>
+</odoo>

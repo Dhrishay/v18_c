@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Action for Rental Partners -->
+    <record id="rental_partner_action" model="ir.actions.act_window">
+        <field name="name">Rental Partners</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('rental_space_id', '!=', False)]</field>
+    </record>
+
+    <!-- Menu for Rental Partners -->
+<!--     <menuitem id="rental_partner_menu"
+              name="Rental Customers"
+              action="rental_partner_action"
+              parent="menu_rental_space"
+              sequence="30"/>
+ -->
+    <!-- Update res.partner Form View to Show rental_space_id -->
+    <record id="view_partner_form_inherit_rental" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.rental</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="rental_space_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

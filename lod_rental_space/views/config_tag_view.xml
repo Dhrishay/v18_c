@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<!-- Location Types -->
+<!-- Tree View -->
+<!-- <record id="view_location_types_tree" model="ir.ui.view">
+    <field name="name">location.types.tree</field>
+    <field name="model">location.types</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="name"/> 
+        </tree>
+    </field>
+</record>
+
+<record id="view_location_types_form" model="ir.ui.view">
+    <field name="name">location.types.form</field>
+    <field name="model">location.types</field>
+    <field name="arch" type="xml">
+        <form>
+            <sheet> 
+                <group>
+                    <field name="name"/>
+                </group>
+                <notebook>
+                    <page string="Types Lines">
+                        <field name="types_lines_ids">
+                            <tree editable="bottom">
+                                <field name="location_id"/>
+                                <field name="rental_area_size"/>
+                                <field name="agreed_amount"/>
+                            </tree>
+                            <form>
+                                <group>
+                                    <field name="location_id"/>
+                                    <field name="rental_area_size"/>
+                                    <field name="agreed_amount"/>
+                                </group>
+                            </form>
+                        </field>
+                    </page>
+                </notebook>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+<record id="action_location_types" model="ir.actions.act_window">
+    <field name="name">Location Types</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">location.types</field>
+    <field name="view_mode">tree,form</field>
+    <field name="context">{}</field>
+    <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create your first Location Type!
+        </p>
+    </field>
+</record> -->
+
+<!-- <menuitem id="menu_location_types"
+              name="Location Types"
+              action="action_location_types"
+              parent="menu_configuration"
+              sequence="10"/> -->
+<!-- Location Types -->
+
+
+
+<!-- Locations -->
+<!-- <record id="view_config_tag_tree" model="ir.ui.view">
+    <field name="name">config.tag.tree</field>
+    <field name="model">config.tag</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="name"/> 
+           
+        </tree>
+    </field>
+</record>
+
+
+<record id="view_config_tag_form" model="ir.ui.view">
+    <field name="name">config.tag.form</field>
+    <field name="model">config.tag</field>
+    <field name="arch" type="xml">
+        <form>
+            <sheet> 
+            <group>
+               <field name="name"/>
+            </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+ <record id="action_config_tag" model="ir.actions.act_window">
+    <field name="name">config Tags</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">config.tag</field>
+    <field name="view_mode">tree,form</field>
+    <field name="context">{}</field>
+    <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create your first config Tag !
+        </p>
+    </field>
+</record>
+
+<menuitem id="menu_config_tag"
+            name="Locations"
+            action="action_config_tag"
+            parent="menu_services"
+            sequence="3"/> -->
+<!-- Locations -->
+
+    
+
+<!-- size -->
+<!-- <record id="view_size_tag_tree" model="ir.ui.view">
+    <field name="name">size.tag.tree</field>
+    <field name="model">size.tag</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="name"/> 
+           
+        </tree>
+    </field>
+</record>
+<record id="view_size_tag_form" model="ir.ui.view">
+    <field name="name">size.tag.form</field>
+    <field name="model">size.tag</field>
+    <field name="arch" type="xml">
+        <form>
+            <sheet> 
+            <group>
+               <field name="name"/>
+            </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+ <record id="action_size_tag" model="ir.actions.act_window">
+    <field name="name">Size Tags</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">size.tag</field>
+    <field name="view_mode">tree,form</field>
+    <field name="context">{}</field>
+    <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            Create your first Size Tag !
+        </p>
+    </field>
+</record>
+
+<menuitem id="menu_size_tag"
+            name="Size"
+            action="action_size_tag"
+            parent="menu_services"
+            sequence="4"/> -->
+<!-- size -->
+   
+
+<!-- Contract Type -->
+<record id="view_agreement_con_type_tree" model="ir.ui.view">
+    <field name="name">view.agreement.contract.type.tree</field>
+    <field name="model">agreement.contract.type</field>
+    <field name="arch" type="xml">
+        <list string="Contract Type">
+            <field name="name"/>
+            <field name="sum_month"/>
+        </list>
+    </field>
+</record>
+<record id="view_agreement_con_type_form" model="ir.ui.view">
+    <field name="name">view.agreement.contract.form</field>
+    <field name="model">agreement.contract.type</field>
+    <field name="arch" type="xml">
+        <form>
+            <sheet> 
+                <group>
+                    <field name="name"/>
+                </group>
+                <group>
+                    <field name="sum_month"/>
+                </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+<record id="action_menu_agreement_con_type" model="ir.actions.act_window">
+    <field name="name">Contract Type</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">agreement.contract.type</field>
+    <field name="view_mode">list,form</field>
+    <field name="view_id" ref="view_agreement_con_type_tree"/>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+          !!!!!!!!!!!!!!!!==!!!!!!!!!!!!!!!!
+        </p>
+    </field>
+</record>
+
+<!-- <menuitem name="Contract Type" 
+            id="menu_agreement_con_type"
+            action="action_menu_agreement_con_type" 
+            parent="menu_contract" 
+            sequence="6"/>
+ --><!-- Contract Type -->
+        
+   
+    
+<!-- Bill Cycle -->
+<record id="view_agreement_cycle_tree" model="ir.ui.view">
+    <field name="name">view.agreement.cycle.tree</field>
+    <field name="model">agreement.cycle</field>
+    <field name="arch" type="xml">
+        <list string="Cycle">
+            <field name="name"/>
+            <field name="sum_month"/>
+        </list>
+    </field>
+</record>
+<record id="view_agreement_cycle_form" model="ir.ui.view">
+    <field name="name">view.agreement.cycle.form</field>
+    <field name="model">agreement.cycle</field>
+    <field name="arch" type="xml">
+        <form>
+            <sheet> 
+                <group>
+                    <field name="name"/>
+                </group>
+                <group>
+                    <field name="sum_month"/>
+                </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+<record id="action_agreement_cycle_config" model="ir.actions.act_window">
+    <field name="name">Bill Cycle</field>
+    <field name="type">ir.actions.act_window</field>
+    <field name="res_model">agreement.cycle</field>
+    <field name="view_mode">list,form</field>
+    <field name="view_id" ref="view_agreement_cycle_tree"/>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+          !!!!!!!!!!!!!!!!==!!!!!!!!!!!!!!!!
+        </p>
+    </field>
+</record>
+
+<!-- <menuitem name="Bill Cycle" 
+            id="menu_agreement_cycle"
+            action="action_agreement_cycle_config" 
+            parent="menu_contract" 
+            sequence="7"/> -->
+<!-- Bill Cycle -->
+
+<!-- Owner Tag -->
+    <!-- Owner Tag Tree View -->
+    <record id="view_owner_tag_tree" model="ir.ui.view">
+        <field name="name">owner.tag.tree</field>
+        <field name="model">owner.tag</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="owner_tag_id"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Owner Tag Form View -->
+    <record id="view_owner_tag_form" model="ir.ui.view">
+        <field name="name">owner.tag.form</field>
+        <field name="model">owner.tag</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet> 
+                    <group>
+                        <group>
+                            <field name="owner_tag_id"/>
+                            <field name="name"/>
+                            <field name="owner_sale_order"/>
+                            <field name="owner_contract"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Owner Sale Order" name="owner_sale_order">
+                            <group>
+                                <field name="owner_image" widget="image" style="max-width:150px;"/>
+                                <field name="owner_text_header"/>
+                            </group>
+                            <group>
+                                <field name="owner_text_footer"/>
+                            </group>
+                        </page>
+                        <page string="Owner Contract" name="owner_contract">
+                            <group>
+                                <field name="contract_image_id" widget="image" style="max-width:150px;"/>
+                                <field name="contract_header_id"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Owner Tag Action -->
+    <record id="action_menu_owner_tag" model="ir.actions.act_window">
+        <field name="name">Owner Tags</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">owner.tag</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first owner!
+            </p>
+        </field>
+    </record>
+
+<!--     <menuitem name="Owner Tag" 
+            id="menu_owner_tag"
+            action="action_menu_owner_tag" 
+            parent="menu_configuration" 
+            sequence="10"/> -->
+<!-- Owner Tag -->
+
+    <!-- Location Branch Action -->
+    <record id="action_menu_location_branch" model="ir.actions.act_window">
+        <field name="name">Location Branch</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">location.branch</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Location Branch!
+            </p>
+        </field>
+    </record>
+
+<!--     <menuitem name="Location Branch" 
+            id="menu_location_branch"
+            action="action_menu_location_branch" 
+            parent="menu_services" 
+            sequence="10"/> -->
+    <!-- Location Branch -->
+
+    
+
+</odoo>

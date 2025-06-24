@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_stock_return_picking_form_dc" model="ir.ui.view">
+        <field name="name">Return lines</field>
+        <field name="model">return.request.order</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="purchase_id" invisible="1" force_save="1"/>
+                <field name="company_id" invisible="1"/>
+                <field name="product_return_moves">
+                    <list editable="bottom" create="1" decoration-warning="not purchase_id">
+                        <field name="product_id" force_save="1"/>
+                        <field name="quantity"/>
+                        <field name="uom_id" groups="uom.group_uom"/>
+                        <field name="purchase_id" column_invisible="True"/>
+                    </list>
+                </field>
+                <footer>
+                    <button name="action_create_returns" string="Return" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="act_stock_return_picking_dc" model="ir.actions.act_window">
+        <field name="name">Return</field>
+        <field name="res_model">return.request.order</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

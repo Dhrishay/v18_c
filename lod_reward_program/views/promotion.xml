@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root Menu -->
+    <menuitem id="lod_reward_program_main_menu"
+    name="Promotions"
+    web_icon="lod_reward_program,static/description/icon.png"
+    sequence="1"/>
+
+    <menuitem         
+        id="menu_discount_loyalty_type_config"
+        action="loyalty.loyalty_program_discount_loyalty_action"
+        name="Discount &amp; Loyalty"
+        parent="lod_reward_program.lod_reward_program_main_menu"
+        groups="point_of_sale.group_pos_manager"
+        sequence="91"
+    />
+
+    <menuitem
+        id="menu_gift_ewallet_type_config"
+        action="loyalty.loyalty_program_gift_ewallet_action"
+        name="Gift cards &amp; eWallet"
+        parent="lod_reward_program.lod_reward_program_main_menu"
+        groups="point_of_sale.group_pos_manager"
+        sequence="92"
+    />
+</odoo>

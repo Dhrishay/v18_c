@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View for Rental Type All -->
+    <record id="view_rental_type_all_tree" model="ir.ui.view">
+        <field name="name">rental.type.all.tree</field>
+        <field name="model">rental.type.all</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="currency_id"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View for Rental Type All -->
+    <record id="view_rental_type_all_form" model="ir.ui.view">
+        <field name="name">rental.type.all.form</field>
+        <field name="model">rental.type.all</field>
+        <field name="arch" type="xml">
+            <form string="Rental Type All">
+                <sheet>
+                    <!-- Main Container Group -->
+                    <group>
+                        <!-- First Group: Basic Details -->
+                        <group string="Basic Information">
+                            <field name="name"/>
+                            <field name="currency_id"/>
+                        </group>
+                        
+                        <group string="Pricing and Image">
+                            <field name="prieclist"/>
+                            <field name="image" widget="image" class="oe_avatar" options="{'size': [150, 150]}" colspan="2"/>
+                            <field name="contract_type"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Rental Type Lines">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="location_lines"/>
+                                    <field name="size_lines"/>
+                                    <field name="location_branch_id"/>
+                                    <field name="contract_type"/> <!-- ฟิลด์ที่เพิ่ม -->
+                                    <field name="currency_ids"/>
+                                    <field name="agreed_amounts"/>
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="location_lines"/>
+                                        <field name="size_lines"/>
+                                        <field name="location_branch_id"/>
+                                        <field name="contract_type"/> <!-- ฟิลด์ที่เพิ่ม -->
+                                        <field name="currency_ids"/>
+                                        <field name="agreed_amounts"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action for Rental Type All -->
+    <record id="action_rental_type_all" model="ir.actions.act_window">
+        <field name="name">Rental Type All</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">rental.type.all</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Rental Type All!
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item for Rental Type All -->
+<!--     <menuitem id="menu_rental_type_all"
+              name="Rental Type All"
+              action="action_rental_type_all"
+              parent="menu_services"
+              sequence="3"/> -->
+</odoo>

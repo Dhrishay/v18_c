@@ -1,0 +1,29 @@
+<odoo>
+    <data>
+        <!-- QWeb Report Template -->
+        <template id="rental_space_status_report_template">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h1>Rental Space Status Report</h1>
+                    <!-- <p>From: <t t-esc="data['start_date']"/> To: <t t-esc="data['end_date']"/></p> -->
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th>Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- <t t-foreach="data['state_counts'].items()" t-as="state_count">
+                                <tr>
+                                    <td><t t-esc="state_count[0]"/></td>
+                                    <td><t t-esc="state_count[1]"/></td>
+                                </tr>
+                            </t> -->
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

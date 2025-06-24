@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- get this model code form lod_batch_update_price module to set the update batch price -->
+    <record id="ir_cron_auto_update_batch_price" model="ir.cron">
+        <field name="name">Auto Update Batch Price</field>
+        <field name="model_id" ref="model_batch_update_price"/>
+        <field name="state">code</field>
+        <field name="code">model.auto_update_batch_price()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="seq_go_to_customer" model="ir.sequence"> 
+        <field name="name">Go To Customer</field> 
+        <field name="code">batch.update.price</field> 
+        <!-- model -->
+        <field name="prefix">KKM-</field>
+        <!-- ຄຳຂື້ນຕົ້ນ -->
+        <field name="suffix"></field>
+        <!-- ຄຳລົງທ້າຍ -->
+        <field name="padding">10</field> 
+        <!-- ຈຳນວນຕົວເລກ -->
+        <field name="number_next">1</field> 
+        <!-- ເລກຕໍ່ໄປ -->
+        <field name="number_increment">1</field>
+        <!-- ເພີ່ມຂື້ນເທື່ອລະ 1 -->
+    </record>
+</odoo>

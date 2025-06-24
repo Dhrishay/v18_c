@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <odoo>
+        <record id="paperformat_accounting_report_rental_quotation" model="report.paperformat">
+            <field name="name">A4 for</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">20</field>
+            <field name="margin_bottom">25</field>
+            <field name="margin_left">8</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">20</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="report_quotation_rental_id" model="ir.actions.report">
+            <field name="name">Quotation / Rental</field>
+            <field name="model">sale.order</field>
+            <field name="binding_model_id" ref="sale.model_sale_order"/>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">lod_rental_space.report_quotation_rental</field>
+            <field name="report_file">lod_rental_space.report_quotation_rental</field>
+            <field name="paperformat_id" ref="lod_rental_space.paperformat_accounting_report_rental_quotation"/>
+            <field name="print_report_name">('Quotation - %s' % (object.name))</field>
+            <field name="attachment">('Quotation_Rental.pdf')</field>
+            <field name="binding_type">report</field>
+        </record>
+
+
+        <!-- <record id="report_sale_order_rental_id" model="ir.actions.report">
+            <field name="name">Sale Order / Rental</field>
+            <field name="model">sale.order</field>
+            <field name="binding_model_id" ref="sale.model_sale_order"/>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">lod_rental_space.report_sale_order_rental</field>
+            <field name="report_file">lod_rental_space.report_sale_order_rental</field>
+            <field name="paperformat_id" ref="lod_rental_space.paperformat_accounting_report_rental_quotation"/>
+            <field name="print_report_name">('sale_order - %s' % (object.name))</field>
+            <field name="attachment">('sale_order_rental.pdf')</field>
+            <field name="binding_type">report</field> 
+        </record> -->
+
+        <record id="report_contract_rental_id" model="ir.actions.report">
+            <field name="name">Contract / Rental</field>
+            <field name="model">agreement.billboard</field>
+            <field name="binding_model_id" ref="model_agreement_billboard"/>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">lod_rental_space.report_contract_rental</field>
+            <field name="report_file">lod_rental_space.report_contract_rental</field>
+            <field name="paperformat_id" ref="lod_rental_space.paperformat_accounting_report_rental_quotation"/>
+            <field name="print_report_name">('Contract - %s' % (object.name))</field>
+            <field name="attachment">('Contract_Rental.pdf')</field>
+            <field name="binding_type">report</field>
+        </record>
+
+
+        <record id="invoice_manager_rental_id" model="ir.actions.report">
+            <field name="name">Invoice / Rental</field>
+            <field name="model">account.move</field>
+            <field name="binding_model_id" ref="account.model_account_move"/>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">lod_rental_space.report_invoice_account_rental</field>
+            <field name="report_file">lod_rental_space.report_invoice_account_rental</field>
+            <field name="paperformat_id" ref="lod_rental_space.paperformat_accounting_report_rental_quotation"/>
+            <field name="print_report_name">('Invoice - %s' % (object.name))</field>
+            <field name="attachment">('Invoice_Rental.pdf')</field>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="kokkok_bank_receipt_id" model="ir.actions.report">
+            <field name="name">Bank Receipt</field>
+            <field name="model">account.move</field>
+            <field name="binding_model_id" ref="account.model_account_move"/>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">lod_rental_space.kokkok_bank_receipt</field>
+            <field name="report_file">lod_rental_space.kokkok_bank_receipt</field>
+            <field name="paperformat_id" ref="lo_accounting_enhancement.paperformat_for_kokkok"/>
+            <field name="print_report_name">('Bank_Receipt - %s' % (object.name))</field>
+            <field name="attachment">('Bank Receipt.pdf')</field>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="kokkok_cash_receipt_id" model="ir.actions.report">
+            <field name="name">Cash Receipt</field>
+            <field name="model">account.move</field>
+            <field name="binding_model_id" ref="account.model_account_move"/>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">lod_rental_space.kokkok_cash_receipt</field>
+            <field name="report_file">lod_rental_space.kokkok_cash_receipt</field>
+            <field name="paperformat_id" ref="lo_accounting_enhancement.paperformat_for_kokkok"/>
+            <field name="print_report_name">('Cash_Receipt - %s' % (object.name))</field>
+            <field name="attachment">('Cash Receipt.pdf')</field>
+            <field name="binding_type">report</field>
+        </record>
+    
+</odoo>

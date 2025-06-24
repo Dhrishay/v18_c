@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Get this view from lod_batch_update_price module -->
+    <record id="view_wizard_load_data_form" model="ir.ui.view">
+        <field name="name">load.product.newtagprice.wizard.form</field>
+        <field name="model">load.product.newtagprice.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="user_id" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="company_id" readonly="context.get('branch_type') == 'fc'" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="date_update" string="Date"/>
+                            <label for="date_update" string="" />
+                            <div class="font-italic text-muted">
+                                Please select a date to filter the updated product prices. If you're
+                                unsure, the system will default to the last update.
+                            </div>
+                        </group>
+                        <group>
+                            <field name="location_id" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="description" />
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <!-- load data kkm -->
+                    <button name="confirm_load_data" string="Confirm Load" type="object"
+                        context="{'branch_type': 'kkm'}"
+                        class="btn-primary" 
+                        invisible="context.get('branch_type') == 'fc'"
+                        />
+                    <!-- load data fc -->
+                    <button name="confirm_load_data" string="Confirm Load FC" type="object"
+                        context="{'branch_type': 'fc'}"
+                        class="btn-primary"
+                        invisible="context.get('branch_type') == 'kkm'"
+                         />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- KKM -->
+    <record id="action_load_data_kkm_wizard" model="ir.actions.act_window">
+        <field name="name">Print New Update Tag Price Phonesinon</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">load.product.newtagprice.wizard</field>
+        <field name="view_id" ref="view_wizard_load_data_form" />
+        <field name="context" eval="{'branch_type': 'kkm'}" />
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Inventory module-->
+    <menuitem action="action_load_data_kkm_wizard" id="menu_action_load_data_new" sequence="0"
+        parent="stock.menu_stock_inventory_control" />
+</odoo>

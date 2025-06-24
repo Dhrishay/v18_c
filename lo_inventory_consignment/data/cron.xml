@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_cron_create_pos_po_end_of_month" model="ir.cron">
+        <field name="name">Create PO from POS MTO Orders</field>
+        <field name="model_id" ref="point_of_sale.model_pos_order"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_create_purchase_orders_for_mto_pos()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">months</field>
+        <field name="nextcall" eval="(DateTime.now().replace(day=1) + relativedelta(months=1, days=-1)).strftime('%Y-%m-%d 23:00:00')"/>
+    </record>
+</odoo>

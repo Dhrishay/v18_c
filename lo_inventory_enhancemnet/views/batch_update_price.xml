@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Get this model code form lod_batch_update_price module to set the update batch price -->
+<odoo>
+    <record id="view_bacth_update_price_list" model="ir.ui.view">
+        <field name="name">batch.update.price.list</field>
+        <field name="model">batch.update.price</field>
+        <field name="arch" type="xml">
+            <list multi_edit="1">
+                <field name="name" /> 
+                <field name="status" /> 
+                <field name="dat_update" string="Update Date"/> 
+                <field name="create_date" string="Create Date"/> 
+            </list>
+        </field>
+    </record>
+
+    <record id="view_bacth_update_price_form" model="ir.ui.view">
+        <field name="name">batch.update.price.form</field>
+        <field name="model">batch.update.price</field>
+        <field name="arch" type="xml">
+            <form string="Batch Update price">
+                <header>
+                    <button string="Update Price" name="action_batch_update_price" 
+                        invisible="status != 'appove'"
+                        type="object" class="oe_highlight" />
+                    <button string="Appoved" name="appove"
+                        invisible="status in ['appove', 'updated']" 
+                        type="object" class="oe_highlight" />
+                    <button string="Reset to draft" name="resettodaft" invisible="status != 'appove'"
+                        type="object" class="oe_highlight" />
+                        <field name="status" widget="statusbar"/>
+                </header>  
+
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="0"/>
+                        </h1>
+                    </div> 
+                    <group>
+                        <field name="dat_update" readonly="status == 'updated'"/>
+                        <field name="user_update_id" readonly="1"/>
+                        <field name="date_update" readonly="1"/>
+                    </group> 
+                    <notebook>
+                        <page string="Product Update Price">
+                            <field name="batch_line_ids" mode="list" readonly="status == 'updated'">
+                                <list string="" editable="bottom"> 
+                                    <field name="barcode" optional="show"/>
+                                    <field name="product_id" readonly="status in ['appove', 'updated']"/>
+                                    <field name="status" invisible="1"/>
+                                    <field name="product_barcode" />
+                                    <field name="current_sale_price" />
+                                    <field name="update_sale_price" readonly="status in ['appove', 'updated']"/>
+                                    <field name="margin_sale_price" widget="percentage"/> 
+                                    <field name="current_standard_price" />
+                                    <field name="update_cost_price" readonly="status in ['appove', 'updated']"/>
+                                    <field name="margin_cost_price"  widget="percentage"/> 
+                                    <field name="schedule_update" readonly="status in ['appove', 'updated']"/> 
+                                    <field name="uom_id" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter reload_on_attachment="True"/>
+            </form>
+        </field>
+    </record>
+    <record id="view_bacth_update_price_search" model="ir.ui.view">
+        <field name="name">batch.update.price.search</field>
+        <field name="model">batch.update.price</field>
+        <field name="arch" type="xml">
+            <search string="Search batch Order">
+                <field name="product_id"/>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_batch_update_price" model="ir.actions.server">
+        <field name="name">Update Price</field>
+        <field name="model_id" ref="lo_inventory_enhancemnet.model_batch_update_price" />
+        <field name="binding_model_id" ref="lo_inventory_enhancemnet.model_batch_update_price" />
+        <field name="state">code</field>
+        <field name="code">action = records.action_batch_update_price()</field>
+    </record>
+
+    <record id="action_batch_update_price_menu" model="ir.actions.act_window">
+        <field name="name">Batch Update Price</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">batch.update.price</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem action="action_batch_update_price_menu" id="menu_action_batch_updat_price"
+        sequence="0" parent="stock.menu_stock_inventory_control" />
+
+</odoo>

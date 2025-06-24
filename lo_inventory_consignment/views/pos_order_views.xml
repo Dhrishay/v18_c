@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="custom_pos_order_consigment_form_view">
+            <field name="name">pos.order.form.consigment.view</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_stock_picking']" position="after">
+                    <button name="action_purchase_order"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-credit-card"
+                        invisible="purchase_count == 0">
+                        <field name="purchase_count" widget="statinfo" string="Purchase" />
+                    </button>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

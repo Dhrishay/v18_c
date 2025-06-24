@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <!-- Get this view from lod_batch_update_price module -->
+    <record id="product_template_updated_new_price_view_list" model="ir.ui.view">
+        <field name="name">product.template.view.list</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <list string="New Product Updated Price">
+                <field name="product_variant_count" column_invisible="True"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="sale_ok" column_invisible="True"/>
+                <field name="cost_currency_id" column_invisible="True"/>
+                <field name="barcode" readonly="product_variant_count &gt; 1"/>
+                <field name="name" string="Product Name"/>
+                <field name="default_code" optional="show"/>
+                <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company" invisible="1"/>
+                <field name="list_price" string="Sales Price" widget="monetary" options="{'currency_field': 'currency_id'}" optional="show" decoration-muted="not sale_ok"/>
+                <field name="categ_id" optional="hide"/>
+                <field name="uom_id" readonly="1" optional="show" groups="uom.group_uom"/>
+                <field name="last_update"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Get this view from lod_product_relation module -->
+    <record id="product_template_only_form_view_inherit_relation_product" model="ir.ui.view">
+        <field name="name">product.template.form.relation.product</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+        
+            <xpath expr="//field[@name='type']" position="after">
+                <field name="top_pog"></field>
+            </xpath>
+            <xpath expr="//page[@name='sales']" position="inside">
+                <group>
+                    <group name="discount" string="Discount">
+                        <field name="is_product_discount" />
+                    </group>
+                    <group>
+                    </group>
+                </group>
+            </xpath>
+            <xpath expr="//page[@name='purchase']" position="inside">
+                <group>
+                    <group name="discount" string="Discount">
+                        <field name="is_product_discount" />
+                    </group>
+                    <group>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_template_tree_view_inherit" model="ir.ui.view">
+        <field name="name">product.template.product.list.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="field[@name='default_code']" position="replace">
+            </xpath>
+            <xpath expr="field[@name='standard_price']" position="replace">
+            </xpath>
+            <xpath expr="field[@name='list_price']" position="replace">
+            </xpath>
+            <xpath expr="field[@name='name']" position="before">
+                <field name="default_code" optional="show"/>
+            </xpath>
+             <xpath expr="field[@name='name']" position="after">
+                <field name="product_name_la"/>
+                <field name="standard_price" widget="monetary" options="{'currency_field': 'cost_currency_id'}" optional="show" readonly="1"/>
+                <field name="list_price" string="Sales Price" widget="monetary" options="{'currency_field': 'currency_id'}" optional="show" decoration-muted="not sale_ok"/>
+                <field name="qty_available" optional="show"/>
+                <field name="virtual_available" optional="show"/>
+                <field name="uom_id" optional="show"/>
+                <field name="diff_cost_sale" optional="show"/>
+                <field name="price_status" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

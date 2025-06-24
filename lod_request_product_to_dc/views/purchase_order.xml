@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="request_order_form" model="ir.ui.view">
+        <field name="name">purchase.order.form</field>
+        <field name="model">purchase.order</field>
+        <field name="arch" type="xml">
+            <form string="Purchase Order" class="o_purchase_order">
+            <header>
+                <button name="button_confirm" type="object" invisible="state != 'draft'" class="oe_highlight" context="{'validate_analytic': True}" string="Confirm Order" id="draft_confirm" data-hotkey="q"/>
+                <button name="action_rfq_send" invisible="state != 'draft'" string="Send by Email" type="object" context="{'send_rfq':True}" class="" data-hotkey="g"/>
+                <!-- <button name="print_quotation" string="Print RFQ" type="object" invisible="state != 'draft'" class="oe_highlight" groups="base.group_user" data-hotkey="k"/> -->
+                <button name="button_confirm" type="object" invisible="state != 'sent'" string="Confirm Order" context="{'validate_analytic': True}" class="oe_highlight" id="bid_confirm" data-hotkey="q"/>
+                <button name="button_approve" type="object" invisible="state != 'to approve'" string="Approve Order" class="oe_highlight" groups="purchase.group_purchase_manager" data-hotkey="z"/>
+                <!-- <button name="action_create_invoice" string="Create Bill" type="object" class="oe_highlight" context="{'create_bill':True}" invisible="state not in ('purchase', 'done') or invoice_status in ('no', 'invoiced')" data-hotkey="w"/> -->
+                <button name="action_rfq_send" invisible="state != 'sent'" string="Re-Send by Email" type="object" context="{'send_rfq':True}" data-hotkey="g"/>
+                <!-- <button name="print_quotation" string="Print RFQ" type="object" invisible="state != 'sent'" groups="base.group_user" data-hotkey="k"/> -->
+                <!-- <button name="button_confirm" type="object" invisible="state != 'draft'" context="{'validate_analytic': True}" string="Confirm Order" id="draft_confirm" data-hotkey="q"/> -->
+                <button name="%(lod_request_product_to_dc.act_stock_return_picking_dc)d" string="Return Order" type="action" invisible="state != 'done'"/>
+                <button name="action_rfq_send" invisible="state != 'purchase'" string="Send PO by Email" type="object" context="{'send_rfq':False}" data-hotkey="g"/>
+                <button name="confirm_reminder_mail" string="Confirm Receipt Date" type="object" invisible="state not in ('purchase', 'done') or mail_reminder_confirmed or not date_planned" groups="base.group_no_one" data-hotkey="o"/>
+                <!-- <button name="action_create_invoice" string="Create Bill" type="object" context="{'create_bill':True}" invisible="state not in ('purchase', 'done') or invoice_status not in ('no', 'invoiced') or not order_line" data-hotkey="w"/> -->
+                <button name="button_draft" invisible="state != 'cancel'" string="Set to Draft" type="object" data-hotkey="o"/>
+                <button name="button_cancel" invisible="state not in ('draft', 'to approve', 'sent', 'purchase')" string="Cancel" type="object" data-hotkey="x" />
+                <button name="button_done" type="object" string="Lock" invisible="state != 'purchase'" data-hotkey="l"/>
+                <button name="button_unlock" type="object" string="Unlock" invisible="state != 'done'" groups="lo_purchase_enhancement.group_purchse_button_lock" data-hotkey="l"/>
+                <field name="state" widget="statusbar" statusbar_visible="draft,sent,purchase" readonly="1"/>
+            </header>
+            <sheet>
+                <div class="oe_button_box" name="button_box">
+                    <button class="oe_stat_button"
+                            name="action_bill_matching"
+                            type="object"
+                            groups="account.group_account_invoice"
+                            icon="fa-bullseye"
+                            invisible="not partner_id or state not in ('purchase', 'done') or not partner_bill_count or invoice_status == 'invoiced'">
+                        <div class="o_field_statinfo">
+                            <span class="o_stat_text">Bill Matching</span>
+                        </div>
+                    </button>
+                    <button type="object"  name="action_view_invoice"
+                        class="oe_stat_button"
+                        icon="fa-pencil-square-o" invisible="invoice_count == 0 or state in ('draft', 'sent', 'to approve')">
+                        <field name="invoice_count" widget="statinfo" string="Vendor Bills"/>
+                        <field name='invoice_ids' invisible="1"/>
+                    </button>
+                    <field name="incoming_picking_count" invisible="1" />
+                    <button type="object" name="action_view_picking" class="oe_stat_button" icon="fa-truck" invisible="incoming_picking_count == 0" groups="stock.group_stock_user">
+                        <field name="incoming_picking_count" widget="statinfo" string="Receipt" help="Incoming Shipments"/>
+                    </button>
+                    <button name="action_view_return_sales"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-truck"
+                        invisible="return_id_count == 0">
+                        <field string="Return Sales" name="return_id_count" widget="statinfo"/>
+                    </button>
+                </div>
+                <div class="oe_title">
+                    <span class="o_form_label" invisible="state not in ('draft', 'sent')">Request for Quotation </span>
+                    <span class="o_form_label" invisible="state in ('draft', 'sent')">Purchase Order </span>
+                    <h1 class="d-flex">
+                        <field name="priority" widget="priority" class="me-3"/>
+                        <field name="name" readonly="1"/>
+                    </h1>
+                </div>
+                <group>
+                    <group>
+                        <field name="partner_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'supplier', 'show_vat': True, 'is_return_to_dc': True}"
+                            options="{'no_create' : True}"
+                            domain="[('request_company', '=', True)]"
+                            placeholder="Name, TIN, Email, or Reference"
+                            readonly="state in ['cancel', 'done', 'purchase']" string="Warehouse"/>
+                        <field name="partner_ref" string="Reference"/>
+                        <field name="currency_id" groups="base.group_multi_currency" force_save="1" readonly="state in ['cancel', 'done', 'purchase']" invisible="1"/>
+                        <field name="id" invisible="1"/>
+                        <field name="company_id" invisible="1" readonly="state in ['cancel', 'done', 'purchase']"/>
+                        <field name="currency_id" invisible="1" readonly="state in ['cancel', 'done', 'purchase']" groups="!base.group_multi_currency"/>
+                        <field name="tax_calculation_rounding_method" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="date_order" invisible="state in ('purchase', 'done')" readonly="state in ['cancel', 'done', 'purchase']"/>
+                        <label for="date_approve" invisible="state not in ('purchase', 'done')"/>
+                        <div name="date_approve" invisible="state not in ('purchase', 'done')" class="o_row">
+                            <field name="date_approve"/>
+                        </div>
+                        <label for="date_planned"/>
+                        <div name="date_planned_div" class="o_row">
+                            <field name="date_planned" readonly="state not in ('draft', 'sent', 'to approve', 'purchase')"/>
+                            <field name="mail_reminder_confirmed" invisible="1"/>
+                            <span class="text-muted" invisible="not mail_reminder_confirmed">(confirmed by vendor)</span>
+                        </div>
+                        <label for="receipt_reminder_email" class="d-none" groups="purchase.group_send_reminder"/>
+                        <div name="reminder" class="o_row" groups='purchase.group_send_reminder' title="Automatically send a confirmation email to the vendor X days before the expected receipt date, asking him to confirm the exact date.">
+                            <field name="receipt_reminder_email"/>
+                            <span>Ask confirmation</span>
+                            <div class="o_row oe_inline" invisible="not receipt_reminder_email">
+                                <field name="reminder_date_before_receipt" class="oe_inline" style="max-width: 30px;"/>
+                                day(s) before
+                                <widget name='toaster_button' button_name="send_reminder_preview" title="Preview the reminder email by sending it to yourself." invisible="not id"/>
+                            </div>
+                        </div>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="Products" name="products">
+                        <field name="tax_country_id" invisible="1"/>
+                        <field name="order_line"
+                            widget="product_label_section_and_note_field_o2m"
+                            mode="list,kanban"
+                            context="{'default_state': 'draft'}"
+                            readonly="state in ('done', 'cancel')">
+                            <list string="Purchase Order Lines" editable="bottom">
+                                <control>
+                                    <create name="add_product_control" string="Add a product"/>
+                                    <create name="add_section_control" string="Add a section" context="{'default_display_type': 'line_section'}"/>
+                                    <create name="add_note_control" string="Add a note" context="{'default_display_type': 'line_note'}"/>
+                                    <button name="action_add_from_catalog" string="Catalog" type="object" class="px-4 btn-link" context="{'order_id': parent.id}"/>
+                                </control>
+                                <field name="tax_calculation_rounding_method" column_invisible="True"/>
+                                <field name="display_type" column_invisible="True"/>
+                                <field name="company_id" column_invisible="True"/>
+                                <field name="currency_id" column_invisible="True"/>
+                                <field name="state" column_invisible="True"/>
+                                <field name="product_type" column_invisible="True"/>
+                                <field name="product_uom" column_invisible="True" groups="!uom.group_uom"/>
+                                <field name="product_uom_category_id" column_invisible="True"/>
+                                <field name="invoice_lines" column_invisible="True"/>
+                                <field name="sequence" widget="handle"/>
+                                <field name="barcode" optional="show"/>
+                                <field name="is_change_price" column_invisible="True"/>       
+                                <field
+                                    name="product_id"
+                                    widget="product_label_section_and_note_field"
+                                    readonly="state in ('purchase', 'to approve', 'done', 'cancel') or is_downpayment"
+                                    required="not display_type and not is_downpayment"
+                                    context="{'partner_id':parent.partner_id, 'quantity':product_qty, 'company_id': parent.company_id}"
+                                    force_save="1" domain="[('purchase_ok', '=', True), '|', ('company_id', '=', False), ('company_id', 'parent_of', parent.company_id)]"/>
+                                <field name="name" widget="section_and_note_text" optional="show"/>
+                                <field name="date_planned" optional="hide" required="not display_type and not is_downpayment" force_save="1" readonly="is_downpayment"/>
+                                <field name="analytic_distribution" widget="analytic_distribution"
+                                        optional="hide"
+                                        groups="analytic.group_analytic_accounting"
+                                        options="{'product_field': 'product_id', 'business_domain': 'purchase_order', 'amount_field': 'price_subtotal'}"/>
+                                <field name="product_qty" readonly="is_downpayment"/>
+                                <field name="qty_received_manual" column_invisible="True"/>
+                                <field name="qty_received_method" column_invisible="True"/>
+                                <field name="qty_received" string="Received" column_invisible="parent.state not in ('purchase', 'done')" readonly="qty_received_method != 'manual' or is_downpayment" optional="show"/>
+                                <field name="qty_retutned" force_save="1" column_invisible="parent.is_retutned == False"/>
+                                <field name="qty_invoiced" string="Billed" column_invisible="parent.state not in ('purchase', 'done')" optional="show"/>
+                                <field name="product_uom" string="UoM" groups="uom.group_uom"
+                                    readonly="state in ('purchase', 'done', 'cancel') or is_downpayment"
+                                    required="not display_type and not is_downpayment"
+                                    options="{'no_open': True}"
+                                    force_save="1" optional="show"/>
+                                <field name="product_packaging_qty" invisible="not product_id or not product_packaging_id" groups="product.group_stock_packaging" optional="show"/>
+                                <field name="product_packaging_id" invisible="not product_id" context="{'default_product_id': product_id, 'list_view_ref':'product.product_packaging_tree_view', 'form_view_ref':'product.product_packaging_form_view'}" groups="product.group_stock_packaging" optional="show"/>
+                                <field name="price_unit" readonly="qty_invoiced != 0" context="{'change_price_unit': True}"/>
+                                <button name="action_purchase_history" type="object" icon="fa-history" title="Purchase History" invisible="not id"/>
+                                <field name="taxes_id" widget="many2many_tags" domain="[('type_tax_use', '=', 'purchase'), ('company_id', 'parent_of', parent.company_id), ('country_id', '=', parent.tax_country_id), ('active', '=', True)]" context="{'default_type_tax_use': 'purchase', 'search_view_ref': 'account.account_tax_view_search'}" options="{'no_create': True}" optional="show" readonly="is_downpayment"/>
+                                <field name="discount" string="Disc.%" width="50px" readonly="qty_invoiced != 0" optional="hide"/>
+                                <field name="price_subtotal" string="Amount"/>
+                            </list>
+                            <form string="Purchase Order Line">
+                                    <field name="tax_calculation_rounding_method" invisible="1"/>
+                                    <field name="state" invisible="1"/>
+                                    <field name="display_type" invisible="1"/>
+                                    <field name="company_id" invisible="1"/>
+                                    <group invisible="display_type">
+                                        <group>
+                                            <field name="product_uom_category_id" invisible="1"/>
+                                            <field name="product_id"
+                                                    context="{'partner_id': parent.partner_id}"
+                                                    widget="many2one_barcode"
+                                                    domain="[('purchase_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]"
+                                                    readonly="state in ('purchase', 'to approve', 'done', 'cancel')"
+                                            />
+                                            <label for="product_qty"/>
+                                            <div class="o_row">
+                                                <field name="product_qty"/>
+                                                <field name="product_uom" groups="uom.group_uom" required="not display_type and not is_downpayment"/>
+                                            </div>
+                                            <field name="qty_received_method" invisible="1"/>
+                                            <field name="qty_received" string="Received Quantity" invisible="parent.state not in ('purchase', 'done')" readonly="qty_received_method != 'manual'"/>
+                                            <field name="qty_invoiced" string="Billed Quantity" invisible="parent.state not in ('purchase', 'done')"/>
+                                            <field name="product_packaging_qty" invisible="not product_id or not product_packaging_id" groups="product.group_stock_packaging"/>
+                                            <field name="product_packaging_id" invisible="not product_id" context="{'default_product_id': product_id, 'list_view_ref':'product.product_packaging_tree_view', 'form_view_ref':'product.product_packaging_form_view'}" groups="product.group_stock_packaging" />
+                                            <field name="price_unit"/>
+                                            <field name="discount"/>
+                                            <field name="taxes_id" widget="many2many_tags" domain="[('type_tax_use', '=', 'purchase'), ('company_id', 'parent_of', parent.company_id), ('country_id', '=', parent.tax_country_id)]" options="{'no_create': True}"/>
+                                        </group>
+                                        <group>
+                                            <field name="date_planned" required="not display_type and not is_downpayment"/>
+                                            <field name="analytic_distribution" widget="analytic_distribution"
+                                                    groups="analytic.group_analytic_accounting"
+                                                    options="{'product_field': 'product_id', 'business_domain': 'purchase_order'}"/>
+                                        </group>
+                                        <group>
+                                        <notebook colspan="4">
+                                            <page string="Notes" name="notes">
+                                                <field name="name"/>
+                                            </page>
+                                            <page string="Invoices and Incoming Shipments" name="invoices_incoming_shiptments">
+                                                <field name="invoice_lines"/>
+                                            </page>
+                                        </notebook>
+                                        </group>
+                                    </group>
+                                    <label for="name" string="Section Name (eg. Products, Services)" invisible="display_type != 'line_section'"/>
+                                    <label for="name" string="Note" invisible="display_type != 'line_note'"/>
+                                    <field name="name" nolabel="1"  invisible="not display_type"/>
+                            </form>
+                            <kanban class="o_kanban_mobile">
+                                    <field name="display_type"/>
+                                    <field name="tax_calculation_rounding_method"/>
+                                    <templates>
+                                        <t t-name="card">
+                                        <t t-if="!record.display_type.raw_value">
+                                            <div class="row">
+                                                <field name="product_id" class="fw-bold col-8"/>
+                                                <span class="fw-bold col-4">
+                                                    Tax excl.: <field name="price_subtotal" class="float-end"/>
+                                                </span>
+                                            </div>
+                                            <div class="row">
+                                                <span class="col-8 text-muted">
+                                                    Quantity:
+                                                    <field name="product_qty" />
+                                                    <field name="product_uom" groups="uom.group_uom" class="small"/>
+                                                </span>
+                                                <span class="fw-bold col-4" t-if="record.tax_calculation_rounding_method.raw_value === 'round_per_line'">
+                                                    Tax incl.: <field name="price_total" />
+                                                </span>
+                                            </div>
+                                            <span class="text-muted">
+                                                Unit Price:
+                                                <field name="price_unit" />
+                                            </span>
+                                            <span class="text-muted" t-if="record.discount.raw_value">
+                                                Discount: <field name="discount" />%
+                                            </span>
+                                        </t>
+                                        <div t-elif="record.display_type.raw_value === 'line_section' || record.display_type.raw_value === 'line_note'">
+                                            <div t-attf-class="{{record.display_type.raw_value === 'line_section' ? 'fw-bold' : 'fst-italic' }}">
+                                                <field name="name" />
+                                            </div>
+                                        </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                        </field>
+                        <group>
+                            <group>
+                                <field colspan="2" name="notes" nolabel="1" placeholder="Define your terms and conditions ..."/>
+                            </group>
+                            <group class="oe_subtotal_footer">
+                                <field name="tax_totals" widget="account-tax-totals-field" nolabel="1" readonly="1"/>
+                            </group>
+                        </group>
+                        <div class="clearfix"/>
+                    </page>
+                    <page string="Other Information" name="purchase_delivery_invoice">
+                        <group>
+                            <group name="other_info">
+                                <field name="user_id" domain="[('share', '=', False)]" widget="many2one_avatar_user"/>
+                                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}" readonly="state in ['cancel', 'done', 'purchase']"/>
+                                <field name="origin"/>
+                            </group>
+                            <group name="invoice_info">
+                                <field name="invoice_status" invisible="state in ('draft', 'sent', 'to approve', 'cancel')"/>
+                                <field name="payment_term_id" readonly="invoice_status == 'invoiced' or state == 'done'" options="{'no_create': True}"/>
+                                <field name="fiscal_position_id" options="{'no_create': True}" readonly="invoice_status == 'invoiced' or state == 'done'"/>
+                            </group>
+                        </group>
+                    </page>
+                </notebook>
+            </sheet>
+            <chatter/>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="purchase_order_dc_inherit_view_form" model="ir.ui.view">
+        <field name="name">purchase.order.inherit.view.form</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="lod_request_product_to_dc.request_order_form" />
+        <field name="arch" type="xml">
+            <field name="partner_ref" position="after">
+                <field name="approval_level_id" />
+                <field name="is_boolean" invisible="1"/>
+            </field> 
+            <xpath expr="//header" position="inside">
+                <button class="oe_highlight" string="Approve" type="object" name="action_approve_order" invisible="state != 'waiting_for_approval' or not is_boolean" />
+                <button string="Reject" type="action" name="%(sh_purchase_dynamic_approval.sh_rejection_reason_action)d" invisible="state != 'waiting_for_approval' or not is_boolean" />
+                <button string="Reset to Draft" type="object" name="action_reset_to_draft" invisible="state != 'reject'" />
+
+            </xpath>
+            <xpath expr="//notebook//page[@name='purchase_delivery_invoice']" position="after">
+                <page string="Approval Info" name="">
+                    <group>
+
+                        <group string="Next Approval">
+                            <field name="level" />
+                            <field name="user_ids" widget="many2many_tags" />
+                            <field name="group_ids" widget="many2many_tags" />
+                        </group>
+
+                        <group string="Reject Order Info">
+                            <field name="rejection_date" />
+                            <field name="reject_by" />
+                            <field name="reject_reason" />
+                        </group>
+
+                        <field name="approval_info_line" nolabel="1" context="{'form_view_ref': 'sh_purchase_dynamic_approval.sh_approval_info_view_form'}">
+                            <list>
+                                <field name="level" />
+                                <field name="user_ids" />
+                                <field name="group_ids" />
+                                <field name="status" widget="boolean_toggle" readonly="1" />
+                                <field name="approval_date" />
+                                <field name="approved_by" />
+                                <field name="purchase_order_id" invisible="1" />
+                            </list>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    
+    <record id="purchase_form_action_dc_inherited" model="ir.actions.act_window">
+        <field name="name">Request Orders</field>
+        <field name="res_model">purchase.order</field>
+        <field name="view_mode">list,kanban,form,pivot,graph,calendar,activity</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('purchase.purchase_order_view_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('lod_request_product_to_dc.request_order_form')}),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('purchase.purchase_order_view_kanban_without_dashboard')}),
+        ]"/>
+        <field name="domain">[('request_type','=',True)]</field>
+        <field name="search_view_id" ref="purchase.purchase_order_view_search"/>
+        <!-- <field name="context">{'create':False,'default_request_type':True}</field> -->
+        <field name="context">{'default_request_type':True,'default_is_without_price':True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No purchase order found. Let's create one!
+            </p>
+            <p>
+                Once you ordered your products to your supplier, confirm your request for quotation and it will turn into a purchase order.
+            </p>
+        </field>
+    </record>
+    <record id="purchase_form_action_dc_inherited_return_po" model="ir.actions.act_window">
+        <field name="name">Return Purchase Request Orders</field>
+        <field name="res_model">purchase.order</field>
+        <field name="view_mode">list,kanban,form,pivot,graph,calendar,activity</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('purchase.purchase_order_view_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('lod_request_product_to_dc.request_order_form')}),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('purchase.purchase_order_view_kanban_without_dashboard')}),
+        ]"/>
+        <field name="domain">[('return_request_type','=',True)]</field>
+        <field name="search_view_id" ref="purchase.purchase_order_view_search"/>
+        <!-- <field name="context">{'create':False,'default_request_type':True}</field> -->
+        <field name="context">{'create':False}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No purchase order found. Let's create one!
+            </p>
+            <p>
+                Once you ordered your products to your supplier, confirm your request for quotation and it will turn into a purchase order.
+            </p>
+        </field>
+    </record>
+    <record id="purchase_dc_inherited_dc" model="ir.ui.view">
+        <field name="name">purchase_dc_inherited_dc</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="lod_request_product_to_dc.request_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="is_without_price" invisible="request_type == False" />
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="request_type" force_save="1" readonly="1" invisible="1"/>
+                <field name="return_request_type" invisible="1"/>
+            </xpath> 
+        </field> 
+    </record>
+
+    <record id="purchase_order_form_inherit_dc" model="ir.ui.view">
+        <field name="name">purchase.order.form.bi.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="domain">[('company_id', 'in', (False, company_id)),('request_company', '!=', True)]</attribute>
+            </xpath>
+        </field>
+    </record>
+    <!-- <record id="purchase_request_size_inherited_request" model="ir.ui.view">
+        <field name="name">purchase.request.size_inherited_request</field>
+        <field name="model">purchase.request</field>
+        <field name="inherit_id" ref="purchase_request.view_purchase_request_form"/>
+        <field name="arch" type="xml"> 
+            <xpath expr="//field[@name='product_packaging_id']" position="after">
+                <field name="packing_size" readonly="1"/>
+            </xpath>
+        </field>
+    </record> -->
+
+    <record id="dc_sh_purchase_order_waiting_approval_action" model="ir.actions.act_window">
+        <field name="name">Waiting Approval</field>
+        <field name="res_model">purchase.order</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">list,kanban,form,pivot,graph,calendar,activity</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('purchase.purchase_order_view_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('lod_request_product_to_dc.request_order_form')}),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('purchase.purchase_order_view_kanban_without_dashboard')})
+        ]"/>
+        <field name="domain">[('request_type','=', True),('state','=','waiting_for_approval')]</field>
+        <field name="search_view_id" ref="purchase.purchase_order_view_search"/>
+        <field name="context">{'default_request_type': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No waiting approval orders found.</p>
+        </field>
+    </record>
+
+
+   <record id="dc_sh_purchase_order_my_approval_action" model="ir.actions.act_window">
+        <field name="name">My Approval</field>
+        <field name="res_model">purchase.order</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">list,kanban,form,pivot,graph,calendar,activity</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('purchase.purchase_order_view_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('lod_request_product_to_dc.request_order_form')}),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('purchase.purchase_order_view_kanban_without_dashboard')})
+        ]"/>
+        <field name="domain">[('request_type','=', True),('is_boolean','=',True)]</field>
+        <field name="search_view_id" ref="purchase.purchase_order_view_search"/>
+        <field name="context">{'default_request_type': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No purchase orders needing your approval.</p>
+        </field>
+    </record>
+</odoo>

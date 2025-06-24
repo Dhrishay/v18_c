@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
+        <field name="domain">[('request_type','!=', True)]</field>
+        <field name="context">{'search_default_my_quotation': 1, 'search_default_group_by_warehouse_id':1}</field>
+    </record>
+
+    <record id="sale.action_orders" model="ir.actions.act_window">
+        <field name="domain">[('state', 'not in', ('draft', 'sent', 'cancel')),('request_type','!=', True)]</field>
+    </record>
+
+    <record id="sale.action_orders_to_invoice" model="ir.actions.act_window">
+        <field name="domain">[('invoice_status','=','to invoice'),('request_type','!=', True)]</field>
+    </record>
+
+    <record id="account.action_move_out_invoice" model="ir.actions.act_window">
+        <field name="domain">[('request_type','!=',True),('move_type', 'in', ['out_invoice', 'out_refund'])]</field>
+    </record>
+
+    <record id="account.action_move_in_invoice" model="ir.actions.act_window">
+        <field name="domain">[('request_type','!=',True),('move_type', 'in', ['in_invoice', 'in_refund'])]</field>
+    </record>
+
+    <record id="stock.action_picking_tree_outgoing" model="ir.actions.act_window">
+        <field name="domain">[('request_type','!=',True)]</field>
+    </record>
+
+    <record id="stock.action_picking_tree_incoming" model="ir.actions.act_window">
+        <field name="domain">[('request_type','!=',True)]</field>
+    </record>
+
+    <record id="purchase.purchase_form_action" model="ir.actions.act_window">
+        <field name="domain">[('request_type','!=',True),('state','in',('purchase', 'done'))]</field>
+    </record>
+
+    <record id="purchase.purchase_rfq" model="ir.actions.act_window">
+        <field name="domain">[('request_type','!=',True)]</field>
+    </record>
+</odoo>

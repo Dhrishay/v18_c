@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<record id="inherit_view_id_inherit_sq_company_po" model="ir.ui.view">
+    <field name="name">res.company.view.form.inherit</field>
+    <field name="model">res.company</field>
+    <field name="inherit_id" ref="base.view_company_form"/>  
+    <field name="arch" type="xml">
+        <xpath expr="//notebook" position="inside">
+            <page name="sequence_and_operations" string="Sequence &amp; Operations">
+                <group name='sequence_section'>
+                    <group name='sequences' string="Sequences">
+                        <field name="vendor_id"/>
+                        <field name="sequence_ro_id" domain="[('company_id', '=', id)]" options="{'no_create': True}"/>
+                        <field name="sequence_rfdc_id" domain="[('company_id', '=', id)]" options="{'no_create': True}"/>
+                        <field name="sequence_deliver_order_id" domain="[('company_id', '=', id)]" options="{'no_create': True}"/>
+                        <field name="sequence_sale_id" domain="[('company_id', '=', id)]" options="{'no_create': True}"/>
+                        <field name="sequence_picking_label_id" domain="[('company_id', '=', id)]" options="{'no_create': True}"/>
+                    </group>
+                    <group name="company_operations" string="Operation">
+                        <field name="picking_type_id"/>
+                        <field name="location_id"/>
+                        <field name="company_type" widget="radio"/>
+                    </group>
+                </group>
+            </page>
+        </xpath>
+    </field>
+</record>
+
+</odoo>

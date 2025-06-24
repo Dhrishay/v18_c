@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_update_categories_wizard,update.categories.wizard,model_update_categories_wizard,base.group_user,1,1,1,1
+access_batch_update_price,batch.update.price,model_batch_update_price,base.group_user,1,1,1,1
+access_batch_update_price_line,access.batch.update.price.line,lo_inventory_enhancemnet.model_batch_update_price_line,base.group_user,1,1,1,1
+access_lod_country_import,lod.country.import,model_lod_country_import,base.group_user,1,1,1,1
+access_lod_margin_config,lod.margin.config,model_lod_margin_config,base.group_user,1,1,1,1
+access_x_tmp_competitor,x.tmp_competitor,model_x_tmp_competitor,base.group_user,1,1,1,1
+access_load_product_newtagprice_wizard,load.product.newtagprice.wizard,model_load_product_newtagprice_wizard,base.group_user,1,1,1,1

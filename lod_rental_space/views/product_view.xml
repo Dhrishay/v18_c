@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="agreement_product_form_view">
+            <field name="name">agreement.product.form.view</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="model">product.template</field>
+            <field name="arch" type="xml">
+
+                <xpath expr="//div[@name='is_non_product']" position='inside'>
+                    <span class="d-inline-block">
+
+                        <field name="is_rental"/>
+                        <label for="is_rental"/>
+                    </span>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

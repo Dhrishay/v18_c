@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="inherit_form_view_stock_picking" model="ir.ui.view">
+        <field name="name">stock.picking.view.form.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_done']" position="after">
+                <field name="is_calculated" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="stock_move_line_product_selector_inherit" model="ir.ui.view">
+        <field name="name">stock.product.selector.inherit</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock_barcode.stock_move_line_product_selector"/>
+        <field name="arch" type="xml">
+            <!-- Product ID in stock_barcode module -->
+            <xpath expr="//div[field[@name='product_id']]" position="before">
+                <!-- Your new barcode field -->
+                <div class="col-12 d-flex align-items-baseline">
+                    <i class="fa fa-fw fa-lg fa-barcode mr-3" title="Barcode"/>
+                    <field name="product_barcode" />
+                </div>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

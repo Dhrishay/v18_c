@@ -1,0 +1,30 @@
+<odoo>
+    <data>
+        <record id="action_open_rental_space_report" model="ir.actions.act_window">
+            <field name="name">Rental Space Report</field>
+            <field name="res_model">report.rental.space.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="view_rental_space_report_wizard" model="ir.ui.view">
+            <field name="name">Rental Space Report Wizard</field>
+            <field name="model">report.rental.space.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                        <field name="state" string="State"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <menuitem id="menu_rental_space_report"
+                                name="Rental Space Report"
+                                parent="menu_reporting"
+                                action="action_open_rental_space_report"
+                                sequence="5"/>
+    </data>
+</odoo>

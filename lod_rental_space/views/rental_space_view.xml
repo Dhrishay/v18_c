@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <!-- search -->
+
+          <record id="rental_space_search" model="ir.ui.view">
+            <field name="name">rental.space.search</field>
+            <field name="model">rental.space</field>
+            <field name="arch" type="xml">
+                <search >
+                    <field name="name" string="Rentals"/>
+                    <field name="agreement_id"/>
+                    <field name="partner_id"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="state" optional="show" widget="badge" 
+                        decoration-success="state =='available'"                        
+                        decoration-muted="state =='Booking'"                        
+                        decoration-danger="state == 'occupied'"                     
+                       />
+                    <field name="owner_tag_id"/>
+                                 
+                       <group expand="0" string="Group By">
+                            <filter name="group_by_gender" string="State" domain="[]" context="{'group_by':'state'}"/>
+                        </group>
+                       <group expand="0" string="Group By">
+                            <filter name="group_by_gender" string="Owner" domain="[]" context="{'group_by':'owner_tag_id'}"/>
+                        </group>
+                       <!-- <group expand="0" string="Group By">
+                            <filter name="group_by_gender" string="Location Types" domain="[]" context="{'group_by':'location_types'}"/>
+                        </group> -->
+                </search>
+            </field>
+        </record>
+        <!-- search -->
+
+     <!-- box -->
+        <record id="view_rental_space_kanban" model="ir.ui.view">
+            <field name="name">rental_space_kanban</field>
+            <field name="model">rental.space</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile">
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="state"/>
+                    <templates>
+                        <t t-name="card">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class= "text-right">
+                                  <strong><field name="state" optional="show" widget="badge"   
+                                                    decoration-success="state =='available'"                        
+                                                    decoration-muted="state =='Booking'"                        
+                                                    decoration-danger="state == 'occupied'"/>
+                                    </strong>
+                                </div>
+                                <div class="o_kanban_image">
+                                    
+                                        <img invisible="state != 'available'"
+                                            alt="available" src="/lod_rental_space/static/description/unlock.jpg" 
+                                            style="max-width:80px;"/>
+
+                                        <img invisible="state != 'occupied'" 
+                                            alt="no" src="/lod_rental_space/static/description/lock.jpg"
+                                            style="max-width:80px;"/>
+
+                                        <img invisible="state != 'booking'" 
+                                            alt="booking" src="/lod_rental_space/static/description/book.jpg"
+                                            style="max-width:80px;"/>
+                                    
+                                </div>
+                                 
+                              
+                                <div class="o_kanban_details ">
+                                    <ul>
+                                        <strong><field name="name"/></strong>
+                                        <div><field name="owner_tag_id"/></div>
+                                        <div><span class="fa fa-user" title="Customer"/> <field name="partner_id"/></div>
+                                        <div><span class="fa fa-address-book-o" title="Agreement"/> <field name="agreement_id"/></div>
+                                        <div><span class="fa fa-location-dot" title="Location"/> <field name="location_id"/></div> 
+                                        <div><span class="fa fa-expand" title="Area"/>  <field name="rental_area_size"/></div>
+                                    <!-- <i class="fa-light fa-location-dot"></i> -->
+                                    </ul>
+                                     
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <!-- box -->
+
+     <!-- form -->
+        <record id="viwe_rental_space_form" model="ir.ui.view">
+            <field name="name">Billboard</field>
+            <field name="model">rental.space</field>
+            <field name="arch" type="xml">
+                <form string="Billboard">
+                    <header>  
+                        <button name="create_sale_orders" type="object" string="Create Sale Order" 
+                                class="btn-primary" invisible="state != 'available'"/>
+                        <field name="state" widget="statusbar" statusbar_visible="available,booking,occupied"
+                               statusbar_colors='{"backuped":"red"}'/>
+                    </header>
+                    <sheet>
+                    <!-- smart button -->
+                        <div class="oe_button_box" name="button_box" >
+                            <button type="object" name="smart_button_sale" class="oe_stat_button" icon="fa-file" >
+                                <field name="rental_count_customer_sale" widget="statinfo" string="Sale" />
+                            </button>
+                        </div>
+                    <!-- smart button -->
+
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" default_focus="1" placeholder="Name" class="oe_inline" readonly="state != 'available'" />
+                            </h1>
+                        </div>
+                        <group>
+                            <group >
+                                <field name="partner_id" readonly="state != 'available'"/>
+                                <!-- <field name="partner_id" string="Customer" required="1"/> -->
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                                <field name="user_id"/>
+                                <field name="order_id" readonly="1"/>
+                                <field name="agreement_id"/>
+                            </group>
+                            <group >
+                                <field name="image" widget="image" invisible="1"/>
+                                <field name="owner_tag_id" />
+                                <field name="owner_image" widget="image" style="max-width:150px;" invisible="1"/>
+                                <field name="owner_text_header" invisible="1"/>
+                                <field name="owner_text_footer" invisible="1"/>
+
+                                <field name="contract_image_id" widget="image" style="max-width:150px;" invisible="1"/>
+                                <field name="contract_header_id" invisible="1"/>
+
+                                <field name="location_types" readonly="state != 'available'"/>
+                                <field name="location_id" readonly="state != 'available'"  domain="[('rental_type_id', '=', location_types)]" />
+                                <field name="location_branch_id" readonly="0"/>
+                                <field name="rental_area_size" />
+                                <field name="currency_id" invisible="0"/>
+                                <field name="agreed_amount" />
+                                <field name="image" widget="image" readonly="0"/>
+
+                                <!-- <field name="contract_type"/> -->
+                                  
+                                <label for="contract_type" srting="Contract Type"/>
+                                <div name="contract_type_day" class="o_row">
+                                    <field name="contract_type" />
+                                    <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon" title="Arrow"/>
+                                    <field name="days_values" placeholder='1' invisible="contract_type != 'days'"/>
+                                </div>
+
+                                <field name="remark_id" readonly="state != 'available'"/>
+                                <field name="contract_template_id" invisible="1"/>
+                                <field name="text_id" invisible="1"/>
+                            </group>
+                        </group>
+                        <field name="note"/>    
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+  <!-- form -->
+    <!-- tree -->
+      <record id="rental_space_tree_view" model="ir.ui.view">
+            <field name="name">rental.space.tree.view</field>
+            <field name="model">rental.space</field>
+            <field name="arch" type="xml">
+                <list >
+                    <field name="name" string="Rentals"/>
+                    <field name="agreement_id"/>
+                    <field name="partner_id"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="contract_type"/>
+                    <field name="currency_id"/>
+                    <field name="agreed_amount"/>
+                    <field name="owner_tag_id"/>
+                    <field name="state" optional="show" widget="badge" 
+                        decoration-success="state =='available'"                        
+                        decoration-muted="state =='Booking'"                        
+                        decoration-danger="state == 'occupied'"                     
+                       />
+                </list>
+            </field>
+        </record>
+    <!-- tree -->
+                    
+    <!-- Action for Billboard -->
+    <record id="action_service_billboard" model="ir.actions.act_window">
+        <field name="name">Billboard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">rental.space</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Billboard!
+            </p>
+        </field>
+    </record>
+
+    <!-- Child Menu: Billboard -->
+  <!--   <menuitem id="menu_billboard"
+              name="Billboard"
+              action="action_service_billboard"
+              parent="menu_rental_space"
+              sequence="10"/>
+ -->
+</odoo>

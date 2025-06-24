@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <odoo>
+        <template id="report_invoice_account_rental">
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id"></t>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"></t>
+        </t>
+
+            <!-- <t t-call="web.html_container"> -->
+                <t t-call="web.basic_layout">
+                <t t-foreach="docs" t-as="doc">
+                    <div class="page">
+                        <div class="oe_structure"/>
+                           
+        <!-- <header> -->
+                        <table width="100%"> 
+                            <tr style="border: 0px;">
+                                <div>
+                                    <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" style="max-height: 40px; float: left;" />
+                                </div>
+                                <td width="20%" style="font-family: Saysettha OT, sahadeva; border:0px;">
+                                    <div style="font-size: 14px; font-family: Saysettha OT, sahadeva;"><b>ບໍລິສັດ ເຈມາກ ຈຳກັດຜູ້ດຽວ</b></div>
+                                    <div style="font-size: 12px; font-family: Saysettha OT, sahadeva;">ທີ່ຕັ້ງ:ຖະໜົນ ຫົວຂົວ-ຊຳເຄ ບ້ານ ວັງຊາຍ ເມືອງ ໄຊເສດຖາ ແຂວງ ນະຄອນຫຼວງວຽງຈັນ</div>
+                                    <div style="font-size: 12px; font-family: Saysettha OT, sahadeva;">ເບີໂທລະສັບຕິດຕໍ່: 020-2200 6424, 020-7647 3211,Email: Jmart.acc2019@gmail.com</div>
+                                    <div style="font-size: 12px; font-family: Saysettha OT, sahadeva;">ທີ່ຢູ່ທະນາຄານ: ທະນາຄານ ການຄ້າຕ່າງປະເທດລາວ ມະຫາຊົນ</div>
+                                    <div style="font-size: 14px; font-family: Saysettha OT, sahadeva;"><b>ຊື່ບັນຊີ: JMART SOLE CO.,LTD</b></div>
+                                    <div style="font-size: 12px; font-family: Saysettha OT, sahadeva;"><b>ເລກບັນຊີ BCEL:(LAK) 2201100244055       IB:(LAK) 0100001617778</b></div>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="row" style="font-family: Saysettha OT, sahadeva; margin-top:20px">
+                                <div class="col-6" style="text-align:right; font-size:16px;">
+                                    <span><b>ໃບຮຽກເກັບເງີນ/INVOICE</b></span>
+                                </div>
+                                <div class="col-3" style="padding-left: 280px;">
+                                    <table style="font-size:12px;border: 1px solid black;">
+                                        <tr>
+                                            <td style="padding: 3px;text-align:right;">ເລກທີ:</td>
+                                            <td style="padding: 3px;text-align:center;">.................</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 3px;text-align:right;">ວັນເດືອນປີ:</td>
+                                            <td style="padding: 3px;text-align:center;">.................</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <br/>
+                            
+                            <table class="col-12" style="border: 0px solid #000000;">
+                                <tr height="50">
+                                    <td class="text-left p-1" height="40" width="65%" style="font-family: Saysettha OT, sahadeva; border: 1px solid #000000; vertical-align: middle;" colspan="2"> 
+                                        <div style="font-size: 14px; padding-top: 10px;">ຊື່ວິສາຫະກິດ (ຜູ້ຊື້): <span t-esc="doc.partner_id.name"/></div> 
+                                        <div style="font-size: 12px;">ທີ່ຢູ່: <t t-if="doc.partner_id.street">
+                                                    <t t-esc="doc.partner_id.street" />. <t t-esc="doc.partner_id.city" /></t>
+                                        </div>
+                                        <div style="font-size: 12px;">ເລກປະຈຳຕົວເລກເສຍອາກອນ:</div>
+                                        <div style="font-size: 14px;">ຜູ້ປະສານງານ: </div>
+                                        <div style="font-size: 12px;">ໂທ/Tell:</div>
+                                    </td>
+                                    
+                                    <td class="text-left p-1" height="40" width="30%" style="font-family: Saysettha OT, sahadeva; border: 1px solid #000000; vertical-align: middle;" colspan="2">
+                                        <div style="font-size: 14px; padding-top: 5px;">ອີງໃສ່ສັນຍາເລກທີ:<span style="margin-left:10px; color: #FF0000; padding-left: 1px;" t-field="doc.name"/></div> 
+                                        <div style="font-size: 12px;">ລົງວັນທີ:</div>
+                                        <div style="font-size: 12px;">ອີງໃສ່ໃບຮຽກເກັບເງິນທີ:</div>
+                                        <div style="font-size: 12px;">ລົງວັນທີ:</div>
+                                        <div style="font-size: 12px;"><span>ກະລຸນາຊໍາລະກ່ອນ,ວັນທີ: </span> <span style="margin-left:10px">.........................</span></div>
+                                    </td>
+                                </tr>
+                            </table>
+        <!-- </header> -->
+                 
+        <!-- <body> --> 
+                    <t t-set="subtotal" t-value="0"/>
+                    <table class="text-center" width="100%" style="font-family: Saysettha OT, sahadeva;">
+                         <thead class="text-center">
+                            <tr>
+                                <td colspan="4" style="color: #000000;">
+                                    <div style="font-size: 10px;">ເນື້ອໃນລາຍການມີຄືດັ່ງລຸ່ມນີ້:</div>
+                                </td>
+                                <td colspan="8" style="color: #FF0000;">
+                                    <div style="font-size: 10px;">* ລາຄານີ້ແມ່ນບໍ່ໄດ້ລວມ ອມພ</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th height="40" width="7%" style="font-size: 12px; border: 1px solid #000000; vertical-align: middle;">
+                                    ລ/ດ
+                                </th>
+                                <th height="40" width="33%" style="font-size: 12px; border: 1px solid #000000; vertical-align: middle;">
+                                    ເນື້ອໃນລາຍການ
+                                </th>
+                                <th height="40" width="10%" style="font-size: 12px; border: 1px solid #000000; vertical-align: middle;">
+                                    ຫົວໜ່ວຍ
+                                </th>
+                                <th height="40" width="10%" style="font-size: 12px; border: 1px solid #000000; vertical-align: middle;">
+                                    ຈຳນວນ
+                                </th>
+                                <th height="40" width="20%" style="font-size: 12px; border: 1px solid #000000; vertical-align: middle;">
+                                    ລາຄາຫົວໜ່ວຍ
+                                </th>
+                                <th height="40" width="50%" style="font-size: 12px; border: 1px solid #000000; vertical-align: middle;">
+                                    ລວມເປັນເງິນ
+                                </th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody class="text-left" style="font-size: 12px;">
+                            <!-- Initialize variables -->
+                            <t t-set="total" t-value="0"/>
+                            <t t-set="c_p" t-value="0"/>
+                            <t t-set="S_p" t-value="0"/>
+                            <t t-set="S_p_c" t-value="0"/>
+                            <t t-set="S_p_ct" t-value="0"/>
+                            <t t-set="return_total" t-value="0"/>
+                            <t t-set="i" t-value="1"/>
+                            
+                            <!-- Iterate through invoice lines -->
+                            <t t-foreach="doc.invoice_line_ids" t-as="line">
+                                <t t-if="not line.product_id.is_product_discount and not line.product_id.is_product_return">
+                                    <tr class="table-row">
+                                        <td class="text-center p-1 cell-index" height="40" style="border: 1px solid #000000; vertical-align: middle;">
+                                            <t t-esc="i"/>
+                                        </td>
+                                        <td class="text-center p-1 cell-name" height="40" style="border: 1px solid #000000; vertical-align: middle;">
+                                            <t t-esc="line.product_id.name"/>
+                                        </td>
+                                        <td class="text-center p-1 cell-quantity" height="40" style="border: 1px solid #000000; vertical-align: middle;">
+                                            <t t-esc="line.product_uom_id.name" />
+                                        </td>
+                                        <td class="text-right p-1 cell-unit-price" height="40" style="border: 1px solid #000000; vertical-align: middle;">
+                                            <t t-esc="line.quantity"/>
+                                        </td>
+                                        <td class="text-center p-1 cell-subtotal" height="40" style="border: 1px solid #000000; vertical-align: middle;">
+                                             <t t-esc="'{:,.2f}'.format(line.price_unit)"/>
+                                        </td>
+                                        <td class="text-right p-1 cell-tax" height="40" style="padding-right: 5px; border: 1px solid #000000; vertical-align: middle;">
+                                            <t t-esc="'{:,.2f}'.format(line.price_subtotal)"/>
+                                        </td>
+                                    </tr>
+                                    <!-- Increment counter -->
+                                    <t t-set="i" t-value="i + 1"/>
+                                </t>
+                            </t>
+                        </tbody>
+                        <tr class="text-left p-1">
+                            <td colspan="3" style="font-size: 12px; border: 1px solid #000000; vertical-align: middle; padding-left: 5px; padding-top: 10px; padding-bottom: 20px;">
+                                <span>ໝາຍເຫດ:</span><br/>
+                                <span>- ຖ້າເກີນກໍານົດທາງບໍລິສັດຈະໄດ້ຂໍຫັກຫນ້າບິນເລີຍໂດຍອັດຕະໂນມັດ </span><br/>
+                                <span>- ຄ່າທໍານຽມຕ່າງໆໃນການໂອນແມ່ນບໍ່ໄດ້ລວມຈໍານວນເງິນທີຮຽກເກັບຂ້າງເທິງ </span><br/>
+                                <span>- ເມື່ອໂອນແລ້ວກະລຸນາສົ່ງຫຼັກຖານການໂອນມາທີ່ W/A 020-7647 321 and 020-2200 6424</span><br/>
+                            </td>
+                            <td colspan="2" class="text-right p-1" style="font-size: 14px; border: 1px solid #000000; vertical-align: middle; padding-right: 5px; padding-top: 1px; padding-bottom: 20px;">
+                                <span>ລວມມູນຄ່າ:</span><br/>
+                                <span>ຮັບສ່ວນຫຼຸດ %:</span><br/>
+                                <span>ລວມມູນຄ່າຍັງບໍ່ລວມອາກອນ:</span><br/>
+                                <span>ອັດຕາອາກອນມູນຄ່າເພີ່ມ 07%:</span><br/>
+                                <span>ລວມມູນຄ່າທັງໝົດ:</span><br/>
+                            </td>
+                            <td class="text-left p-1" colspan="1" rowspan="6" style="font-size: 14px; border: 1px solid #000000; vertical-align: middle; padding-right: 5px; padding-top: 10px; padding-bottom: 20px;">
+                                <strong style="padding-left: 5px; font-size:14px;" t-field="doc.currency_id.name"/> <strong style="margin-left:65px; vertical-align: middle;"><t t-esc="'{:,.0f}'.format(doc.amount_total)"/></strong> <br/>
+                                <strong style="padding-left: 5px; font-size:14px; margin-left:120px;"> - </strong><br/>
+                                <strong style="padding-left: 5px; font-size:14px;" t-field="doc.currency_id.name"/> <strong style="margin-left:65px; vertical-align: middle;"><t t-esc="'{:,.0f}'.format(doc.amount_total)"/></strong> <br/>
+                                <strong style="padding-left: 5px; font-size:14px; margin-left:120px;"> - </strong><br/>
+                                <strong style="padding-left: 5px; font-size:14px;" t-field="doc.currency_id.name"/> <strong style="margin-left:65px; vertical-align: middle;"><t t-esc="'{:,.0f}'.format(doc.amount_total)"/></strong> <br/>
+                            </td>
+                        </tr>
+
+                    </table>
+
+                    <table class="col-12" style="border: 0px solid #000000;">
+                        <tr height="50">
+                            <td class="text-center p-1" height="40" width="50%" style="font-family: Saysettha OT, sahadeva; font-size: 12px; border: 1px solid #000000; vertical-align: middle; padding-right: 5px; padding-top: 10px; padding-bottom: 120px;">
+                                <div style="font-size: 14px; padding-top: 10px; padding-bottom: 120px;"> <u><b> ຜູ້ຮັບບິນ </b></u> </div> 
+                                
+                            </td>
+                            
+                            <td class="text-center p-1" height="40" width="50%" style="font-family: Saysettha OT, sahadeva; font-size: 12px; border: 1px solid #000000; vertical-align: middle; padding-right: 5px; padding-top: 10px; padding-bottom: 120px;">
+                                <div style="font-size: 14px; padding-top: 10px; padding-bottom: 120px;"> <u><b> ຜູ້ອອກບິນ </b></u> </div>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                </div>
+                </t>
+            </t>
+    </template>
+   
+</odoo>

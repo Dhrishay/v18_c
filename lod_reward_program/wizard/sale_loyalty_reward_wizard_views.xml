@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="sale_loyalty_reward_wizard_view_form_inherit_lod_reward_program" model="ir.ui.view">
+        <field name="name">sale.loyalty.reward.wizard.view.form.inherit</field>
+        <field name="model">sale.loyalty.reward.wizard</field>
+        <field name="inherit_id" ref="sale_loyalty.sale_loyalty_reward_wizard_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='selected_reward_id']" position="replace">
+                <field name="selected_reward_ids" widget="many2many_tags" colspan="2" nolabel="1" invisible="not reward_ids"/>
+                <label for="reward_product_ids" string="Free product:" colspan="2" invisible="not multi_product_reward"/>
+                <field name="reward_product_ids" widget="many2many_tags" colspan="2" nolabel="1" readonly="1" invisible="not multi_product_reward"/>
+            </xpath>
+            <xpath expr="//label[@for='selected_reward_id']" position="replace">
+                <label for="selected_reward_ids" string="Choose your reward:" colspan="2" invisible="not reward_ids"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

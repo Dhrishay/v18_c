@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root Menu -->
+    <menuitem id="rental_space_root"
+    name="Rental Space"
+    web_icon="lod_rental_space,static/description/icon.png"
+    sequence="1"/>
+
+    <!-- Child Menu: Rental Space Details -->
+    <menuitem id="menu_rental_space"
+    name="Rental Space Details"
+    parent="rental_space_root"
+    sequence="5"/>
+
+    <menuitem id="menu_billboard"
+            name="Billboard"
+            action="lod_rental_space.action_service_billboard"
+            parent="menu_rental_space"
+            sequence="10"/>
+
+    <menuitem  id="menu_customer"
+        name="Customer"
+        action="base.action_partner_form" 
+        parent="menu_rental_space" 
+        sequence="20"/>
+
+    <menuitem id="rental_partner_menu"
+        name="Rental Customers"
+        action="rental_partner_action"
+        parent="menu_rental_space"
+        sequence="30"/>
+
+
+
+    <menuitem id="sale_order_billboard"
+        name="Sales"
+        parent="rental_space_root"
+        sequence="10"/>
+                
+    <menuitem  id="sale_order_pda_menu"
+            name="Sale Order"
+            action="lod_rental_space.sale_order_two_action" 
+            parent="sale_order_billboard"
+            sequence="10"/>
+
+
+    <menuitem id="menu_agreement"
+        name="Agreement"
+        parent="rental_space_root"
+        sequence= "20"/>
+
+    <menuitem id="menu_agreement_root"
+        name="Agreement"
+        action="lod_rental_space.action_rental_space_agreement"
+        parent="menu_agreement"
+        sequence="1"/>
+
+
+    <menuitem id="menu_accounting_retal_root"
+        name="Accounting"
+        parent="rental_space_root"
+        sequence="30"/>
+                          
+    <menuitem id="menu_accounting_invoices"
+        name="Invoices Rental"
+        action="account_move_two_action"
+        parent="menu_accounting_retal_root"
+        sequence="10"/>
+
+
+
+    <!-- <menuitem id="menu_reporting"
+    name="Reporting"
+    parent="rental_space_root"
+    sequence="35"/>
+    <menuitem id="menu_rental_space_status"
+            name="Rental Space Status"
+            parent="menu_reporting"
+            action="action_rental_space_status_wizard"
+            sequence="1"/> -->
+
+    <menuitem id="menu_configuration"
+        name="Configurations"
+        parent="rental_space_root"
+        sequence="40"/>
+        
+    <!-- <menuitem  id="menu_pricelists"
+                name="Pricelists"
+                action="base.action_partner_form" 
+                parent="menu_configuration" 
+                sequence="1"/>  -->
+    <menuitem name="Owner Tag" 
+        id="menu_owner_tag"
+        action="lod_rental_space.action_menu_owner_tag" 
+        parent="menu_configuration" 
+        sequence="10"/>
+
+    <menuitem id="menu_services"
+        name="Services"
+        parent="menu_configuration"
+        sequence="2"
+        action=""/> 
+
+    <menuitem name="Location Branch" 
+            id="menu_location_branch"
+            action="lod_rental_space.action_menu_location_branch" 
+            parent="menu_services" 
+            sequence="10"/>
+
+    <menuitem id="menu_agreement_terms_template" 
+        name="Terms Templates" 
+        parent="menu_services" 
+        action="lod_rental_space.action_agreement_terms_template" 
+        sequence="20"/>
+
+    <menuitem id="menu_rental_type_all"
+          name="Rental Type All"
+          action="action_rental_type_all"
+          parent="menu_services"
+          sequence="3"/>
+                        
+<!-- <menuitem id="menu_location_types"
+        name="Location Types"
+        action="action_location_types"
+        parent="menu_services"
+        sequence="2"/> -->
+            
+    <menuitem id="menu_contract"
+        name="Contracts"
+        parent="menu_configuration"
+        sequence="5"
+        action=""/>
+
+    <menuitem name="Contract Type" 
+        id="menu_agreement_con_type"
+        action="lod_rental_space.action_menu_agreement_con_type" 
+        parent="menu_contract" 
+        sequence="6"/>
+
+    <menuitem name="Bill Cycle" 
+        id="menu_agreement_cycle"
+        action="lod_rental_space.action_agreement_cycle_config" 
+        parent="menu_contract" 
+        sequence="7"/>
+
+
+</odoo>

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_rental_space_agreement_search" model="ir.ui.view">
+        <field name="name">agreement.billboard.search</field>
+        <field name="model">agreement.billboard</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="street_partner"/>
+                <field name="city_partner"/>
+                <field name="phone_partner"/>
+                <field name="mobile_partner"/>
+                <field name="user_id"/>
+                <field name="stade_partner"/>
+                <field name="final_date"/>
+                <field name="activity_ids" widget="list_activity" optional="show"/>
+                 <group expand="0" string="Group By">
+                    <filter name="group_by_gender" string="State" domain="[]" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <!-- Tree View -->
+    <record id="view_rental_space_agreement_tree" model="ir.ui.view">
+        <field name="name">agreement.billboard.tree</field>
+        <field name="model">agreement.billboard</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="quotation_rfe"/>
+              
+                <field name="user_id"/>
+                <field name="stade_partner"/>
+                <field name="final_date"/>
+                <field name="activity_ids" widget="list_activity" optional="show"/>
+                <field name="total_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="state" optional="show" widget="badge" 
+                        decoration-muted="state =='draft'"                        
+                        decoration-warning="state =='open'"                        
+                        decoration-danger="state == 'closed'"                     
+                       />
+            </list>
+        </field>
+    </record>
+
+    <!-- Kanban View -->
+    <record id="view_rental_space_agreement_kanban" model="ir.ui.view">
+        <field name="name">agreement.billboard.kanban</field>
+        <field name="model">agreement.billboard</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="o_kanban_image" style='margin-right:40px;padding: 5px;height: 100px;'>
+                                <!-- <field name="partner_img" widget='image' class="oe_avatar" options='{"preview_image": "image"}'/> -->
+                                <field name="partner_img" widget="image" class="oe_avatar" options="{'size': [85, 85]}"/>
+
+                            </div>
+                            <div class="oe_kanban_details">
+                                <ul>
+                                    <span class="float-right text-right">
+                                        <field name="state" style="padding: 8px;font-size: 10px;" 
+                                               widget="label_selection" 
+                                               options="{'classes': {'draft':'success', 'open':'warning', 'closed':'danger'}}"/>
+                                    </span>
+                                    <strong><field name="name"/></strong>
+                                    <div><i class="fa fa-address-book-o" title="Quotation"/> <field name="quotation_rfe"/></div>
+                                    <div><i class="fa fa-user-o" title="Customer"/> <field name="partner_id"/></div>
+                                    <div><i class="fa fa-calendar-check-o" title="Agreement"/> <field name="date_agreement"/></div>
+                                    <div><i class="fa fa-calendar-times-o" title="Final Date"/> <field name="final_date"/></div>
+                                    <div><i class="fa fa-dollar" title="Total Amount"/> <field name="total_amount"/></div>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_rental_space_agreement_form" model="ir.ui.view">
+        <field name="name">agreement.billboard.form</field>
+        <field name="model">agreement.billboard</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="contract_close" invisible="state != 'open'" 
+                            type="object" class="oe_highlight"
+                            string="Terminate Contract"/>
+                    
+                    <button name="contract_open" invisible="state != 'draft'" 
+                            type="object" class="oe_highlight" 
+                            string="Set In Progress"/>
+
+                    <button name="contract_draft" invisible="state not in ['closed', 'cancel']"
+                            type="object" class="oe_highlight" 
+                            string="Set Draft"/>
+
+                    <button name="contract_cancel" invisible="state not in ['draft','closed', 'cancel']" 
+                            type="object" class="btn btn-danger" 
+                            string="Cancel"/>
+
+                    <field name="state" widget="statusbar" statusbar_visible="draft,open,closed,cancel" 
+                           statusbar_colors='{"backuped":"red"}'/>
+                </header>
+                <sheet>
+                   <!-- smart button -->
+                    <div class="oe_button_box" name="button_box" >
+                        <button type="object" name="smart_button_inv" class="oe_stat_button" icon="fa-file" >
+                            <field name="agree_count_customer_invoice" widget="statinfo" string="Invoices" />
+                        </button>
+                    </div>
+                   <!-- smart button -->
+
+                    <div class="oe_title">
+                        <h1>
+                            <!-- <field name="name" default_focus="1" placeholder="Name" class="oe_inline"/> -->
+                            <field name="name" readonly="1" placeholder="Name"/>
+                        </h1>
+                    </div>
+                    <!-- <field name="partner_img" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;: &quot;avatar_128&quot;}"/> -->
+                    <field name="partner_img" widget="image" class="oe_avatar" options="{'size': [128, 128]}"/>
+
+                    <field name="contract_image_id" widget="image" style="max-width:150px;" invisible="1"/>
+                    <field name="contract_header_id" string="Owner Contract Header" invisible="1"/>
+                    <!-- <field name="text_id" string="Terms Template" /> -->
+
+                    <group>
+                        <group string="Agreement">
+                            <field name="quotation_rfe"/>
+                            <field name="contract_type_id"/>
+                            <field name="cycle_id" />
+                            <field name="product_id" />
+                        </group>
+                        <group string="Technical Details">
+                            <field name="user_id"/>
+                            <field name="date_agreement"/>
+                            <field name="final_date"/>
+                            <field name="invoice_date"/>
+                        </group>
+                        
+                        <!-- <group>
+                            <field name="terms_template_id" placeholder="Select Terms Template"/>
+                        </group> -->
+                    </group>
+                    <group string="Customer Details">
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="phone_partner"/>
+                            <field name="mobile_partner"/>
+                            <field name="email_partner"/>
+                        </group>
+                        <group>
+                            <field name="street_partner"/>
+                            <field name="city_partner"/>
+                            <field name="stade_partner"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+
+                    <!-- <field name="note"/> -->
+
+                    <notebook>
+                        <page string="Agreement Lines">
+                            <field name="argreement_line_ids">
+                                <list editable="bottom">
+                                    <field name="billboard_id"/>
+                                    <field name="product_uom_qty"/>
+                                    <field name="product_uom"/>
+                                    <field name="price_unit"/>
+                                    <field name="location_branch_id"/>
+                                    <field name="rental_area_sizes"/>
+                                    <field name="location_ids"/>
+                                    <field name="discount"/>
+                                    <field name="agreed_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <field name="currency_id" invisible="1"/>
+
+                                    <!-- <field name="price_subtotal" invisible="1"/> -->
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Note">
+                            <!-- <field name="text_id" placeholder="Enter your Note" widget="html"/> -->
+                            <field name="text_id" string="Terms Template" />
+                        </page>
+                    </notebook>
+
+                    <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <label for="total_amount" string="Total Amount" class="font-weight-bold mr-2"/>
+                            <field name="total_amount" string="Total Amount"  widget="monetary" nolabel="1" colspan="2" class="font-weight-bold" style="font-size: 20px;" options="{'currency_field': 'currency_id'}"/>
+                        </div>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action Window for Agreements -->
+    <record id="action_rental_space_agreement" model="ir.actions.act_window">
+        <field name="name">Agreement</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">agreement.billboard</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[]</field>        
+        <field name="context">{'default_contract_type_id': 1, 'default_cycle_id': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Agreement!
+            </p>
+        </field>
+    </record>
+
+    <!-- Action Window for Agreements from Sale -->
+    <record id="action_rental_space_agreement_from_sale" model="ir.actions.act_window">
+        <field name="name">Agreement</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">agreement.billboard</field>
+        <field name="view_mode">form</field>
+        <field name="domain">[]</field>        
+        <field name="context">{'default_contract_type_id': 1, 'default_cycle_id': 1}</field>
+    </record>
+</odoo>

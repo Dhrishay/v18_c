@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-inherit="stock_barcode.LineTitle" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('o_product_label')]" position="before">
+            <t t-if="line.product_id.barcode">
+                <div name="barcode">
+                    <i class="fa fa-fw fa-barcode"/>
+                    <span class="barcode-value" t-esc="line.product_id.barcode"/>
+                </div>
+            </t>
+        </xpath>
+    </t>
+</templates>

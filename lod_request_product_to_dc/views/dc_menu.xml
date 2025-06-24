@@ -1,0 +1,36 @@
+<odoo>
+    <data>
+        <menuitem name="Request Order" id="dc_root_menu" web_icon="lod_request_product_to_dc,static/description/icons.png" sequence="1" >
+            <menuitem name="Request Order" id="request_order" sequence="1">
+                <menuitem name="Request Order" action="lod_request_product_to_dc.purchase_form_action_dc_inherited" sequence="1" id="menu_req_to_dc_po"/>                
+                <menuitem name="Reveiving" action="lod_request_product_to_dc.action_picking_tree_incoming_inherited" sequence="2" id="menu_req_to_dc_receipt"/>
+                <menuitem name="Vendor Bill" action="lod_request_product_to_dc.action_move_in_invoice_dc_inherited" sequence="3" id="menu_req_to_dc_bill"/>
+                <menuitem name="Return Stock Picking Order" action="lod_request_product_to_dc.action_picking_tree_incoming_inherited_return_request_type" sequence="4" id="menu_req_to_dc_receipt_return_request"/>
+                <menuitem name="Return Purchase Request Order" action="lod_request_product_to_dc.purchase_form_action_dc_inherited_return_po" sequence="5" id="menu_req_to_dc_po_return"/>
+            </menuitem>
+
+            <menuitem name="Delivery Order" id="delivery_order" sequence="2">
+                <menuitem name="Delivery Order From DC" action="lod_request_product_to_dc.sale_order_request_product_action" sequence="1" id="dc_menu"/>
+                <menuitem name="Stock Delivery Order" action="lod_request_product_to_dc.action_picking_tree_outgoing_inherited" sequence="2" id="menu_req_to_dc_deliveries"/>
+                <menuitem name="Invoice" action="lod_request_product_to_dc.action_move_out_invoice_dc_inherited" sequence="3" id="menu_req_to_dc_invoices"/>
+                <menuitem name="Return Stock Delivery Order" action="lod_request_product_to_dc.action_picking_tree_outgoing_inherited_return_request_type" sequence="4" id="menu_req_to_dc_deliveries_return"/>
+                <menuitem name="Return Delivery Order From DC" action="lod_request_product_to_dc.sale_order_request_product_action_return_dc" sequence="5" id="dc_menu_return"/>
+                <menuitem name="My Approval" action="lod_request_product_to_dc.dc_sh_sale_order_my_approval_action" sequence="6" id="dc_sale_approval"/>
+                <menuitem name="Waiting Approval" action="lod_request_product_to_dc.dc_sh_sale_order_waiting_approval_action" sequence="7" id="dc_sale_waiting_approval"/>
+            </menuitem>
+        </menuitem>
+
+        <menuitem id="sh_purchase_approval_config_action_menu_config" name="Configuration" groups="approvals.group_approval_manager" parent="lod_request_product_to_dc.dc_root_menu" sequence="99" />
+
+        <menuitem id="sh_sale_approval_config_action_menu_root" name="Sale Approval Configuration" action="sh_sale_dynamic_approval.sh_sale_approval_config_action" groups="approvals.group_approval_manager" parent="lod_request_product_to_dc.sh_purchase_approval_config_action_menu_config" sequence="99" />
+
+        <menuitem id="sh_purchase_approval_config_action_menu_setting" name="Setting" action="purchase.action_purchase_configuration" groups="approvals.group_approval_manager" parent="lod_request_product_to_dc.sh_purchase_approval_config_action_menu_config" sequence="1" />
+
+        <menuitem id="sh_purchase_approval_config_action_menu_root" name="Purchase Approval Configuration" action="sh_purchase_dynamic_approval.sh_purchase_approval_config_action" groups="approvals.group_approval_manager" parent="lod_request_product_to_dc.sh_purchase_approval_config_action_menu_config" sequence="99" />
+
+        <menuitem id="sh_purchase_order_my_approval_action_menu" name="My Approval" action="lod_request_product_to_dc.dc_sh_purchase_order_my_approval_action" parent="lod_request_product_to_dc.request_order" sequence="8" />
+
+        <menuitem id="sh_purchase_order_waiting_approval_action_menu" name="Waiting Approval" action="lod_request_product_to_dc.dc_sh_purchase_order_waiting_approval_action" parent="lod_request_product_to_dc.request_order" sequence="9" />
+
+    </data>
+</odoo>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Form View -->
+        <record id="view_agreement_terms_template_form" model="ir.ui.view">
+            <field name="name">agreement.terms.template.form</field>
+            <field name="model">agreement.terms.template</field>
+            <field name="arch" type="xml">
+                <form string="Agreement Terms Template">
+                    <sheet>
+                        <group>
+                            <field name="contract_template_id" placeholder="Enter template name"/>
+                            <field name="text_id" widget="html" placeholder="Enter terms"/>
+                            <field name="active"/>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="view_agreement_terms_template_tree" model="ir.ui.view">
+            <field name="name">agreement.terms.template.tree</field>
+            <field name="model">agreement.terms.template</field>
+            <field name="arch" type="xml">
+                <list string="Agreement Terms Templates">
+                    <field name="contract_template_id"/>
+                    <field name="active"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_agreement_terms_template" model="ir.actions.act_window">
+            <field name="name">Agreement Terms Templates</field>
+            <field name="res_model">agreement.terms.template</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+    </data>
+</odoo>

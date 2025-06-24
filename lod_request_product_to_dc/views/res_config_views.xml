@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_dc" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.inter.company.rules</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account_inter_company_rules.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='module_inter_company_rules_set_so_po']" position="inside">
+                <div class="row ml16">
+                    <label for="operation_type" class="col o_light_label"/>
+                    <field name="operation_type" domain="[('company_id', '=', company_id)]" class="col-1 col-lg-1"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_contract_rental">
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id"/>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"/>
+        </t>
+
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="doc">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <!--header -->
+                    <div class="text-center" style="font-size: 16px; font-family: Saysettha OT, sahadeva;">
+                            <b>ສາທາລະນະລັດ ປະຊາທິປະໄຕ ປະຊາຊົນລາວ</b>
+                        </div>
+                        <div class="text-center" style="font-size: 16px; font-family: Saysettha OT, sahadeva;">
+                            <b>ສັນຕິພາບ ເອກະລາດ ປະຊາທິປະໄຕ ເອກະພາບ ວັດທະນາຖາວອນ</b>
+                        </div>
+                        <div class="text-center">
+                            <img t-if="doc.contract_image_id" t-att-src="image_data_uri(doc.contract_image_id)" style="width: 150px; height: 150px;"/>
+                        </div>
+                    <!--header -->
+
+                    <!-- Header body -->
+                    <div class="text-right" style="font-family: Saysettha OT, sahadeva;">
+                        <div class="col-11">
+                            <div style="font-size: 16px;"><b>ເລກທີ: <span style="padding-left: 1px;" t-field="doc.name"/> </b></div>
+                        </div>
+                        <div class="col-11">
+                            <div style="font-size: 16px;"><b>ວັນທີ: <span style="padding-left: 1px;" t-field="doc.invoice_date"/> </b></div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="text-center" style="font-size: 26px; font-family: Saysettha OT, sahadeva;" ><b>ສັນຍາເຊົ່າພື້ນທີ່ສາຂາ</b></div>
+                    <div class="text-center" style="font-size: 17px; font-family: Saysettha OT, sahadeva;" ><b>ສະບັບນີ້ສ້າງຂຶ້ນລະຫວ່າງ</b></div>
+
+                    <div class="text-left" style="font-family: Saysettha OT, sahadeva;">
+
+                        <div class="col-12" style="font-size: 10px; padding-left: 65px;">
+                            <span t-esc="doc.contract_header_id"/>
+                        </div>
+
+                        <!-- <div class="col-12">
+                            <div style="font-size: 17px; padding-left: 120px;"><b> ບໍລິສັດ ເຈມາກ ຈຳກັດຜູ້ດຽວ, ສຳນັກງານຕັ້ງຢູ່ຖະໜົນ ຫົວຂົວ-ຊຳເຄ້, ບ້ານ ວັງຊາຍ ເມືອງ ໄຊເສດຖາ,</b></div>
+                        </div>
+                        <div class="col-12">
+                            <div style="font-size: 17px; padding-left: 50px;"><b> ນະຄອນຫຼວງວຽງຈັນ, ເບີໂທ:020 7647 3211, ອີເມວ:jmartsupper.info@gmaill.com. </b></div>
+                        </div> -->
+                        <div class="col-12">
+                            <div style="font-size: 16px; padding-left: 50px;"><b> "ເຊີ່ງຕໍ່ໄປນີ້ເອີ້ນວ່າ ຜູ້ ໃຫ້ເຊົ່າ ຫຼື ຝ່າຍ (ກ)".</b></div>
+                        </div>
+                    </div>
+                    <div class="text-center" style="font-size: 17px; font-family: Saysettha OT, sahadeva;" ><b>ແລະ</b></div>
+                    
+                    <div class="text-left" style="font-family: Saysettha OT, sahadeva;">
+                        <div style="font-size: 16px; padding-left: 65px;"> ຮ້ານ/ແບຣນ(ໂລໂກ້) <b><span style="color: #FF0000;" t-field="doc.name"/></b> <span>,ລະຫັດລູກໜີ້:</span> <b><span style="color: #FF0000;" t-field="doc.name"/></b> ,ທ່ານ <b><span t-field="doc.partner_id"/></b> <span>,</span></div>
+                        <div style="font-size: 16px; padding-left: 20px;"> ອາຍຸ <span style="color: #FF0000;"><b> 25 </b></span> ,ປີ ,ອາຊີບ <b><span style="color: #FF0000; padding-left: 5px;" t-field="doc.name"/></b> <span style="padding-left: 5px;">,ປະຈຸບັນຢູ່ໜ່ວຍ</span> <span style="color: #FF0000; padding-left: 1px;"><b>5</b></span> <span style="padding-left: 1px;">,ບ້ານ</span> <b><span style="padding-left: 5px;" t-field="doc.street_partner"/></b> <span style="padding-left: 1px;">,ເມືອງ</span> <b><span style="padding-left: 5px;" t-field="doc.city_partner"/> <span>,</span> <span t-field="doc.stade_partner"/></b> <span>,</span></div>
+                        <div style="font-size: 16px; padding-left: 20px;"> ເບີໂທ <b><span t-field="doc.phone_partner"/></b> <span>,ຖືບັດປະຈຳຕົວ/ສຳມະໂນຄົວເລກທີ</span> <b><span style="color: #FF0000;" t-field="doc.phone_partner"/></b> <span>,ຢັ້ງຢືນຈາກ</span> <span style="color: #FF0000;"> <b>ກສ ນະຄອນຫຼວງວຽງຈັນ</b></span></div>
+                        <div style="font-size: 16px; padding-left: 20px;"> ວັນທີອອກບັດ <b><span style="color: #FF0000;" t-field="doc.phone_partner"/></b> <span>,ວັນທີໝົດອາຍຸ</span> <b><span style="color: #FF0000;" t-field="doc.phone_partner"/></b> <span><b>. "ເຊິ່ງຕໍ່ໄປນີ້ເອີ້ນວ່າ ຜູ້ເຊົ່າ ຫຼື ຝ່າຍ ( ຂ )".</b></span></div>
+                    </div>
+                    <!-- Header body -->
+
+                    <!-- ROW..1 -->
+                    <div class="text-left" style="font-family: Saysettha OT, sahadeva;">
+                        <div style="font-size: 16px; padding-left: 65px;"><b> ທັງສອງຝ່າຍ "ຜູ້ໃຫ້ເຊົ່າ" ແລະ "ຜູ້ເຊົ່າ" ຕົກລົງເຫັນດີ ເປັນເອກະພາບກັນ ກ່ຽວກັບ ເນື້ອໃນ, ຂໍ້ກຳນົດ ແລະ ຂໍ້ຜູກພັນໃນ</b></div>
+                        <div style="font-size: 16px; padding-left: 65px;"><b> ສັນຍາ ດັ່ງລາຍລະອຽດ ດັ່ງລຸ່ມນີ້:</b></div>
+                    </div>
+
+                    <div class="text-left" style="font-family: Saysettha OT, sahadeva;">
+                        <div style="font-size: 16px; padding-left: 1px;"><b> ມາດຕາ01: ວ່າດ້ວຍກຳນົດເວລາ ແລະ ເນື້ອໃນການເຊົ່າ (ສິນຄ້າທີ່ນຳມາຈຳໜ່າຍ, ສະຖານທີ່, ໄລຍະເວລາ ແລະ ຄ່າເຊົ່າ) ລາຄາ </b></div>
+                        <div style="font-size: 16px; padding-left: 1px;"><b> ບໍ່ລວມ (ອມພ).</b></div>
+                        <div style="font-size: 16px; padding-left: 65px;"><b> - ໄລຍະເວລາເຊົ່າພື້ນທີ່ແມ່ນ <span style="font-size: 20px;" t-field="doc.contract_type_id"/> <span>/ປີ, ເຊິ່ງເລີ່ມເເຕ່ວັນທີ</span> <span style="font-size: 20px;" t-field="doc.date_agreement"/> <span>, ເຖິງວັນທີ</span> <span style="font-size: 20px;" t-field="doc.final_date"/></b></div>
+                    </div>
+                    <!-- ROW..1 -->
+
+
+                    <!-- table1 -->
+                    <table class="text-row" width="100%" style="font-family: Saysettha OT, sahadeva;">
+                        <thead class="text-center">
+                            <tr>
+                                <th height="40" width="5%" style="font-size: 16px; border: 1px solid #000000; vertical-align: middle;">
+                                    ລ/ດ
+                                </th>
+                                <th height="40" width="22%" style="font-size: 16px; border: 1px solid #000000; vertical-align: middle;">
+                                    ປະເພດສີນຄ້າ
+                                </th>
+                                <th height="40" width="10%" style="font-size: 16px; border: 1px solid #000000; vertical-align: middle;">
+                                    ສາຂາ
+                                </th>
+                                <th height="40" width="15%" style="font-size: 16px; border: 1px solid #000000; vertical-align: middle;">
+                                    ສະຖານທີ່/ຂະໜາດ
+                                </th>
+                                <th height="40" width="15%" style="font-size: 16px; border: 1px solid #000000; vertical-align: middle;">
+                                    ໄລຍະເວລາ
+                                </th>
+                                <th height="40" width="15%" style="font-size: 16px; border: 1px solid #000000; vertical-align: middle;">
+                                    ຄ່າເຊົ່າ/ເດືອນ
+                                </th>
+                                <th height="40" width="20%" style="font-size: 16px; border: 1px solid #000000; vertical-align: middle;">
+                                    ລວມ
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <!-- Body -->
+                        <tbody class="text-row">
+                            <t t-set="total" t-value="0"/>
+                            <t t-set="i" t-value="0"/>
+                            <t t-foreach="doc.argreement_line_ids" t-as="line">
+                                <tr style="font-size: 14px; border: 0px solid black;">
+                                    <td class="text-center p-1" height="60" style="border: 1px solid #000000; vertical-align: middle;">
+                                        <t t-esc="i + 1"/>  
+                                        <t t-set="i" t-value="i + 1"/>  
+                                    </td>
+                                    <td class="text-center p-1" height="60" style="border: 1px solid #000000; vertical-align: middle;">
+                                        <t t-esc="line.billboard_id" />
+                                    </td>
+                                    <td class="text-center p-1" height="60" style="border: 1px solid #000000; vertical-align: middle;">
+                                        <t t-esc="line.location_branch_id" />
+                                    </td>
+                                    <td class="text-center p-1" height="60" style="border: 1px solid #000000; vertical-align: middle;">
+                                        <t t-esc="line.location_ids" /><br/>
+                                        <t t-esc="line.rental_area_sizes" />
+                                    </td>
+                                    <td class="text-center p-1" height="60" style="border: 1px solid #000000; vertical-align: middle;">
+                                        <b><t t-esc="doc.date_agreement" /><br/> <span>To</span> <br/>
+                                        <t t-esc="doc.final_date" /></b>
+                                    </td>
+                                    <td class="text-center p-1" height="60" style="font-size: 16px; border: 1px solid #000000; vertical-align: middle;">
+                                        <b><t t-esc="line.price_unit" /></b>
+                                    </td>
+                                    <td class="text-center p-1" height="60" style="font-size: 16px; border: 1px solid #000000; vertical-align: middle; padding-right: 5px;" > 
+                                        <b><t t-esc="line.agreed_amount" /></b>
+                                    </td>
+                                </tr>
+                                
+                                <!-- <tr class="text-left p-1" colspan="2">
+                                    <td class="text-right p-1" colspan="7" style="font-size: 10px; border: 1px solid #000000; vertical-align: middle; padding-right: 5px; padding-top: 20px; padding-bottom: 20px;">
+                                        <span>ລວມເປັນຕົວໜັງສື:</span><br/>
+                                    </td>
+                                </tr> -->
+                            </t>
+                            <tr class="text-left p-1" height="40" colspan="2">
+                                    <td class="text-right p-1" colspan="6" style="font-size: 16px; border: 1px solid #000000; vertical-align: middle; padding-right: 5px; padding-top: 20px; padding-bottom: 20px;">
+                                        <span>ລວມມູນຄ່າ:</span><br/>
+                                    </td>
+                                    <td class="text-center p-1" colspan="1" style="font-size: 16px; border: 1px solid #000000; vertical-align: middle; padding-right: 5px; padding-top: 20px; padding-bottom: 20px;">
+                                        <strong><t t-esc="doc.total_amount"/></strong> <br/>
+                                    </td>
+                                </tr>
+                                <tr class="text-left p-1" colspan="2">
+                                    <td class="text-right p-1" colspan="6" style="font-size: 16px; border: 1px solid #000000; vertical-align: middle; padding-right: 5px; padding-top: 20px; padding-bottom: 20px;">
+                                        <span>ສ່ວນຫຼຸດ%:</span><br/>
+                                    </td>
+                                    <td class="text-center p-1" colspan="1" style="font-size: 16px; border: 1px solid #000000; vertical-align: middle; padding-right: 5px; padding-top: 20px; padding-bottom: 20px;">
+                                        <strong><t t-esc="line.discount"/></strong> <br/>
+                                    </td>
+                                </tr>
+                                <tr class="text-left p-1" colspan="2">
+                                    <td class="text-right p-1" colspan="6" style="font-size: 16px; border: 1px solid #000000; vertical-align: middle; padding-right: 5px; padding-top: 20px; padding-bottom: 20px;">
+                                        <span>ລວມມູນຄ່າທັງໝົດ:</span><br/>
+                                    </td>
+                                    <td class="text-center p-1" colspan="1" style="font-size: 16px; border: 1px solid #000000; vertical-align: middle; padding-right: 5px; padding-top: 20px; padding-bottom: 20px;">
+                                        <strong><t t-esc="doc.total_amount"/></strong> <br/>
+                                    </td>
+                                </tr>
+                        </tbody>
+                        <!-- Body -->
+                    </table>
+                    <br/>
+                    <!-- table1 -->
+
+                    <!-- Next page -->
+                    <div style="page-break-before: always;"></div>
+                    <!-- Next page -->
+
+                    <!-- ROW..2 -->
+                    <div class="text-left" style="font-family: Saysettha OT, sahadeva;">
+                        <div style="font-size: 17px; padding-left: 65px;"><b><span><u> (ໝາຍເຫດ):</u></span> ການຊຳລະຄ່າເຊົ່າແມ່ນຕ້ອງຈ່າຍລ່ວງໜ້າຢ່າງໜ້ອຍ 15 ວັນ, ທ່ານສາມາດເລືອກຈ່າຍໄດ້ດັ່ງລຸ່ມນີ້: </b></div>
+                    </div>
+
+                    <div class="text-left" style="font-family: Saysettha OT, sahadeva;">
+                        <div style="font-size: 17px; padding-left: 25px;">
+                            <b> - 
+                            <i class="far fa-square" title="Monthly" style="padding-left: 2px;"></i> ລາຍເດືອນ 
+                            <i class="far fa-square" title="Quarters"></i> ທຸກໆ 3 ເດືອນ
+                            <i class="far fa-square" title="Half Year"></i> ທຸກໆ 6 ເດືອນ 
+                            <i class="far fa-square" title="All Agreement"></i> ທັງໝົດຄົບຕາມສັນຍາ.
+                            </b>
+                        </div>
+                        <div style="font-size: 17px; padding-left: 25px;">
+                            <b> - <span style="padding-left: 2px;"> "ຜູ້ເຊົ່າ" ຕ້ອງຊຳລະເງິນຄ່າເຊົ່າຂອງງວດທຳອິດໃຫ້ສຳເລັດກ່ອນຈື່ງສາມາດເຂົ້າມານຳໃຊ້ພື້ນທີ່ໄດ້. </span></b>
+                        </div>
+                        <div style="font-size: 17px; padding-left: 25px;">
+                            <b> - <span style="padding-left: 2px;"> ຊຳລະຜ່ານບັນຊີທະນາຄານເທົ່ານັ້ນ: ເເມ່ນໃຫ້ໂອນເຂົ້າບັນຊີ ທະນາຄານການຄ້າຕ່າງປະເທດ (BCEL). </span></b>
+                        </div>
+                        <div style="font-size: 17px; padding-left: 25px;">
+                            <b> - <span style="padding-left: 2px;"> ຊື່ບັນຊີ: JMART SOLE CO.,LTD </span></b>
+                        </div>
+                        <div style="font-size: 17px; padding-left: 25px;">
+                            <b> - <span style="padding-left: 2px;"> ເລກທີບັນຊີ: LAK 2201100244055 ແລະ THB 2201100244064 </span></b>
+                        </div>
+                    </div>
+                    <br/>
+                    <!-- ROW..2 -->
+                    <div class="text-left" style="font-family: Saysettha OT, sahadeva;">
+                        <div style="font-size: 17px; padding-left: 1px;"><b> 
+                        <span t-field="doc.text_id" /><br/> </b></div>
+                    </div>
+                    <br/>
+
+                    <!-- Next page -->
+                    <div style="page-break-before: always;"></div>
+                    <!-- Next page -->
+
+                    <div class="text-left" style="font-family: Saysettha OT, sahadeva;">
+                        <div style="font-size: 17px; padding-left: 100px;"><b> ສັນຍາສະບັບນີ້ໄດ້ ສ້າງມາເປັນພາສາລາວ 02 ສະບັບ, ປະກອບມີ 4 ໜ້າ, 7 ມາດຕາ, ມີເນື້ອໃນອັນດຽວກັນ </b></div>
+                        <div style="font-size: 17px; padding-left: 55px;"><b> ແລະ ມີຄຸນຄ່າເທົ່າທຽມກັນທາງດ້ານກົດໝາຍ, ເເຕ່ລະຝ່າຍເກັບຮັກສາໄວ້ຝ່າຍລະ 01 ສະບັບ ແລະ ມີຜົນສັກສິດນຳໃຊ້ ນັບ </b></div>
+                        <div style="font-size: 17px; padding-left: 55px;"><b> ເເຕ່ມື້ທັງສອງຝ່າຍໄດ້ລົງລາຍເຊັນເປັນຕົ້ນໄປ. </b></div>
+                    </div>
+                    <br/>
+
+                    <div class="text-left" style="font-family: Saysettha OT, sahadeva;">
+                        <div style="font-size: 17px; padding-left: 100px;"><b> <u>ຜູ້ເຊົ່າ ຫຼື ( ຝ່າຍ ຂ )</u> 
+                        <span style="font-size: 17px; padding-left: 250px;"><u>ຜູ້ໃຫ້ເຊົ່າ ຫຼື ( ຝ່າຍ ກ )</u></span></b></div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+
+                    <div class="text-left" style="font-family: Saysettha OT, sahadeva;">
+                        <div style="font-size: 17px; padding-left: 150px;"><b> ພະຍານ
+                        <span style="font-size: 17px; padding-left: 330px;"> ພະຍານ </span></b></div>
+                    </div>
+                    <br/>
+
+                    <div class="text-left" style="font-family: Saysettha OT, sahadeva;">
+                        <div style="font-size: 17px; padding-left: 90px;"><b> 1. ........................................
+                        <span style="font-size: 17px; padding-left: 200px;"> 1. ........................................ </span></b></div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div class="text-left" style="font-family: Saysettha OT, sahadeva;">
+                        <div style="font-size: 17px; padding-left: 90px;"><b> 2. ........................................
+                        <span style="font-size: 17px; padding-left: 200px;"> 2. ........................................ </span></b></div>
+                    </div>
+                    <br/>
+                    
+
+                    <div class="text-left" style="font-family: Saysettha OT, sahadeva;">
+                        <div style="font-size: 14px; padding-left: 55px;"><b> ເອກະສານຕິດຂັດ: </b></div>
+                        <div style="font-size: 14px; padding-left: 33px;"><b> 1. Copy ບັດປະຈຳຕົວ, ປື້ມຜ່ານແດນ, ປື້ມສຳມະໂນຄົວ ( ເອົາຢ່າງໃດຢ່າງໜຶ່ງກໍ່ໄດ້ ) </b></div>
+                        <div style="font-size: 14px; padding-left: 33px;"><b> 2. Lay Out ພື້ນທີ່ຮ້ານ </b></div>
+                        <div style="font-size: 14px; padding-left: 33px;"><b> 3. ຮູບພາບຮ້ານ </b></div>
+                        <div style="font-size: 14px; padding-left: 33px;"><b> 4. Copy ປື້ມບັນຊີ ສະກຸນເງິນກີບ ແລະ ບາດ ( ໃນກໍລະນີໂອນຄ່າມັດຈຳຄືນ ) </b></div>
+                    </div>
+
+
+
+                    <div class="footer">
+                        <div class="text-center" style="font-size: 14px;">
+                            <div>
+                                <strong>Page: <span class="page"/> of <span class="topage"/></strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t> 
+        </t> 
+    </template>
+</odoo>

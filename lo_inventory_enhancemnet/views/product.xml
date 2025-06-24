@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="product_template_master_action" model="ir.actions.act_window">
+        <field name="type">ir.actions.act_window</field>
+        <field name="name">Master Product</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">list,kanban,form</field>
+        <!-- <field name="view_id" ref="product_template_kanban_view"/>         -->
+        <field name="search_view_id" ref="product.product_template_search_view"/> 
+        <field name="context">{"search_default_goods": 1, 'default_type': 'consu'}</field>        
+        <field name="domain">[]</field>
+        <!-- <field name="domain">[('categ_id','!=',951)]</field> -->
+    </record>
+
+    <record id="view_product_category_inherit" model="ir.ui.view">
+        <field name="name">product.category.inherited</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <!-- <field name="parent_id" position="after">
+            </field> -->
+            <xpath expr="//group[@name='first']" position="after">
+                <group col="4" string="eCommerce">
+                    <field name="categ_public_id"/>
+                    <field name="cat_code"/>
+                    <field name="category_name"/>
+                    <field name="sub_cat_code"/>
+                    <field name="sub_category_name"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_master_product_template"
+        name="Master Products"
+        parent="stock.menu_stock_inventory_control" sequence="0"
+        action="product_template_master_action"
+        />     
+
+    <menuitem
+        id="menu_master_materials_template"
+        name="Bill of Materials"
+        parent="stock.menu_stock_inventory_control" sequence="1"
+        action="mrp.mrp_bom_form_action"
+        /> 
+</odoo>

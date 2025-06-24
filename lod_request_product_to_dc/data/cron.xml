@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_cron_comapany_partner_dc" model="ir.cron">
+        <field name="name">Set Comapany Partner To DC</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="state">code</field>
+        <field name="code">model.set_request_company()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">weeks</field>
+    </record>
+</odoo>
