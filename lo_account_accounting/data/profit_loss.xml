@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_reports.profit_and_loss" model="account.report">
+        <field name="line_ids">
+            <record id="account_financial_total_expense" model="account.report.line">
+                <field name="name">Total expense</field>
+                <field name="hierarchy_level">0</field>
+                <field name="code">TOTAL_EXP</field>
+                <field name="expression_ids">
+                    <record id="account_financial_report_total_balance" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">aggregation</field>
+                        <field name="formula">ADMIN_EXP.balance + MAR_EXP.balance+ SELL_EXP.balance+ STAFF_EXP.balance+ BUS_TRIP_EXP.balance+ UTL_EXP.balance+ INCOME_TAX_EXP.balance+ FINANCE_COST.balance + EXP.balance</field>
+                    </record>
+                </field>
+                <field name="sequence" eval="0"/>
+            </record>
+            <record id="account_financial_report_admin_expense" model="account.report.line">
+                <field name="name">Administrative Expenses</field>
+                <field name="code">ADMIN_EXP</field>
+                <field name="hierarchy_level">1</field>
+                <field name="groupby">account_id</field>
+                <field name="foldable" eval="True"/>
+                <field name="expression_ids">
+                    <record id="account_financial_report_admin_expense0_balance" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">domain</field>
+                        <field name="formula" eval="[('account_id.account_type', '=', 'expense_admin')]"/>
+                        <field name="subformula">sum</field>
+                        <field name="green_on_positive" eval="False"/>
+                    </record>
+                </field>
+                <field name="sequence" eval="0"/>
+            </record>
+            <record id="account_financial_report_market_expense" model="account.report.line">
+                <field name="name">Marketing Expenses</field>
+                <field name="code">MAR_EXP</field>
+                <field name="hierarchy_level">1</field>
+                <field name="groupby">account_id</field>
+                <field name="foldable" eval="True"/>
+                <field name="expression_ids">
+                    <record id="account_financial_report_market_expense0_balance" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">domain</field>
+                        <field name="formula" eval="[('account_id.account_type', '=', 'expense_market')]"/>
+                        <field name="subformula">sum</field>
+                        <field name="green_on_positive" eval="False"/>
+                    </record>
+                </field>
+                <field name="sequence" eval="0"/>
+            </record>
+            <record id="account_financial_report_expense_sell_commission" model="account.report.line">
+                <field name="name">Selling Commission</field>
+                <field name="code">SELL_EXP</field>
+                <field name="hierarchy_level">1</field>
+                <field name="groupby">account_id</field>
+                <field name="foldable" eval="True"/>
+                <field name="expression_ids">
+                    <record id="account_financial_report_expense_sell_balance" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">domain</field>
+                        <field name="formula" eval="[('account_id.account_type', '=', 'expense_sell_commission')]"/>
+                        <field name="subformula">sum</field>
+                        <field name="green_on_positive" eval="False"/>
+                    </record>
+                </field>
+                <field name="sequence" eval="0"/>
+            </record>
+            <record id="account_financial_report_expense_staff" model="account.report.line">
+                <field name="name">Staff Expense</field>
+                <field name="code">STAFF_EXP</field>
+                <field name="hierarchy_level">1</field>
+                <field name="groupby">account_id</field>
+                <field name="foldable" eval="True"/>
+                <field name="expression_ids">
+                    <record id="account_financial_report_expense_staff_balance" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">domain</field>
+                        <field name="formula" eval="[('account_id.account_type', '=', 'expense_staff')]"/>
+                        <field name="subformula">sum</field>
+                        <field name="green_on_positive" eval="False"/>
+                    </record>
+                </field>
+                <field name="sequence" eval="0"/>
+            </record>
+            <record id="account_financial_report_expense_business_trip" model="account.report.line">
+                <field name="name">Business Trip Expense</field>
+                <field name="code">BUS_TRIP_EXP</field>
+                <field name="hierarchy_level">1</field>
+                <field name="groupby">account_id</field>
+                <field name="foldable" eval="True"/>
+                <field name="expression_ids">
+                    <record id="account_financial_report_expense_business_trip_balance" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">domain</field>
+                        <field name="formula" eval="[('account_id.account_type', '=', 'expense_business_trip')]"/>
+                        <field name="subformula">sum</field>
+                        <field name="green_on_positive" eval="False"/>
+                    </record>
+                </field>
+                <field name="sequence" eval="0"/>
+            </record>
+            <record id="account_financial_report_expense_utility" model="account.report.line">
+                <field name="name">Utility Expense</field>
+                <field name="code">UTL_EXP</field>
+                <field name="hierarchy_level">1</field>
+                <field name="groupby">account_id</field>
+                <field name="foldable" eval="True"/>
+                <field name="expression_ids">
+                    <record id="account_financial_report_expense_utility_balance" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">domain</field>
+                        <field name="formula" eval="[('account_id.account_type', '=', 'expense_utility')]"/>
+                        <field name="subformula">sum</field>
+                        <field name="green_on_positive" eval="False"/>
+                    </record>
+                </field>
+                <field name="sequence" eval="0"/>
+            </record>
+            <record id="account_financial_report_expense_rental" model="account.report.line">
+                <field name="name">Rental Expense</field>
+                <field name="code">RENT_EXP</field>
+                <field name="hierarchy_level">1</field>
+                <field name="groupby">account_id</field>
+                <field name="foldable" eval="True"/>
+                <field name="expression_ids">
+                    <record id="account_financial_report_expense_rental_balance" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">domain</field>
+                        <field name="formula" eval="[('account_id.account_type', '=', 'expense_rental')]"/>
+                        <field name="subformula">sum</field>
+                        <field name="green_on_positive" eval="False"/>
+                    </record>
+                </field>
+                <field name="sequence" eval="0"/>
+            </record>
+            <record id="account_financial_report_expense_income_tax" model="account.report.line">
+                <field name="name">Income Tax Expense</field>
+                <field name="code">INCOME_TAX_EXP</field>
+                <field name="hierarchy_level">1</field>
+                <field name="groupby">account_id</field>
+                <field name="foldable" eval="True"/>
+                <field name="expression_ids">
+                    <record id="account_financial_report_expense_income_tax_balance" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">domain</field>
+                        <field name="formula" eval="[('account_id.account_type', '=', 'expense_income_tax')]"/>
+                        <field name="subformula">sum</field>
+                        <field name="green_on_positive" eval="False"/>
+                    </record>
+                </field>
+                <field name="sequence" eval="0"/>
+            </record>
+            <record id="account_financial_report_expense_finance_cost" model="account.report.line">
+                <field name="name">Finance Cost</field>
+                <field name="code">FINANCE_COST</field>
+                <field name="hierarchy_level">1</field>
+                <field name="groupby">account_id</field>
+                <field name="foldable" eval="True"/>
+                <field name="expression_ids">
+                    <record id="account_financial_report_expense_finance_cost_balance" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">domain</field>
+                        <field name="formula" eval="[('account_id.account_type', '=', 'expense_finance_cost')]"/>
+                        <field name="subformula">sum</field>
+                        <field name="green_on_positive" eval="False"/>
+                    </record>
+                </field>
+                <field name="sequence" eval="0"/>
+            </record>
+            <record id="account_reports.account_financial_report_operating_income0" model="account.report.line">
+                <field name="expression_ids">
+                    <record id="account_reports.account_financial_report_operating_income0_balance" model="account.report.expression">
+                        <field name="formula">REV.balance - COS.balance - TOTAL_EXP.balance</field>
+                    </record>
+                </field>
+            </record>
+            <record id="account_reports.account_financial_report_net_profit0" model="account.report.line">
+                <field name="expression_ids">
+                    <record id="account_reports.account_financial_report_net_profit0_balance" model="account.report.expression">
+                        <field name="formula">REV.balance + OIN.balance - COS.balance - TOTAL_EXP.balance - OEXP.balance</field>
+                    </record>
+                </field>
+            </record>
+            <record id="account_reports.account_financial_report_cost_sales0" model="account.report.line">
+                <field name="name">Cost Of Sales</field>
+            </record>
+        </field>
+    </record>
+</odoo>

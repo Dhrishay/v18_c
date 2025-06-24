@@ -1,0 +1,155 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_move_line_tree_grouped_general" model="ir.ui.view">
+        <field name="name">account.move.line.tree.grouped.general</field>
+        <field name="model">account.move.line</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="account.view_move_line_tree"/>
+        <field name="arch" type="xml">
+            <field name="account_id" position="attributes">
+                <attribute name="optional">hide</attribute>
+                <attribute name="readonly">1</attribute>
+            </field>
+            <field name="balance" position="attributes">
+                <attribute name="optional">show</attribute>
+            </field>
+            <field name="balance" position="after">
+                <field name="cumulated_balance" optional="show"/>
+                </field>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="action_account_revenue_form">
+        <field name="name">Deferred Revenues</field>
+        <field name="res_model">account.asset</field>
+        <field name="domain">[('asset_type', '=', 'sale'), ('state', '!=', 'model'), ('parent_id', '=', False)]</field>
+        <field name="context">{'asset_type': 'sale', 'default_asset_type': 'sale'}</field>
+        <!-- <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('account_asset.view_account_asset_sale_tree')}),
+            (0, 0, {'view_mode': 'kanban'}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('account_asset.view_account_asset_revenue_form')})]"/> -->
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create new deferred revenue
+            </p>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="action_account_expense_form">
+        <field name="name">Deferred Expenses</field>
+        <field name="res_model">account.asset</field>
+        <field name="domain">[('asset_type', '=', 'expense'), ('state', '!=', 'model'), ('parent_id', '=', False)]</field>
+        <!-- <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('account_asset.view_account_asset_sale_tree')}),
+            (0, 0, {'view_mode': 'kanban'}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('account_asset.view_account_asset_revenue_form')})]"/> -->
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create new deferred revenue
+            </p>
+        </field>
+    </record>
+    <record id="action_account_moves_ledger_general" model="ir.actions.act_window">
+        <field name="context">{'journal_type':'general', 'search_default_group_by_account': 1, 'search_default_posted':1}</field>
+        <field name="name">General Ledger</field>
+        <field name="res_model">account.move.line</field>
+        <field name="domain">[('display_type', 'not in', ('line_section', 'line_note'))]</field>
+        <field name="view_id" ref="view_move_line_tree_grouped_general"/>
+        <field name="view_mode">list,pivot,graph</field>
+    </record>
+    <menuitem
+        id="menu_action_account_journal"
+        name="Journals"
+        parent="account.menu_finance_entries"
+        sequence="21" />
+    <menuitem
+        id="menu_action_account_ledgers"
+        name="Ledgers"
+        parent="account.menu_finance_entries"
+        sequence="21" />
+    <menuitem
+        id="menu_action_account_management"
+        name="Management"
+        parent="account.menu_finance_entries"
+        sequence="21" />
+    <menuitem
+        id="menu_action_account_journal_sale"
+        name="Sales"
+        parent="menu_action_account_journal"
+        action="account.action_account_moves_journal_sales"
+        sequence="21" />
+    <menuitem
+        id="menu_action_account_journal_purchase"
+        name="Purchases"
+        parent="menu_action_account_journal"
+        action="account.action_account_moves_journal_purchase"
+        sequence="21" />
+    <menuitem
+        id="menu_action_account_journal_bank_cash"
+        name="Cash and cash equivalents"
+        parent="menu_action_account_journal"
+        action="account.action_account_moves_journal_bank_cash"
+        sequence="21" />
+    <menuitem
+        id="menu_action_account_journal_misc"
+        name="Miscellaneous"
+        parent="menu_action_account_journal"
+        action="account.action_account_moves_journal_misc"
+        sequence="21" />
+    <menuitem
+        id="menu_action_account_journal_general"
+        name="General Ledger"
+        parent="menu_action_account_ledgers"
+        action="action_account_moves_ledger_general"
+        sequence="21" />
+    <menuitem
+        id="menu_action_account_journal_partner_ledger"
+        name="Partner Ledger"
+        parent="menu_action_account_ledgers"
+        action="account.action_account_moves_ledger_partner"
+        sequence="21" />
+    <menuitem
+        id="menu_action_account_journal_deferred_revenue"
+        name="Deferred Revenue"
+        parent="menu_action_account_management"
+        action="action_account_revenue_form"
+        sequence="21" />
+    <menuitem
+        id="menu_action_account_journal_deferred_expense"
+        name="Deferred Expense"
+        parent="menu_action_account_management"
+        action="action_account_expense_form"
+        />
+    <menuitem
+        id="account_auto_transfer.menu_auto_transfer"
+        name="Automatic Transfers"
+        parent="menu_action_account_management" sequence="1"/>
+
+    <menuitem parent="menu_action_account_management"
+          id="account_budget.menu_act_budget_analytic_view"
+          name="Analytic Budget" sequence="2"
+          groups="account.group_account_manager"/>
+
+    <menuitem parent="menu_action_account_management" id="account_asset.menu_action_account_asset_form" sequence="3" name="Assets"/>
+
+    <menuitem
+        id="menu_action_account_miscellaneous"
+        name="Miscellaneous"
+        parent="account.menu_finance_entries"
+        sequence="20" />
+
+    <menuitem id="account.menu_action_move_journal_line_form" sequence="1" name="Journal Entries" parent="menu_action_account_miscellaneous"/>
+
+    <menuitem id="account.menu_action_account_moves_all" parent="menu_action_account_miscellaneous" name="Journal Items" sequence="2"/>
+
+    <menuitem
+        id="menu_action_account_actions"
+        name="Actions"
+        parent="account.menu_finance_entries"
+        sequence="22" />
+
+    <menuitem id="account_accountant.menu_account_reconcile" name="Reconcile" parent="menu_action_account_actions" sequence="1"/>
+    <menuitem
+        id="account_accountant.menu_action_change_lock_date"
+        name="Lock Dates"
+        parent="menu_action_account_actions"
+        sequence="2"/>
+</odoo>
