@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <!--
+    This template extends the 'ProductScreen' in the Point of Sale module.
+    The purpose is to:
+    1. Modify the 'showRemainingButtons' attribute of the 'ControlButtons' component within the 'pads' div.
+    2. Add a custom sidebar toggle button and a collapsible control sidebar before the 'leftpane' div
+       when the control button sidebar feature is enabled (`pos.config.is_control_button_side_bar` is true).
+    -->
+
+    <t t-name="ProductScreen" t-inherit="point_of_sale.ProductScreen" t-inherit-mode="extension">
+        <!-- Modify the 'ControlButtons' to hide the remaining buttons -->
+        <xpath expr="//div[hasclass('pads')]//ControlButtons" position="attributes">
+            <attribute name="showRemainingButtons">false</attribute>
+        </xpath>
+        <!-- Add a custom sidebar toggle and collapsible control sidebar -->
+        <xpath expr="//div[hasclass('leftpane')]" position="before">
+            <t t-if="pos.config.is_control_button_side_bar">
+                <div class="hide" id="pos-main-control">
+
+
+                    <!-- Control Sidebar -->
+                    <div  id="pos-control-sidebar">
+                        <!-- Close Button -->
+                        <a class="close-btn" t-on-click="onCloseBtnClick">
+                            <i class="fa fa-times-circle"/>
+                        </a>
+                        <!-- Control Buttons inside the Sidebar -->
+                        <div class="pt-5">
+                            <ControlButtons showRemainingButtons="true" t-if="!ui.isSmall"
+                                            onClickMore.bind="displayAllControlPopup"/>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+    </t>
+</templates>

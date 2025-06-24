@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_pos_control_size_color,access_pos_control_size_color,model_pos_control_size_color,base.group_user,1,1,1,1
+access_pos_action_button,access_pos_action_button,model_pos_action_button,base.group_user,1,1,1,1
+access_pos_control_size_color_line,access_pos_control_size_color_line,model_pos_control_size_color_line,base.group_user,1,1,1,1

@@ -1,0 +1,64 @@
+<odoo>
+
+
+    <record id="control_button_size_color_form" model="ir.ui.view">
+        <field name="name">control.button.size.color.form</field>
+        <field name="model">pos.control.size.color</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="config_ids" widget="many2many_tags" options="{'no_create': True,
+                            'no_edit': True,
+                            'no_open':True}"/>
+                        </group>
+                        <group>
+                            <field name="height"/>
+                            <field name="width"/>
+                        </group>
+
+                    </group>
+                    <field name="line_ids" mode="list">
+                        <list editable="bottom">
+                            <field name="button_id" options="{'no_create': True,
+                            'no_edit': True,
+                            'no_open':True}"/>
+                            <field name="button_color" widget="color_picker"/>
+                        </list>
+                    </field>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="control_button_size_color_tree" model="ir.ui.view">
+        <field name="name">control.button.size.color.tree</field>
+        <field name="model">pos.control.size.color</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="config_ids" widget="many2many_tags"/>
+                <field name="height"/>
+                <field name="width"/>
+
+            </list>
+        </field>
+    </record>
+
+    <record id="action_control_button_size_color" model="ir.actions.act_window">
+        <field name="name">POS Button Size &amp; Color</field>
+        <field name="res_model">pos.control.size.color</field>
+        <field name="view_mode">list,form</field>
+
+    </record>
+
+    <menuitem name="POS Button Size &amp; Color" id="menu_control_button_size_color"
+              parent="point_of_sale.menu_point_config_product"
+              action="action_control_button_size_color"
+              sequence="1"/>
+
+</odoo>

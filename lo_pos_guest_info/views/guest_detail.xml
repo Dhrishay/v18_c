@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="guest_detail_tree_view" model="ir.ui.view">
+        <field name="name">guest.detail.tree</field>
+        <field name="model">guest.detail</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="order_id"/>
+                <field name="session_id"/>
+                <field name="age"/>
+                <field name="country_id"/>
+                <field name="gender"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="guest_detail_form_view" model="ir.ui.view">
+        <field name="name">guest.detail.form</field>
+        <field name="model">guest.detail</field>
+        <field name="arch" type="xml">
+            <form edit="0">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="order_id"/>
+                            <field name="age"/>
+                            <field name="country_id"/>
+                            <field name="gender"/>
+                        </group>
+                        <group>
+                            <field name="config_id"/>
+                            <field name="company_id"/>
+                            <field name="session_id"/>
+                            <field name="user_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_search_guest_detail" model="ir.ui.view">
+        <field name="name">guest.detail.filter</field>
+        <field name="model">guest.detail</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="order_id"/>
+                <field name="user_id"/>
+                <filter string="Country" name="country" context="{'group_by':'country_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id='guest_detail_action' model='ir.actions.act_window'>
+        <field name="name">Guest Details</field>
+        <field name="res_model">guest.detail</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_country': 1}</field>
+    </record>
+
+    <menuitem id="guest_detail_menu"
+              action="guest_detail_action"
+              parent="point_of_sale.menu_point_config_product"
+              sequence="50"/>
+</odoo>

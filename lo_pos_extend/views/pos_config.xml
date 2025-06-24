@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="pos_config_delivery_extended" model="ir.ui.view">
+        <field name="name">pos_config_delivery_extended</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='pos_payment_section']" position="before">
+                <block title="Delivery" id="pos_delivery_info">
+                    <setting id="pos_delivery_info" string="Delivery Time">
+<!--                    <label for="delivery_time" steing="Delivery Time"/>-->
+                    <div>
+                        <field name="delivery_time" style="max-width: 7rem;"/> <span style="margin-left: 5px;"> Minutes</span>
+                    </div>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="account_journal_ib_journal_form_inherit" model="ir.ui.view">
+            <field name="name">account.journal.view.ib.journalform.inherit</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='type']" position="after">
+                    <field name="icon_qr" widget='image' class="oe_avatar"/>
+                    <field name="is_iblaoqr"/>
+                    <field name="wallet_ib_name" invisible="not is_iblaoqr"/>
+                    <field name="wallet_ib_account" invisible="not is_iblaoqr"/>
+                    <field name="wallet_ib_merchant_id" invisible="not is_iblaoqr"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

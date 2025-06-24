@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="report_guest_detail_view_tree" model="ir.ui.view">
+        <field name="name">report.guest.detail.view.list</field>
+        <field name="model">report.guest.detail</field>
+        <field name="arch" type="xml">
+            <list string="Guest Analysis">
+                <field name="date"/>
+                <field name="order_id"/>
+                <field name="gender"/>
+                <field name="guest_count"/>
+                <field name="country_id"/>
+
+                <field name="age"/>
+                <field name="guest_age_range"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_report_guest_detail_pivot" model="ir.ui.view">
+        <field name="name">report.guest.detail.pivot</field>
+        <field name="model">report.guest.detail</field>
+        <field name="arch" type="xml">
+            <pivot string="Guest Analysis" sample="1">
+                <field name="country_id" type="row"/>
+                <field name="date" interval="month" type="col"/>
+                <field name="guest_count"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_report_guest_detail_graph" model="ir.ui.view">
+        <field name="name">report.guest.detail.graph</field>
+        <field name="model">report.guest.detail</field>
+        <field name="arch" type="xml">
+            <graph string="Guest Analysis" sample="1">
+                <field name="country_id"/>
+                <field name="guest_count" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+
+    <record id="view_report_guest_detail_search" model="ir.ui.view">
+        <field name="name">report.guest.detail.search</field>
+        <field name="model">report.guest.detail</field>
+        <field name="arch" type="xml">
+            <search string="Point of Sale Analysis">
+                <filter name="date" date="date"/>
+                <field name="order_id"/>
+                <field name="age"/>
+                <separator/>
+                <filter string="Male" name="male" domain="[('gender','=','male')]"/>
+                <filter string="Female" name="female" domain="[('gender','=','female')]"/>
+                <separator/>
+                <group expand="1" string="Group By">
+                    <filter string="Country" name="country" context="{'group_by':'country_id'}"/>
+                    <filter string="Gender" name="gender" context="{'group_by':'gender'}"/>
+                    <filter string="Point of Sale" name="pos" context="{'group_by':'config_id'}"/>
+                    <separator/>
+                    <filter string="Order Date" name="order_month" context="{'group_by':'date:month'}"/>
+                    <separator/>
+                    <filter string="Age" name="age" context="{'group_by':'guest_age_range'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+    <record id="action_report_guest_detail_all" model="ir.actions.act_window">
+        <field name="name">Guest Analysis</field>
+        <field name="res_model">report.guest.detail</field>
+        <field name="view_mode">graph,pivot</field>
+        <field name="search_view_id" ref="view_report_guest_detail_search"/>
+        <field name="context">{'group_by':[]}</field>
+    </record>
+
+
+    <menuitem id="menu_report_guest_detail_all" name="Guest Analysis" action="action_report_guest_detail_all"
+              parent="point_of_sale.menu_point_rep" sequence="10"/>
+</odoo>

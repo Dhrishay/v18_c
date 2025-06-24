@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_guest_detail,access_guest_detail,model_guest_detail,base.group_user,1,1,1,1
+lo_pos_guest_info.access_report_guest_detail,access_report_guest_detail,lo_pos_guest_info.model_report_guest_detail,base.group_user,1,1,1,1
+

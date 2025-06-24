@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="lo_pos_extend.TicketScreen" t-inherit="point_of_sale.TicketScreen" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('narrow')]" position="after">
+            <div t-if="this.pos.config.takeaway" class="col p-2">Order Type</div>
+        </xpath>
+        <xpath expr="//div[hasclass('order-row')]//div[hasclass('narrow')]" position="after">
+            <div t-if="this.pos.config.takeaway" class="col end p-2">
+                <div><span t-if="order.takeaway">Take Away</span>
+                    <span t-else="">Dine In</span></div>
+            </div>
+        </xpath>
+    </t>
+</templates>

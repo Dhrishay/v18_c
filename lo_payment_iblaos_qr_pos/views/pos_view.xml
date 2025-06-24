@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="pos_config_ib_journal_form_inherit" model="ir.ui.view">
+            <field name="name">pos.config.view.ib.journalform.inherit</field>
+            <field name="model">pos.config</field>
+            <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='is_posbox']" position="after">
+                    <label string="IB LaoQR Journal" for="ib_journal_id" class="col-lg-3 o_light_label" options="{'no_open': True, 'no_create': True}"/>
+                    <field name="ib_journal_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

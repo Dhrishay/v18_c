@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="PaymentScreen" t-inherit="point_of_sale.PaymentScreenButtons" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('payment-buttons')]/div" position="inside">
+            <div class="payment-controls">
+                <button t-if="currentOrder.is_paid() and currentOrder._isValidEmptyOrder()" class="button js_payment_ref highlight btn btn-light btn-lg w-100 lh-lg text-truncate"
+                    t-on-click="ToggleIsToPaymentRef">
+                     <i class="fa fa-credit-card-alt" /> Payment Ref
+                </button>
+            </div>
+        </xpath>
+    </t>
+</templates>
