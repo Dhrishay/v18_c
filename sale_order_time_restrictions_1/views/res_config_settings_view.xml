@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_website_order_time_settings" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.order.time</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="website.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='sale_product_catalog_settings']" position="after">
+                <block title="Order Time Restrictions" id="order_time_restrictions">
+                     <setting id="website_order_time_restrictions">
+                        <div class="text-muted">
+                            Order Times
+                        </div>
+                        <div class="content-group">
+                            <div class="row mt16">
+                                <label class="o_light_label col-lg-3" string="Start Time" for="order_start_time"/>
+                                <field name="order_start_time" widget="float_time"/>
+                            </div>
+                            <div class="row">
+                                <label class="o_light_label col-lg-3" for="order_end_time"/>
+                                <field name="order_end_time" widget="float_time"/>
+                            </div>
+                        </div>
+                         <div class="content-group">
+                             <div class="row mt16">
+                                 <label class="o_light_label col-lg-3" string="Restricted Days" for="order_start_time"/>
+                                <field name="rule_id"/>
+                             </div>
+                         </div>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_order_day_rule,order.day.rule,model_order_day_rule,,1,1,1,1
+access_order_day_rule_line,order.day.rule.line,model_order_day_rule_line,,1,1,1,1
