@@ -1,0 +1,20 @@
+{
+    'name' : 'API Connection LOD to KKE',
+    'version' : '18.0.0.1',
+    'sequence': 0,
+    'category': 'API Connection LOD to KKE',
+    'website' : 'https://www.laooddoo.com/',
+    'summary' : '',
+    'description' : """API Connection LOD to KKE (Kokkok Express)""",
+    'depends': ['lo_accounting_enhancement','lo_sale_enhancement','lo_company_set_configuration','stock','sale','sale_stock','delivery','odoo_rest','lod_request_product_to_dc'],
+    'data': [
+        'security/ir.model.access.csv',
+        'view/sale_order_view.xml',
+        'view/stock_view.xml',
+        'view/res_config.xml',
+        ],
+    'demo': [],
+    'installable': True,
+    'application': True,
+    'license': 'LGPL-3',
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="stock_picking_inherit_form_view" model="ir.ui.view">
+        <field name="name">stock.picking.inherit.view.form</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='location_dest_id']" position="after">
+                <field name="driver_name" />
+            </xpath>
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="license_plate" />
+                <field name="delivery_state" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="stock_vpicktree_inherit_form_view" model="ir.ui.view">
+        <field name="name">stock.picking.inherit.view.vpicktree</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="delivery_state" optional="show" widget="badge" decoration-muted="delivery_state == 'loading'" decoration-info="delivery_state == 'on_transit'" decoration-success="delivery_state == 'arrived'"/>
+                <field name="kke_pick_time" widget="date" optional="hide"/>
+                <field name="kke_drop_time" widget="date" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

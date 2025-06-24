@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_receipt">
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id"></t>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"></t>
+        </t>
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <div class='page'>
+                    <div class="oe_structure"/>
+                        <div style="font-family: Phetsarath OT">
+                            <t t-foreach="docs" t-as="doc">
+                                <div>  
+                                    <div class="text-center" style="font-size: 30px">
+                                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" alt="Logo"  style="max-height: 80px;"/>
+                                        <!-- <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" style="max-height: 140px;"/> -->
+                                    </div>
+                                    <div class="text-center" style="font-size: 20px">
+                                        <span>PHONSINUAN BRANCH</span>
+                                    </div>
+                                    <div class="text-center" style="font-size: 20px">
+                                        <span>310 RUE BOURICHANE, BAN PHONSINUAN, UNIT 12</span>
+                                    </div>
+                                </div>
+
+                                <div class="text-center" style="font-size: 18px; font-weight: 900;">
+                                    <span>ໃບເກັບເງິນ / RECEIPT</span>
+                                </div>
+                                <br/>
+                
+                                <div class="row">
+                                    <div class="col-12">
+                                        <span> ເລກໃບຮັບເງິນ / RECEIPT NO : </span><br/>
+                                        <span> ວັນທີ / DATE : </span><br/>
+                                        <span> ເວລາ / TIME : </span><br/>
+                                        <span> ລະຫັດພະນັກງານ / CASCHIER ID : </span><br/>
+                                        <span> ລຳດັບ / POS NO : </span><br/>
+                                        <span> ລະຫັດລູກຄ້າ / CUSTOMER ID: </span><br/>
+                                        <span> ສະກຸນເງິນ / CURENCY : </span><br/>
+                                        <span> ລາຄາລວມ ອມພ / VAT 7%</span>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div>
+                                    <table class="text-center" style="font-size: 16px; font-family: Times New Roman, Times, serif; width:1200px; border: 1px solid #000000; border-left: 0px; border-right: 0px; border-top: 0px;">
+                                        <thead>
+                                            <tr>
+                                                <th height="40" style="font-size: 16px; font-family: Times New Roman, Times, serif; background-color: #B6E3B5; color: black; border: 1px solid #000000; padding-top: 12px; width:100px"></th>
+                                                <th height="40" style="font-size: 16px; font-family: Times New Roman, Times, serif; background-color: #B6E3B5; color: black; border: 1px solid #000000; padding-top: 12px;"></th>
+                                                <th height="40" style="font-size: 16px; font-family: Times New Roman, Times, serif; background-color: #B6E3B5; color: black; border: 1px solid #000000; padding-top: 12px;"></th>
+        
+                                            </tr>
+                                        </thead>
+                                        <!-- <style>
+                                            tbody#tb tr:nth-child(odd) {
+                                              background-color: #D6EAF8 ;
+                                            } 
+                                        </style> -->
+        
+                                        <tbody id="tb">
+                                            <t t-set="i" t-value="1"/>
+                                            <!-- <t t-foreach="doc.move_line_ids_without_package" t-as="line"> -->
+                                                <tr height="35">
+                                                    <td class="text-center" style="font-size: 16px;  padding-top: 11px;  border-left: 1px solid #000000; border-right: 1px solid #000000;">
+                                                        <t t-esc="i" />
+                                                    </td>
+                                                    <td style="font-size: 16px;  padding-top: 11px;  border-left: 1px solid #000000; border-right: 1px solid #000000;">
+                                                        <!-- <span t-field="line.product_id.default_code"/> -->
+                                                    </td>
+                                                    <td class="text-center" style="font-size: 16px;  padding-top: 10px; border-right:1px;  border-left: 1px solid #000000; border-right: 1px solid #000000;">
+                                                        <!-- <t t-esc="line.product_id.barcode" /> -->
+                                                    </td>
+                                                </tr>
+                                                <t t-set="i" t-value="i+1"/>
+                                            <!-- </t> -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <br/>
+
+                                <div class="row">
+                                     <div class="col-6">
+                                        <span> ທັງໝົດ /  SUBTOTAL: </span><br/>
+                                        <span> ສ່ວນຫຼຸດ / DISCOUNT: </span><br/>
+                                        <span> ອາກອນມູນຄ່າເພິ່ມ / VAT INCLDE: </span><br/>
+                                        <span> ລວມທັງໝົດ / TOTAL DUE: </span>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="text-right">
+                                            <span></span><br/>
+                                            <span></span><br/>
+                                            <span></span><br/>
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <br/>
+
+                                <div class="row">
+                                     <div class="col-6">
+                                        <span> ບັດເຄຣດິດ / CREDIT CARD : </span><br/>
+                                        <span> ບັດເອທີເອັມ / ATM : </span>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="text-right">
+                                            <span></span><br/>
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <br/>
+
+                                <div class="row">
+                                     <div class="col-6">
+                                        <span> ເງິນສົດ / CASH : </span><br/>
+                                        <span> ເງຶນທອນ / CHANGE: </span>
+                                    </div>
+                                     <div class="col-6">
+                                        <div class="text-right">
+                                            <span></span><br/>
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <br/>
+
+                                <div class="row">
+                                     <div class="col-6">
+                                        <span> ຄະແນນ / POINT : </span><br/>
+                                        <span> ຄະແນນ ສະມາຊິກ / LOYALTY POINT : </span><br/>
+                                        <span> ໂປໂມຊັນ / PROMOTION : </span><br/>
+                                        <span> ຄູປອງ / COPON : </span><br/>
+                                        <span> ຂອງລາງວັນ / GIFT CARD: </span><br/>
+                                    </div>
+                                     <div class="col-6">
+                                        <div class="text-right">
+                                            <span></span><br/>
+                                            <span></span><br/>
+                                            <span></span><br/>
+                                            <span></span><br/>
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                    <!-- </body> -->
+                                    <!-- <footer> -->
+                                <div class="footer">
+                                    <div class="text-center" style="font-size: 30px">
+                                        <!-- <img src="" width="" height=""> -->
+                                        <span>QR CODE</span>
+                                    </div>
+                                </div>
+                                    <!-- </footer> -->
+                            </t>  
+                        </div>
+            
+                </div>
+            
+   
+            </t>
+        </t>
+    </template>
+</odoo>

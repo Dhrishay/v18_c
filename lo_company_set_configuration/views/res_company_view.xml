@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id='res_company_view_inherit_analytic_cr' model="ir.ui.view">
+        <field name="name">res.company.view.analytic.cr</field>
+        <field name='model'>res.company</field>
+        <field name='inherit_id' ref="base.view_company_form"/>
+        <field name='arch' type='xml'>
+            <xpath expr="//sheet" position='before'>
+                <header>
+                    <button name="action_create_configuration" string="Set Configuration" type="object"
+                            invisible="is_set_up_done"
+                            groups="lo_company_set_configuration.group_company_set_up_configuration"
+                            class="btn btn-primary"/>
+                </header>
+            </xpath>
+            <xpath expr="//field[@name='currency_id']" position="after">
+                <field name="is_set_up_done" invisible="1"/>
+
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Address">
+                    <group>
+                        <group string="Address">
+                            <field name="zone_id"/>
+                            <field name="district_id"/>
+                        </group>
+                        <group string="Map location">
+                            <field name="latitude"/>
+                            <field name="longitude"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//field[@name='company_registry']" position="attributes">
+                <attribute name="string">Company Registry</attribute>
+            </xpath>
+
+
+             <xpath expr="//page[@name='general_info']//field[@name='vat']" position="attributes">
+                <attribute name="string">VAT</attribute>
+            </xpath>
+
+
+
+               <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="res_partner_name_id"/>
+                <field name="owner_id"/>
+            </xpath>
+            <xpath expr="//field[@name='mobile']" position="after">
+                <field name="account_default_pos_receivable_account_id"/>
+            </xpath>
+            <xpath expr="//field[@name='phone']" position="before">
+                <field name="merchant_id"/>
+                <field name="pc_code"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="group_company_set_up_configuration" model="res.groups">
+        <field name="name">Show Company Configuration</field>
+        <field name="category_id" ref="base.module_category_hidden"/>
+        <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+
+    </record>
+
+</odoo>

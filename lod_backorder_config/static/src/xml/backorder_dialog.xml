@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="stock_barcode.BackorderDialog" t-inherit-mode="extension">
+        <xpath expr="//Dialog//t[@t-set-slot='footer']" position="before">
+            <div class="o_input_dropdown">
+                <br/>
+                <br/>
+                <!-- <BackOrderLocationAutocomplete/> -->
+                <!-- t-props="getAutoCompleteProps(props.backOrderLocations)" -->
+                Location:
+                <t t-if="props.backOrder_name">
+                    <t t-esc="props.backOrder_name"/>
+
+                </t>
+            </div>
+        </xpath>
+    </t>
+</templates>

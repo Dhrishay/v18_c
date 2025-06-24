@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<odoo>
+	<record model="ir.ui.view" id="account_invoice_form_accouting_enhancement">
+		<field name="name">Account Invoice</field>
+		<field name="model">account.move</field>
+		<field name="inherit_id" ref="account.view_move_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='ref']" position="replace">
+				<field name="ref" placeholder="*"></field>
+			</xpath>
+			<xpath expr="//field[@name='ref']" position="attributes">
+				<attribute name="required">1</attribute>
+			</xpath>
+			<xpath expr="//group[@id='other_tab_group']//field[@name='payment_reference']" position="replace" />
+             <xpath expr="//field[@name='partner_shipping_id']" position="after">
+                  <field name="payment_reference" invisible="move_type not in ('out_invoice', 'out_refund')" readonly="inalterable_hash" placeholder="Standard communication"/>
+             </xpath>
+             <xpath expr="//div[@name='journal_div']" position="after">
+                 <field name="account_id" />
+                 <field name="account_ids" />
+             </xpath>
+			<xpath expr="//page[@id='invoice_tab']//list//field[@name='price_unit']" position="before">
+				<field name="cr_sale_price" optional="show"/>
+			</xpath>
+			<xpath expr="//page[@id='other_tab']" position="after">
+				<page name="reference" string="Reference">
+					<group name="reference" string="Reference">
+						<field name="sale_order_id" />
+					</group>
+					<group name="delivery" string="Delivery Reference">
+						<field name="delivery_ref"/>
+					</group>
+				</page>
+			</xpath>
+			<xpath expr="//div[@name='currency_conversion_div']" position="replace">
+				<div class="break"/>
+				<div name="currency_conversion_div" class="d-flex text-muted float-start" invisible="currency_id == company_currency_id">
+					<span>1 </span>
+					<field name="currency_id" readonly="True" options="{'no_open': True}"/>
+					<span> = </span>
+					<field name="invoice_currency_inverse_rate" digits="[12,6]" readonly="True"/>
+					<span> </span>
+					<field name="company_currency_id" readonly="True" options="{'no_open': True}"/>
+				</div>
+			</xpath>
+		</field>
+	</record>
+	<record model="ir.ui.view" id="account_invoice_tree_accouting_enhancement">
+		<field name="name">Account Invoice</field>
+		<field name="model">account.move</field>
+		<field name="inherit_id" ref="account.view_invoice_tree"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='status_in_payment']" position="before">
+				<field name="payment_state"
+                           widget="badge"
+                           decoration-danger="payment_state == 'not_paid'"
+                           decoration-warning="payment_state in ('partial', 'in_payment')"
+                           decoration-success="payment_state in ('paid', 'reversed')"
+                           invisible="payment_state in ('invoicing_legacy')"
+                           optional="show"/>
+			</xpath>
+			<xpath expr="//field[@name='activity_ids']" position="attributes">
+				<attribute name="optional">show</attribute>
+			</xpath>
+			<xpath expr="//field[@name='amount_total_in_currency_signed']" position="before">
+				<field name="amount_total_signed" string="Total Signed" sum="Total Signed" decoration-bf="1" optional="show"/>
+			</xpath>
+		</field>
+	</record>
+	<record model="ir.ui.view" id="account_invoice_tree_accouting_enhancement">
+		<field name="name">Account Invoice</field>
+		<field name="model">account.move</field>
+		<field name="inherit_id" ref="account.view_invoice_tree"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='status_in_payment']" position="before">
+				<field name="payment_state"
+                           widget="badge"
+                           decoration-danger="payment_state == 'not_paid'"
+                           decoration-warning="payment_state in ('partial', 'in_payment')"
+                           decoration-success="payment_state in ('paid', 'reversed')"
+                           invisible="payment_state in ('invoicing_legacy')"
+                           optional="show"/>
+			</xpath>
+			<xpath expr="//field[@name='activity_ids']" position="attributes">
+				<attribute name="optional">show</attribute>
+			</xpath>
+			<xpath expr="//field[@name='amount_total_in_currency_signed']" position="before">
+				<field name="amount_total_signed" string="Total Signed" sum="Total Signed" decoration-bf="1" optional="show"/>
+			</xpath>
+		</field>
+	</record>
+</odoo>

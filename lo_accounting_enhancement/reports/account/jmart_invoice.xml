@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ✅ Report Action -->
+    <record id="jmart_invoice_id" model="ir.actions.report">
+        <field name="name">Jmart Invoice</field>
+        <field name="model">account.move</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lo_accounting_enhancement.jmart_invoice_main</field>
+        <field name="paperformat_id" ref="lo_accounting_enhancement.paperformat_for_kokkok"/>
+        <field name="print_report_name">'invoice_%s_%s' % ((object.name or '').replace("/","-"), (object.invoice_date or time.strftime("unknown_date")))</field>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- ✅ Report Template for Jmart Invoice -->
+    <template id="jmart_invoice">
+        <t t-call="web.internal_layout">
+            <main class="oe_structure" t-attf-style="font-family: {{ font_family }}; font-size: 14px;">
+                <!-- 🔧 Page Break Style -->
+                <style>
+                    .page-break {
+                        page-break-before: always;
+                    }
+                </style>
+                <!-- ✅ Use account.move.line instead of order_line -->
+                <t t-set="line_items" t-value="list(enumerate(doc.invoice_line_ids))"/>
+                <t t-set="group_size" t-value="25"/>
+                <t t-set="total_page" t-value="(len(line_items) + group_size - 1) // group_size"/>
+                <!-- 🔁 Loop through each page -->
+                <t t-foreach="range(total_page)" t-as="g">
+                    <div class="page">
+                        <!-- 🧾 Invoice Header Row -->
+                        <div class="row" t-attf-style="font-family: {{ font_family }}; font-size: 14px; margin-top: 30px;">
+                            <!-- 🖼️ Logo Section -->
+                            <div class="col-3">
+                                <img t-if="company.logo"
+                                     t-att-src="'data:image/png;base64,%s' % company.logo.decode('utf-8')"
+                                     t-attf-style="max-height: 90px;"/>
+                                <br/>
+                            </div>
+
+                            <!-- 🏢 Company Info Section -->
+                            <div class="col-6" t-attf-style="padding-left: 20px;">
+                               <!-- Company Name -->
+                                <span t-attf-style="font-family: {{ font_family }}; font-size: 20px;">
+                                    <b><t t-esc="company.name"/></b>
+                                </span><br/>
+                                <!-- Address -->
+                                <span t-attf-style="font-family: {{ font_family }}; font-size: 14px;">
+                                    Village:
+                                </span>
+                                <span t-attf-style="font-family: Noto Sans Lao; font-size: 14px;">
+                                    <t t-esc="company.street or ''"/>
+                                </span>
+                                <span t-attf-style="font-family: {{ font_family }}; font-size: 14px;padding-left:5px;">
+                                    District:
+                                </span>
+                                <span t-attf-style="font-family: Noto Sans Lao; font-size: 14px;">
+                                    <t t-esc="company.street2 or ''"/>
+                                </span>
+                                <span t-attf-style="font-family: {{ font_family }}; font-size: 14px;">
+                                    Province:
+                                </span>
+                                <span t-attf-style="font-family: Noto Sans Lao; font-size: 14px;">
+                                    <t t-esc="company.city or ''"/>
+                                </span><br/>
+                                <!-- Phone -->
+                                <span t-attf-style="font-family: {{ font_family }}; font-size: 14px;">
+                                    Tel:
+                                </span>
+                                <span t-attf-style="font-family: Noto Sans Lao; font-size: 14px;">
+                                    <t t-esc="company.phone or ''"/>
+                                </span><br/> 
+                                <!-- <span t-attf-style="font-family: {{ font_family }}; font-size: 14px; padding-left: 8px;">
+                                    Fax:
+                                </span><br/> -->
+                                <!-- VAT ID -->
+                                <span t-attf-style="font-family: {{ font_family }}; font-size: 14px;">
+                                    VAT ID:
+                                </span>
+                                <span t-attf-style="font-family: Noto Sans Lao; font-size: 14px;">
+                                    <t t-esc="company.vat or '-'"/>
+                                </span>
+
+                            </div>
+                            <!-- 🧾 Invoice Title -->
+                            <div class="col-3" t-attf-style="padding-left: 60px;">
+                                <span t-attf-style="font-family: {{ font_family }}; font-size: 30px;">
+                                    Invoice
+                                </span><br/>
+                            </div>
+                        </div> <!-- 🔚 End Header Row -->
+                        <div class="row" t-attf-style="font-family: {{ font_family }}; font-size: 14px; margin-top: 25px;">
+                            <!-- 🔹 Left Column: Customer Info -->
+                            <div class="col-6" t-attf-style="border: 1px solid #000; padding: 10px; border-radius: 5px; min-height: 180px; height: auto;">
+                                <span t-attf-style="font-family: {{ font_family }}; font-size: 14px;">Code:</span>
+                                <span t-attf-style="font-family: {{ font_family }}; font-size: 14px;">
+                                      <t t-esc="'%s' % ''.join(c for c in (doc.partner_id.name or '') if c.isdigit())[:6]"/>
+                                </span><br/>
+
+                                <span t-attf-style="font-family: {{ font_family }}; font-size: 14px; ">Contact Person:</span>
+                                <span t-attf-style="font-family: {{ font_family }}; font-size: 14px;">
+                                    <t t-esc="doc.partner_id.name or ''"/>
+                                </span><br/>
+
+                                <span t-attf-style="font-family: {{ font_family }}; font-size: 14px;">Name:</span>
+                                <span t-attf-style="font-family: {{ font_family }}; font-size: 14px;">
+                                    <t t-esc="doc.partner_id.name or ''"/>
+                                </span><br/>
+
+                                <span t-attf-style="font-family: {{ font_family }}; font-size: 14px;">Address:</span>
+                                <span t-attf-style="font-family: {{ font_family }}; font-size: 14px;">
+                                    <t t-esc="doc.partner_id.street or ''"/>
+                                    <t t-esc="doc.partner_id.street2 or ''"/>
+                                    <t t-esc="doc.partner_id.city or ''"/>
+                                </span>
+                            </div>
+
+                            <!-- 🔸 Spacer Column -->
+                            <div class="col-1" t-attf-style="border: none; padding: 10px; border-radius: 5px; min-height: 180px; height: auto;">
+                            </div>
+
+                            <!-- 🔹 Right Column: Invoice Info -->
+                            <div class="col-5" t-attf-style="border: 1px solid #000; padding: 10px; border-radius: 5px; min-height: 180px; height: auto;">
+                                <table t-attf-style="width: 100%; font-size: 14px; border-collapse: collapse;">
+                                    <tbody>
+                                        <tr>
+                                            <td t-attf-style="padding: 4px; width: 50%; font-family: {{ font_family }};">Page:</td>
+                                            <td t-attf-style="padding: 4px; width: 50%;">
+                                                <t t-esc="g + 1"/> / <t t-esc="total_page"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td t-attf-style="padding: 4px; font-family: {{ font_family }};">Invoice Number:</td>
+                                            <td t-attf-style="padding: 4px;">
+                                                <t t-esc="doc.name or ''"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td t-attf-style="padding: 4px; font-family: {{ font_family }};">Invoice Date:</td>
+                                            <td t-attf-style="padding: 4px;">
+                                                <t t-esc="doc.invoice_date.strftime('%d/%m/%Y') if doc.invoice_date else ''"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td t-attf-style="padding: 4px; font-family: {{ font_family }};">Document Date:</td>
+                                            <td t-attf-style="padding: 4px;"> <t t-esc="doc.create_date.strftime('%d/%m/%Y') if doc.create_date else ''"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td t-attf-style="padding: 4px; font-family: {{ font_family }};">Document Number:</td>
+                                            <td t-attf-style="padding: 4px;"><t t-esc="doc.name or ''"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td t-attf-style="padding: 4px; font-family: {{ font_family }};">Payment Terms:</td>
+                                            <td t-attf-style="padding: 4px;"><t t-esc="doc.sale_order_id.payment_term_id.name or ''"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td t-attf-style="padding: 4px; font-family: {{ font_family }};">Due Date:</td>
+                                            <td t-attf-style="padding: 4px;"> <t t-esc="doc.invoice_date_due.strftime('%d/%m/%Y') if doc.invoice_date_due else ''"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td t-attf-style="padding: 4px; font-family: {{ font_family }};">Delivery Deadline:</td>
+                                            <td t-attf-style="padding: 4px;"> <t t-esc="doc.my_activity_date_deadline.strftime('%d/%m/%Y') if doc.my_activity_date_deadline else ''"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td t-attf-style="padding: 4px; font-family: {{ font_family }};">Delivery Date:</td>
+                                            <td t-attf-style="padding: 4px;"> <t t-esc="doc.delivery_date.strftime('%d/%m/%Y') if doc.delivery_date else ''"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td t-attf-style="padding: 4px; font-family: {{ font_family }};">Salesperson:</td>
+                                            <td t-attf-style="padding: 4px;">
+                                                <t t-esc="doc.user_id.name or ''"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td t-attf-style="padding: 4px; font-family: {{ font_family }};">Printed By:</td>
+                                            <td t-attf-style="padding: 4px;">
+                                                <t t-esc="user.name"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- 🔻 Invoice Line Title -->
+                        <div t-attf-style="padding: 5px; font-family: {{ font_family }}; font-size: 14px;">
+                            Invoice Line Items
+                        </div>
+                       <table t-attf-style="width: 100%; border-bottom:1px solid black; font-size: 14px; font-family: {{ font_family }};" border="1">
+                            <thead>
+                                <tr t-attf-style="text-align: center; border: 1px solid black; font-size: 14px; font-family: {{ font_family }};">
+                                    <th t-attf-style="width: 5%; border: 1px solid black; font-size: 14px;">No.</th>
+                                    <th t-attf-style="width: 15%; border: 1px solid black; font-size: 14px;">Product Code</th>
+                                    <th t-attf-style="width: 30%; border: 1px solid black; font-size: 14px;">Product Description</th>
+                                    <th t-attf-style="width: 8%; border: 1px solid black; font-size: 14px;">Unit</th>
+                                    <th t-attf-style="width: 8%; border: 1px solid black; font-size: 14px;">Free</th>
+                                    <th t-attf-style="width: 10%; border: 1px solid black; font-size: 14px;">Unit Price</th>
+                                    <th t-attf-style="width: 5%; border: 1px solid black; font-size: 14px;">Discount</th>
+                                    <th t-attf-style="width: 20%; border: 1px solid black; font-size: 14px;">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody t-attf-style="font-size: 14px; font-family: {{ font_family }};">
+                                <tr t-foreach="line_items[g*group_size : (g+1)*group_size]" t-as="item">
+                                    <td t-attf-style="text-align: center; border: 1px solid black; height: 30px; font-size: 14px;">
+                                        <t t-esc="item[0] + 1"/>
+                                    </td>
+                                    <td t-attf-style="text-align: left; border: 1px solid black; padding-left: 5px; font-size: 14px;">
+                                        <t t-esc="item[1].barcode or '-'"/>
+                                    </td>
+                                    <td t-attf-style="text-align: left; border: 1px solid black; padding-left: 5px; font-family: 'Noto Sans Lao'; font-size: 14px;">
+                                        <t t-esc="item[1].name"/>
+                                    </td>
+                                    <td t-attf-style="text-align: center; border: 1px solid black; font-size: 14px;">
+                                        <t t-esc="item[1].product_uom_id.name"/>
+                                    </td>
+                                    <td t-attf-style="text-align: center; border: 1px solid black; font-size: 14px;">
+                                        <!-- <t t-esc="item[1].free_qty if hasattr(item[1], 'free_qty') else 0"/> -->
+                                    </td>
+                                    <td t-attf-style="text-align: right; border: 1px solid black; padding-right: 5px; font-size: 14px;">
+                                        <t t-esc="'{:,.2f}'.format(item[1].price_unit)"/> <t t-esc="doc.currency_id.name"/>
+                                    </td>
+                                    <td t-attf-style="text-align: right; border: 1px solid black; padding-right: 5px; font-size: 14px;">
+                                        <t t-esc="'{:,.0f}'.format(item[1].discount)"/>%
+                                    </td>
+                                    <td t-attf-style="text-align: right; border: 1px solid black; padding-right: 5px; font-size: 14px;">
+                                        <t t-esc="'{:,.2f}'.format(item[1].price_total)"/> <t t-esc="doc.currency_id.name"/>
+                                    </td>
+                                </tr>
+                                <!-- Footer Subtotal Per Page -->
+                                <tr style="page-break-inside: avoid;">
+                                    <td colspan="5" style="border-top: 1px solid black; border-bottom: 0px; border-left: 1px solid black; font-size: 14px;"></td>
+                                    <t t-if="g + 1 == total_page">
+                                        <td colspan="2" style="border-top: 1px solid black; border-bottom: 0px; border-left: 1px solid black; font-size: 14px;"></td>
+                                    </t>
+                                    <t t-if="g + 1 != total_page">
+                                        <td colspan="2" style="text-align: center; font-family: Montserrat; border-top: 1px solid black; border-left: 0px; border-right: 1px solid black; font-size: 14px;">
+                                            <span>Subtotal This Page</span>
+                                        </td>
+                                        <td style="text-align: right; border: 1px solid black; padding-right:5px; font-size: 14px;"
+                                            t-attf-style="font-family: {{ 'Noto Sans Lao' if lang == 'lo_LA' else 'Montserrat' }};">
+                                            <t t-set="subtotal_this_page" t-value="sum(item[1].price_total for item in line_items[g*group_size : (g+1)*group_size])"/>
+                                            <t t-esc="'{:,.2f}'.format(subtotal_this_page or 0.0)"/> <t t-esc="doc.currency_id.name"/>
+                                        </td>
+                                    </t>
+                                </tr>
+
+                                <!-- Grand Total at last page -->
+                                <t t-set="line_count" t-value="len(doc.invoice_line_ids)"/>
+                                <t t-set="total_qty" t-value="sum(line.quantity for line in doc.invoice_line_ids)"/>
+                                <t t-if="g + 1 == total_page">
+                                    <tr>
+                                        <td colspan="5" style="padding: 6px; border-left: 1px solid black; border-top: 1px solid black; font-size: 14px;">
+                                            # Non-VAT Included Items
+                                        </td>
+                                        <td colspan="2" style="text-align: right; padding: 6px; border-top: 1px solid black; font-size: 14px;">
+                                            Subtotal This Page
+                                        </td>
+                                        <td style="text-align: right; padding: 6px; border-top: 1px solid black; border-right: 1px solid black; font-size: 14px;">
+                                            <t t-set="subtotal_this_page" t-value="sum(item[1].price_total for item in line_items[g*group_size : (g+1)*group_size])"/>
+                                            <t t-esc="'{:,.2f}'.format(subtotal_this_page or 0.0)"/> <t t-esc="doc.currency_id.name"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" style="padding: 6px; border-left: 1px solid black; border-bottom: 1px solid black; font-size: 14px;">
+                                            Total Quantity: <strong><t t-esc="'{:,.2f}'.format(total_qty)"/></strong> pcs
+                                            Total Lines: <strong><t t-esc="line_count"/></strong> items
+                                        </td>
+                                        <td colspan="2" style="text-align: right; padding: 6px; border-bottom: 1px solid black; font-size: 14px;">
+                                            Grand Total
+                                        </td>
+                                        <td style="text-align: right; padding: 6px; border-bottom: 1px solid black; border-right: 1px solid black; font-size: 14px;">
+                                            <t t-esc="'{:,.2f}'.format(doc.amount_total)"/> <t t-esc="doc.currency_id.name"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <!-- ✅ Final Page Summary Section -->
+                        <t t-if="g + 1 == total_page">
+                            <table t-attf-style="width: 100%; {{ table_font_style }} border-collapse: collapse; margin-top: 20px;" border="0">
+                                <tr>
+                                    <td t-attf-style="width: 60%; vertical-align: top; {{ table_font_style }}">Note
+                                    <span  t-attf-style="font-family: {{ font_family }};"><t t-esc="doc.narration"/> </span>
+                                    </td>
+                                    <td t-attf-style="width: 40%;">
+                                        <table t-attf-style="width: 100%; border-collapse: collapse; {{ table_font_style }} border: 1px solid black;" border="1">
+                                           <tr>
+                                                <t t-set="undiscounted_total" t-value="sum(line.price_unit * line.quantity for line in doc.invoice_line_ids)"/>
+                                                <t t-set="discount" t-value="(undiscounted_total or 0.0) - (doc.amount_untaxed or 0.0)"/>
+                                                <td t-attf-style="padding: 5px;">Discount</td>
+                                                <td t-attf-style="text-align: right; padding-right: 5px;"><t t-esc="'{:,.2f}'.format(discount)"/> <t t-esc="doc.currency_id.name"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td t-attf-style="padding: 5px; {{ table_font_style }}">Total After Discount</td>
+                                                <td t-attf-style="text-align: right;padding-right: 5px; {{ table_font_style }}">
+                                                    <t t-esc="'{:,.2f}'.format(doc.amount_total)"/> <t t-esc="doc.currency_id.name"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <t t-set="exempt_amount" t-value="sum(line.price_subtotal for line in doc.invoice_line_ids if not line.tax_ids or all((tax.amount or 0.0) == 0.0 for tax in line.tax_ids))"/>
+                                                <td t-attf-style="padding: 5px; {{ table_font_style }}">Exempt Amount</td>
+                                                <td t-attf-style="text-align: right;padding-right: 5px; {{ table_font_style }}"><t t-esc="'{:,.2f}'.format(exempt_amount)"/> <t t-esc="doc.currency_id.name"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td t-attf-style="padding: 5px; {{ table_font_style }}">VAT 10%</td>
+                                                <td t-attf-style="text-align: right;padding-right: 5px; {{ table_font_style }}">
+                                                    <t t-esc="'{:,.2f}'.format(doc.amount_tax)"/> <t t-esc="doc.currency_id.name"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table t-attf-style="width: 100%; {{ table_font_style }} border-collapse: collapse; margin-top: 20px;" border="0">
+                                <tr>
+                                    <td t-attf-style="width: 70%; background-color: #d3d3d3;font-family: Noto Sans Lao; text-align: center; font-weight: bold; padding: 8px; border: 1px solid black;">
+                                        <t t-set="helper" t-value="env['amount.to.text.lao']"/>
+                                        <t t-if="lang == 'lo_LA'" t-esc="helper.amount_to_text(doc.amount_total, doc.currency_id.name)"/>
+                                        <t t-else="" t-esc="helper.num2word(doc.amount_total, doc.currency_id.name)"/>
+                                    </td>
+                                    <td t-attf-style="width: 3%; border: none;"></td>
+                                    <td t-attf-style="width: 30%; text-align: right; border: 1px solid black; padding: 8px;">
+                                        <table t-attf-style="width: 100%; border-collapse: collapse; {{ table_font_style }}" border="0">
+                                            <tr>
+                                                <td t-attf-style="font-weight: bold; {{ table_font_style }}">Net Total</td>
+                                                <td t-attf-style="text-align: right; {{ table_font_style }}">
+                                                    <t t-esc="'{:,.2f}'.format(doc.amount_total)"/> <t t-esc="doc.currency_id.name"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div t-attf-style="border-bottom: 3px solid black; margin-top: 10px;"></div>
+
+                            <table t-attf-style="width: 100%; margin-top: 30px; {{ table_font_style }} text-align: center;">
+                                <tr>
+                                    <td t-attf-style="border: 1px solid black; border-radius: 8px; padding: 10px; width: 22%;">
+                                        <div t-attf-style="font-weight: bold; border-bottom: 1px solid black; {{ table_font_style }}">Receiver</div>
+                                        <br/><br/>(<span>..............................................</span>)<br/>Date ........./............/..........
+                                    </td>
+                                    <td t-attf-style="border: none; padding: 10px; width: 3%;"></td>
+                                    <td t-attf-style="border: 1px solid black; border-radius: 8px; padding: 10px; width: 22%;">
+                                        <div t-attf-style="font-weight: bold; border-bottom: 1px solid black; {{ table_font_style }}">Sender</div>
+                                        <br/><br/>(<span>..............................................</span>)<br/>Date ........./............/..........
+                                    </td>
+                                    <td t-attf-style="border: none; padding: 10px; width: 3%;"></td>
+                                    <td t-attf-style="border: 1px solid black; border-radius: 8px; padding: 10px; width: 22%;">
+                                        <div t-attf-style="font-weight: bold; border-bottom: 1px solid black; {{ table_font_style }}">Inspector</div>
+                                        <br/><br/>(<span>..............................................</span>)<br/>Date ........./............/..........
+                                    </td>
+                                    <td t-attf-style="border: none; padding: 10px; width: 3%;"></td>
+                                    <td t-attf-style="border: 1px solid black; border-radius: 8px; padding: 10px; width: 22%;">
+                                        <div t-attf-style="font-weight: bold; border-bottom: 1px solid black; {{ table_font_style }}">Approver</div>
+                                        <br/><br/>(<span>..............................................</span>)<br/>Date ........./............/..........
+                                    </td>
+                                </tr>
+                            </table>
+                        </t>
+                        <!-- 🔁 Page Break: show if not last page -->
+                        <t t-if="g + 1 &lt; total_page">
+                            <div class="page-break"/>
+                        </t>
+
+                    </div> <!-- 🔚 End Page -->
+                </t> <!-- 🔚 End Page Loop -->
+            </main>
+        </t>
+    </template>
+
+    <template id="jmart_invoice_main">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+            <t t-set="company" t-value="doc.company_id if doc and 'company_id' in doc else res_company"/>
+                <t t-set="lang" t-value="doc.partner_id.lang or 'en_US'"/>
+                <t t-set="font_family" t-value="'Noto Sans Lao' if doc.partner_id.lang == 'lo_LA' else 'Montserrat'"/>
+                <t t-set="table_font_style" t-value="'font-family: Montserrat; font-size: 12px;'"/>
+                <t t-set="table_cell_border_style" t-value="'border: 1px solid black;'"/>
+                <t t-set="table_cell_padding_right" t-value="'text-align: right; border-left: 1px solid black; border-right: 1px solid black; padding-right: 5px;'"/>
+                <t t-set="table_cell_text_left" t-value="'text-align: left; padding-left: 3px;padding-top: 3px; border-left: 1px solid black; border-right: 1px solid black;'"/>
+                <t t-set="table_cell_center" t-value="'text-align: center; border-left: 1px solid black; border-right: 1px solid black;'"/>
+                <t t-call="lo_accounting_enhancement.jmart_invoice" t-lang="lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>

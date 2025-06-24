@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="view_sale_std_price_form_inherit" model="ir.ui.view">
+      <field name="name">sale.order.std.inherit</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.view_order_form" />
+      <field name="arch" type="xml">
+        <xpath expr="//page[@name='order_lines']//list//field[@name='price_unit']" position="before">
+          <field name="cr_sale_price" optional="show"/>
+<!--          <field name="user_branch" invisible="1" optional="hide"/>-->
+        </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>

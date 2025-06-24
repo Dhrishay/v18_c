@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.backorder</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="stock.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//block[@name='barcode_setting_container']" position="after">
+                    <block title="Backorder" name="backorder_setting_container">
+                        <setting id="backorder" company_dependent="1">
+                            <label for="backorder_location_id"/>
+                            <field name="backorder_location_id" readonly="0"/>
+                        </setting>
+                    </block>
+                    <block title="Lock Destination Location" name="is_destination_location_container">
+                        <setting id="lock_destination_location">
+                            <field name="is_receipt_lock_destination_location"/>
+                        </setting>
+                        <setting id="lock_src_location">
+                            <field name="is_delivery_lock_src_location"/>
+                        </setting>
+                    </block>
+                    <block title="Confirm Mapping" name="confirm_mapping_container">
+                        <setting id="confirm_mapping">
+                          
+                            <field name="is_confirm_mapping"/>
+                        </setting>
+                    </block>
+                </xpath>
+            </field>
+        </record>
+        <record id="stock_barcode_confirmation_view_form1" model="ir.ui.view">
+            <field name="name">stock.barcode.confirmation.view.form1</field>
+            <field name="model">stock.backorder.confirmation</field>
+            <field name="inherit_id" ref="stock.view_backorder_confirmation"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='show_transfers']" position="after">
+                    <field name="location_id" readonly="1" invisible="not picking_incoming"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="stock_picking_form_inherit" model="ir.ui.view">
+            <field name="name">stock.picking.form.inherit.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='location_dest_id'][1]" position="attributes">
+                    <attribute name="readonly">(is_lock_receipt and picking_type_code in ['incoming', 'outgoing']) or state == 'done'</attribute>
+                </xpath>
+                <xpath expr="//field[@name='location_dest_id'][2]" position="attributes">
+                    <attribute name="readonly">(is_lock_receipt and picking_type_code in ['incoming', 'outgoing']) or state == 'done'</attribute>
+                </xpath>
+                <xpath expr="//field[@name='location_id'][1]" position="attributes">
+                    <attribute name="readonly">(is_lock_delivery and picking_type_code in ['incoming', 'outgoing']) or state == 'done'</attribute>
+                </xpath>
+                <xpath expr="//field[@name='location_id'][2]" position="attributes">
+                    <attribute name="readonly">(is_lock_delivery and picking_type_code in ['incoming', 'outgoing']) or state == 'done'</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="stock_move_line_product_selector_inherit" model="ir.ui.view">
+            <field name="name">stock.product.selector.inherit</field>
+            <field name="model">stock.move.line</field>
+            <field name="inherit_id" ref="stock_barcode.stock_move_line_product_selector"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='location_dest_id']" position="after">
+                    <field name="is_lock_receipt" invisible="1"/>
+                    <field name="is_lock_delivery" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='location_dest_id']" position="attributes">
+                    <attribute name="readonly">is_lock_receipt</attribute>
+                </xpath>
+                 <xpath expr="//field[@name='location_id']" position="attributes">
+                    <attribute name="readonly">is_lock_delivery</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="mrp_production_form_view_inherit" model="ir.ui.view">
+            <field name="name">mrp.production.form.inherit</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='components']//field[@name='quantity']" position="attributes">
+                    <attribute name="readonly">parent.state in ['confirmed'] or has_tracking != 'none'</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

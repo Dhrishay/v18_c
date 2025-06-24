@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <odoo>
+        <template id="report_cash_payment_request_taladlao">
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id"></t>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"></t>
+        </t>
+
+            <!-- <t t-call="web.html_container"> -->
+                <t t-call="web.basic_layout">
+                <t t-foreach="docs" t-as="doc">
+                    <div class="page">
+                        <div class="oe_structure"/>
+                           
+        <!-- <header> -->
+            <div class="row">
+                <div class="col-6">
+                    <div style="font-size: 32px;"><b>Cash Payment Request</b></div>
+                    <div class="text-left" style="font-size: 20px; padding-top: 5px; ">
+                        <!-- <strong>Invoice No.:   <span style="color: #FF0000; padding-left: 25px;" t-field="doc.name"/></strong> -->
+                    </div>
+                    <div class="text-left" style="font-size: 14px;">
+                        <strong style="font-size: 16px;">Vendor:</strong>
+                            <div style="color: #002060; font-size: 16px; font-weight: 900;" > 
+                                <span t-esc="doc.partner_id.name"/>
+                            </div>
+                            <div>
+                                <t t-if="doc.partner_id.street">
+                                    <t t-esc="doc.partner_id.street" />. <t t-esc="doc.partner_id.city" />
+                                </t>
+                            </div>
+                            <div>
+                                Tel: <t t-esc="doc.partner_id.mobile" />, <t t-esc="doc.partner_id.phone" /><br/>
+                                Email: <t t-esc="doc.partner_id.email" />
+                            </div>
+                    </div>
+                    
+                </div>
+                <div class="col-6">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" alt="Logo"  style="max-height: 80px; float: right;"/>
+                    <!-- <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" style="max-height: 80px; float: right;" /> -->
+                    <div class="row pt-2" style="font-size: 14px; margin-top: 10px; font-weight: 900;">
+                        <div class="col-8 text-right">
+                            <div>Number :</div>
+                            <div>Date : </div>
+                            <div>Ref: INV No: </div>
+                        </div>
+                        <div class="col-5 pl-2" style="color: #002060;">
+                            <div><t t-esc="doc.name"/></div>
+                            <div><span t-field="doc.date" t-options='{"format": "dd/MM/yyyy"}'/></div>
+                            <div><span t-field="doc.memo"/></div>
+                        </div>
+                    </div>
+                        
+                        
+                </div>
+                </div>
+        <!-- </header> -->
+                 
+        <!-- <body> -->
+                    <t t-set="subtotal" t-value="0"/>
+                     <table class="text-center" width="100%">
+                         <thead class="text-center">
+                            <tr>
+                                <td colspan="8" style="color: #FF0000;">
+                                    <strong><span style="font-size: 10px; float: right; float: right;" t-field="doc.name"/></strong>
+                                    <span style="font-size: 10px; margin-right: 50px; float: right;" t-field="doc.partner_id.name"/> 
+                                </td>
+                            </tr>
+                            <tr>
+                                <th height="30" width="5%" style="font-size: 14px; border: 1px solid #000000; vertical-align: middle;">
+                                    No
+                                </th>
+                                <th height="30" width="33%" style="font-size: 14px; border: 1px solid #000000; vertical-align: middle;">
+                                    Description
+                                </th>
+                                <th height="30" width="6%" style="font-size: 14px; border: 1px solid #000000; vertical-align: middle;">
+                                    Amount
+                                </th>
+                                <th height="30" width="13%" style="font-size: 14px; border: 1px solid #000000; vertical-align: middle;">
+                                    Remark
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-left" style="font-size: 12px;">
+                            <t t-set="total" t-value="0"/>
+                            <t t-set="total_advance" t-value="0"/>
+                            <t t-set="i" t-value="1"/>
+                            <t t-foreach="(request.env['account.move'].search([('payment_reference','=',doc.memo)])).invoice_line_ids" t-as="line">
+                                <!-- <t t-if="line.product_id.is_product_discount != True"> -->
+                                <tr style="border: 0px solid black;">
+                                    <td class="text-center p-1" style="border: 1px solid #000000; vertical-align: middle;">
+                                        <t t-esc="i" />
+                                    </td>
+                                    <td class="text-left p-1" style="border: 1px solid #000000; vertical-align: middle;">
+                                        <t t-esc="line.name" />
+                                    </td>
+                                    <td class="text-left p-1" style="border: 1px solid #000000; vertical-align: middle;">
+                                        <t t-esc="'{:,.2f}'.format(line.price_total)"/>
+                                    </td>
+                                    <td class="text-center p-1" style="border: 1px solid #000000; vertical-align: middle;">
+                                        <t t-esc="doc.narration"/>
+                                    </td>
+                                </tr> 
+                                <!-- <t t-set="subtotal" t-value="subtotal + line.price_subtotal"/> -->
+                                <!-- </t> -->
+                                <t t-set="i" t-value="i+1"/>
+                                
+                            </t>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <table class="col-6" style="font-size: 14px; width: 45%; float: right;">
+                        <tr height="30" class="text-left">
+                            <td class="p-2" style="color: black; border: 1px solid #000000; padding-left: 5px;">
+                                Total
+                            </td>
+                            <td class="p-2 text-center" style="width:20%; color: black; border: 1px solid #000000;"><span t-field="doc.currency_id.name"/></td>
+                            <td class="text-right p-2" style="color: #002060; border: 1px solid #000000; padding-right: 5px;">
+                                <t t-esc="'{:,.2f}'.format(doc.amount)"/>
+                            </td>
+                        </tr>
+                        
+                    </table>
+                    <div style="width: 10%;"></div>
+
+                    <div class="footer">
+                        <div class="row pt-2" style="font-size: 12px;">
+                            <div class="col-10">
+                                <strong><span t-field="company.partner_id.name" />. <span t-field="company.street" />, <span t-field="company.street2" />, <span t-field="company.city" />, <span t-field="company.country_id.name" /><br/> 
+                                Tel: <span t-field="company.partner_id.mobile" />, <span t-field="company.partner_id.email" />, <span t-field="company.partner_id.website" /></strong>
+                            </div>
+                            <div class="col-2 text-right">
+                                <strong>Page: <span class="page"/> of <span class="topage"/></strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </t>
+            </t>
+        <!-- </t>             -->
+    </template>
+   
+</odoo>

@@ -1,0 +1,91 @@
+<odoo>
+    <!-- create_analytic_account: views -->
+
+
+    <record id="analytic_wizard_create_sub_company_view" model="ir.ui.view">
+        <field name="name">analytic.wizard.create.sub.company.view</field>
+        <field name="model">analytic.create.sub.company.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" readonly="1" invisible="state=='done'"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="is_create_analytic_account" invisible="state!='analytic_account'"/>
+                            <field name="is_create_analytic_budget" invisible="state!='analytic_budget'"/>
+                            <field name="is_create_pos_session" invisible="state!='pos_session'"/>
+                            <field name="warehouse_name" string="Warehouse Name"
+                                   invisible="state not in ['warehouse', 'done']"
+                                   required="state=='warehouse'" readonly="state=='done'"/>
+                            <field name="warehouse_code"
+                                   invisible="state not in ['warehouse', 'done']"
+                                   required="state=='warehouse'"
+                                   readonly="state=='done'"
+                            />
+                            <h6 invisible="state!='done' or not is_create_analytic_budget">Budget</h6>
+                            <field name="budget_name"
+                                   invisible="state not in ['analytic_budget', 'done'] or not is_create_analytic_budget"
+                                   required="state=='analytic_budget' and is_create_analytic_budget"
+                                   readonly="state=='done'"
+                            />
+                            <field name="date_from"
+                                   invisible="state not in ['analytic_budget', 'done'] or not is_create_analytic_budget"
+                                   required="state=='analytic_budget' and is_create_analytic_budget"
+                                   readonly="state=='done'"
+                            />
+                            <field name="date_to"
+                                   invisible="state not in ['analytic_budget', 'done'] or not is_create_analytic_budget"
+                                   required="state=='analytic_budget' and is_create_analytic_budget"
+                                   readonly="state=='done'"
+                            />
+                            <h6 invisible="state!='done' or not is_create_analytic_account">Analytic Account</h6>
+                            <field name="account_name"
+                                   invisible="state not in ['analytic_account', 'done'] or not is_create_analytic_account"
+                                   required="state=='analytic_account' and is_create_analytic_account"
+                                   readonly="state=='done'"
+                            />
+                            <field name="analytic_plan_id"
+                                   invisible="state not in ['analytic_account', 'done'] or not is_create_analytic_account"
+                                   required="state=='analytic_account' and is_create_analytic_account"
+                                   readonly="state=='done'"
+                                   domain="[('company_id', '=', company_parent_id)]"
+                            />
+                            <h6 invisible="state!='done' or not is_create_pos_session">Pos Session</h6>
+                            <field name="session_name"
+                                   invisible="state not in ['pos_session', 'done'] or not is_create_pos_session"
+                                   required="state=='pos_session' and is_create_pos_session"
+                                   readonly="state=='done'"
+                            />
+                              <field name="module_pos_restaurant"
+                                   invisible="state not in ['pos_session', 'done'] or not is_create_pos_session"
+                                   required="state=='pos_session' and is_create_pos_session"
+                                   readonly="state=='done'"
+                            />
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_create_analytic_account" string="Next" type="object" class="oe_highlight"
+                            invisible="state=='done'"/>
+                    <button name="action_confirm" string="Confirm" type="object" class="oe_highlight"
+                            invisible="state!='done'" confirm="Are you sure you want setup the all above details"/>
+                    <button name="action_previous_rec" string="Previous" type="object" class="oe_highlight"
+                            invisible="state in ['warehouse']"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- create_analytic_account : actions -->
+    <record id="analytic_wizard_create_sub_company_action" model="ir.actions.act_window">
+        <field name="name">Setup Branch Confirmation</field>
+        <field name="res_model">analytic.create.sub.company.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

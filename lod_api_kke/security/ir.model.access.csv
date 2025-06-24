@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+lod_api_kke.access_kke_delivery_type,access_kke_delivery_type,lod_api_kke.model_kke_delivery_type,base.group_user,1,1,1,1

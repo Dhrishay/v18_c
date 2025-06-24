@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_currency_form_inherit_rate" model="ir.ui.view">
+        <field name="name">res.currency.view.form.rate</field>
+        <field name="model">res.currency</field>
+        <field name="inherit_id" ref="base.view_currency_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='active']" position="after">
+                <field name="inverse_sale_rate"  digits="[12,12]" invisible="1"></field>
+                <field name="rate_sale"  digits="[12,12]" invisible="1"></field>
+            </xpath>
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="inver_rate_sale"  digits="[12,12]" optional="hide"></field>
+                <field name="rate_sale"  digits="[12,12]"></field>
+            </xpath>
+            <xpath expr="//field[@name='company_rate']" position="replace">
+                <field name="company_rate" digits="[12,12]" optional="hide"/>
+            </xpath>
+            <xpath expr="//field[@name='inverse_company_rate']" position="replace">
+                <field name="inverse_company_rate" digits="[12,12]" optional="show" string="Purchase Rate"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_currency_rate_tree_inherit_new" model="ir.ui.view">
+        <field name="name">res.currency.rate.view.form.inherit</field>
+        <field name="model">res.currency.rate</field>
+        <field name="inherit_id" ref="base.view_currency_rate_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="inside"> 
+                <field name="inver_rate_sale"  digits="[12,12]"></field>
+                <field name="rate_sale"  digits="[12,12]"></field>
+            </xpath>
+        </field>
+    </record>
+</odoo>

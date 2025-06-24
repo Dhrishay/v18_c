@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="paperformat_for_kokkok" model="report.paperformat">
+        <field name="name">A4 for kokkok</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">9</field>
+        <field name="margin_bottom">25</field>
+        <field name="margin_left">14</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">35</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="paperformat_for_master_franchise" model="report.paperformat">
+        <field name="name">A4 kokkok Master Franchise</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">9</field>
+        <field name="margin_bottom">25</field>
+        <field name="margin_left">14</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">35</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="invoice_kokkok_id" model="ir.actions.report">
+        <field name="name">Invoice / Vendor Bill</field>
+        <field name="model">account.move</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lo_accounting_enhancement.report_invoice_taladlao</field>
+        <field name="report_file">lo_accounting_enhancement.report_invoice_taladlao</field>
+        <field name="paperformat_id" ref="paperformat_for_kokkok"/>
+        <field name="print_report_name">('Invoice - %s' % (object.name))</field>
+        <field name="attachment">('Invoice.pdf')</field>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="kokkok_cash_payment_request_report_id" model="ir.actions.report">
+        <field name="name">Cash Payment Request</field>
+        <field name="model">account.move</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lo_accounting_enhancement.report_cash_payment_request_report_taladlao</field>
+        <field name="report_file">lo_accounting_enhancement.report_cash_payment_request_report_taladlao</field>
+        <field name="paperformat_id" ref="paperformat_for_kokkok"/>
+        <field name="print_report_name">('Cash_Payment_Request - %s' % (object.name))</field>
+        <field name="attachment">('Cash Payment Request.pdf')</field>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="kokkok_bank_payment_request_report_id" model="ir.actions.report">
+        <field name="name">Bank Payment Request</field>
+        <field name="model">account.move</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lo_accounting_enhancement.report_bank_payment_request_report_taladlao</field>
+        <field name="report_file">lo_accounting_enhancement.report_bank_payment_request_report_taladlao</field>
+        <field name="paperformat_id" ref="paperformat_for_kokkok"/>
+        <field name="print_report_name">('Bank_Payment_Request - %s' % (object.name))</field>
+        <field name="attachment">('Bank Payment Request.pdf')</field>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="kokkok_cash_receipt_id" model="ir.actions.report">
+        <field name="name">Cash Receipt</field>
+        <field name="model">account.move</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lo_accounting_enhancement.kokkok_cash_receipt</field>
+        <field name="report_file">lo_accounting_enhancement.kokkok_cash_receipt</field>
+        <field name="paperformat_id" ref="paperformat_for_kokkok"/>
+        <field name="print_report_name">('Cash_Receipt - %s' % (object.name))</field>
+        <field name="attachment">('Cash Receipt.pdf')</field>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="kokkok_bank_receipt_id" model="ir.actions.report">
+        <field name="name">Bank Receipt</field>
+        <field name="model">account.move</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lo_accounting_enhancement.kokkok_bank_receipt</field>
+        <field name="report_file">lo_accounting_enhancement.kokkok_bank_receipt</field>
+        <field name="paperformat_id" ref="paperformat_for_kokkok"/>
+        <field name="print_report_name">('Bank_Receipt - %s' % (object.name))</field>
+        <field name="attachment">('Bank Receipt.pdf')</field>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="kokkok_master_fc_inv_cust" model="ir.actions.report">
+        <field name="name">Invoice Master Franchise</field>
+        <field name="model">account.move</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lo_accounting_enhancement.kokkok_master_fc_inv_cust_tmpl</field>
+        <field name="report_file">lo_accounting_enhancement.kokkok_master_fc_inv_cust_tmpl</field>
+        <field name="paperformat_id" ref="paperformat_for_master_franchise"/>
+        <field name="print_report_name">('Master Franchise Invoice - %s' % (object.name))</field>
+        <field name="attachment">(object.state == 'posted') and ((object.name or 'INV').replace('/','_')+'.pdf')</field>
+        <field name="groups_id" eval="[(4, ref('lo_accounting_enhancement.group_master_franchise_manager'))]"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="vendor_bill" model="ir.actions.report">
+        <field name="name">Receipt</field>
+        <field name="model">account.move</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lo_accounting_enhancement.report_receipt</field>
+        <field name="report_file">lo_accounting_enhancement.report_receipt</field>
+        <field name="print_report_name">('report_receipt - %s' % (object.name))</field>
+        <field name="attachment">('report receipt.pdf')</field>
+        <field name="binding_type">report</field>
+    </record>
+
+
+    <record id="kokkok_cash_receipt_report_id" model="ir.actions.report">
+        <field name="name">Cash Receipt</field>
+        <field name="model">account.payment</field>
+        <field name="binding_model_id" ref="account.model_account_payment"/>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lo_accounting_enhancement.report_cash_receipt</field>
+        <field name="report_file">lo_accounting_enhancement.report_cash_receipt</field>
+        <field name="paperformat_id" ref="paperformat_for_kokkok"/>
+        <field name="print_report_name">('Cash Receipt - %s' % (object.name))</field>
+        <field name="attachment">('cash_receipt.pdf')</field>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="kokkok_bank_receipt_report_id" model="ir.actions.report">
+        <field name="name">Bank Receipt</field>
+        <field name="model">account.payment</field>
+        <field name="binding_model_id" ref="account.model_account_payment"/>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lo_accounting_enhancement.report_bank_receipt</field>
+        <field name="report_file">lo_accounting_enhancement.report_bank_receipt</field>
+        <field name="paperformat_id" ref="paperformat_for_kokkok"/>
+        <field name="print_report_name">('Bank Receipt - %s' % (object.name))</field>
+        <field name="attachment">('bank_receipt.pdf')</field>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="report_cash_payment_request_taladlao_id" model="ir.actions.report">
+        <field name="name">Cash Payment Request</field>
+        <field name="model">account.payment</field>
+        <field name="binding_model_id" ref="account.model_account_payment"/>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lo_accounting_enhancement.report_cash_payment_request_taladlao</field>
+        <field name="report_file">lo_accounting_enhancement.report_cash_payment_request_taladlao</field>
+        <field name="paperformat_id" ref="paperformat_for_kokkok"/>
+        <field name="print_report_name">('Cash_Payment_Request - %s' % (object.name))</field>
+        <field name="attachment">('Cash Payment Request.pdf')</field>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="report_bank_payment_request_taladlao_id" model="ir.actions.report">
+        <field name="name">Bank Payment Request</field>
+        <field name="model">account.payment</field>
+        <field name="binding_model_id" ref="account.model_account_payment"/>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lo_accounting_enhancement.report_bank_payment_request_taladlao</field>
+        <field name="report_file">lo_accounting_enhancement.report_bank_payment_request_taladlao</field>
+        <field name="paperformat_id" ref="paperformat_for_kokkok"/>
+        <field name="print_report_name">('Bank_Payment_Request - %s' % (object.name))</field>
+        <field name="attachment">('Bank Payment Request.pdf')</field>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,366 @@
+<?xml version="1.0"?>
+<odoo>
+	<template id="footer_2kkm">
+		<div class="footer">
+			<div class="row pt-2" style="font-size: 12px;">
+				<div class="col-10">
+					<strong>
+						<span t-if="company.partner_id"> <t t-out="company.partner_id.name"/>, </span>
+						<span t-if="company.street"> <t t-out="company.street"/>, </span>
+						<span t-if="company.street2"> <t t-out="company.street2"/>, </span>
+						<span t-if="company.city"> <t t-out="company.city"/>, </span>
+						<span t-if="company.country_id"> <t t-out="company.country_id.name"/>.</span>
+						<br/>
+						<span t-if="company.partner_id and company.partner_id.mobile "> Tel: <t t-out="company.partner_id.mobile"/>, </span>
+						<span t-if="company.partner_id and company.partner_id.email "> Email: <t t-out="company.partner_id.email"/>, </span>
+						<span t-if="company.partner_id and company.partner_id.website "> Website: <t t-out="company.partner_id.website"/></span>
+					</strong>
+				</div>
+				<div class="col-2 text-right">
+					<strong>Page:
+
+						<span class="page"/>
+                        of
+
+						<span class="topage"/>
+					</strong>
+				</div>
+			</div>
+		</div>
+	</template>
+	<template id="report_invoice_account_taladlaos">
+		<t t-set="o" t-value="o.with_context(lang=lang)"/>
+		<t t-set="company" t-value="o.company_id"/>
+		<t t-set="list_data_head"
+           t-value="{
+			  '1':{'name':'Invoice','style': {
+				  1:'font-size: 32px; text-align:left;',
+				  2:'text-align:left;'},
+				  'value': ''},
+			  '2':{'name':'Invoice No. :','style': {
+				  1:'font-size: 20px;text-align:left;',
+				  2:''},
+				  'value': o.name },
+			  '3':{'name':'Customer :','style': {
+				  1:'text-align:left;',
+				  2:'color: #002060; text-align:left;font-size: 16px; font-weight: 900;'},
+				  'value': o.partner_id.name if o.partner_id else ''},
+			  '4':{'name':'Tel :','style': {
+				  1:'text-align:left;',
+				  2:'text-align:left;'},
+				  'value': o.partner_id.phone+', '+o.partner_id.mobile if o.partner_id.mobile and o.partner_id.phone else o.partner_id.phone or o.partner_id.mobile},
+			  '5':{'name':'Email :','style': {
+				  1:'text-align:left;',
+				  2:'text-align:left;'},
+				  'value': o.partner_id.email},
+		  }"/>
+		<t t-set="list_data_head_right"
+           t-value="{
+			  '1': {
+				  'name': '',
+				  'class': 'text-right',
+				  'value': '',
+			  },
+			  '2': {
+				  'name': 'Date:',
+				  'class': '',
+				  'value': (o.invoice_date).strftime('%d/%m/%Y') if o.invoice_date else '-',
+			  },
+			  '3': {
+				  'name': 'Due Date:',
+				  'class': '',
+				  'value': (o.invoice_date_due).strftime('%d/%m/%Y') if o.invoice_date_due else '-',
+			  },
+			  '4': {
+				  'name': 'Ref SO:',
+				  'class': '',
+				  'value': o.invoice_origin if o.invoice_origin else '-',
+			  },
+			  '5': {
+				  'name': 'Ref Payment:',
+				  'class': '',
+				  'value': o.invoice_origin if o.invoice_origin else '-',
+			  },
+		  }"/>
+		<t t-call="web.basic_layout">
+			<style>
+                .blue-text {
+                	color: #002060;
+                }
+                .p-padding {
+                	padding: 1px !important;
+                }
+
+                .table-bordered {
+                	border: 1px solid #000000;
+                }
+
+                .table-bordered th,
+                .table-bordered td {
+					border: 1px solid #000000;
+					padding: 5px !important;
+                }
+
+                .table-bordered thead th,
+                .table-bordered thead td {
+					text-align: left !important;
+					border: 1px solid #000000;
+                }
+
+            </style>
+			<t t-set="tax_totals" t-value="json.loads(o.tax_totals_json)"/>
+			<div class="page">
+				<div class="oe_structure"/>
+				<div class="row pb-3" style="align-items: end !important;">
+					<div class="col-7" >
+						<div style="border:none !important;text-align:left !important;">
+							<t t-foreach="list_data_head" t-as="data_head">
+								<div style="border:0px !important;text-align:left !important;">
+									<span
+											t-att-style="list_data_head[data_head]['style'][1]"
+											t-out="list_data_head[data_head]['name']"/>
+									<span
+											t-att-style="list_data_head[data_head]['style'][2]"
+											t-out="list_data_head[data_head]['value']"/>
+								</div>
+							</t>
+						</div>
+					</div >
+					<div class="col-5" style="border: 0px !important;">
+						<div style='width: 100%;' >
+							<t t-foreach="list_data_head_right" t-as="data_head_right">
+								<div  style="border:0px !important;text-align:left !important;" t-att-class="list_data_head_right[data_head_right]['class']">
+									<t t-if="data_head_right== '1' and company.logo">
+										<img t-att-src="image_data_uri(company.logo)" style="max-height: 60px"/>
+									</t>
+									<t t-else="">
+										<div class="row">
+											<div class="col-4 p-padding" style="border:0px !important;text-align:left !important;">
+												<span
+														t-out="list_data_head_right[data_head_right]['name']"/>
+											</div>
+											<div class="col-8">
+												<span class='blue-text'
+													  t-out="list_data_head_right[data_head_right]['value']"
+												/>
+											</div>
+										</div>
+									</t>
+								</div>
+							</t>
+						</div>
+					</div>
+				</div>
+				<div class="">
+					<table class='table text-center table-bordered' style='font-size:12px'>
+						<thead style='font-size: 14px'>
+							<div style="text-align: right !important;">
+								<t t-out="o.partner_id.name"/>
+								<strong><t t-out='o.name'/></strong>
+							</div>
+							<t t-set="head_table"
+							   t-value="['No','Barcode','Product Name','Unit','Price','QTY','Total']"/>
+							<tr>
+								<t t-foreach="head_table" t-as="data">
+									<th style="text-align:center !important;">
+										<b><t t-out='data'/></b>
+									</th>
+								</t>
+							</tr>
+						</thead>
+						<tbody>
+							<t t-set="no_line" t-value="0"/>
+							<t t-set="price_subtotal" t-value="0"/>
+							<t t-set="total_discount" t-value="0"/>
+							<t t-set="total" t-value="0"/>
+							<t t-set="fm_cur" t-value="'{:,.2f}'"/>
+							<t t-foreach="o.invoice_line_ids" t-as="line">
+								<t t-set="no_line" t-value="no_line+1"/>
+								<t t-set="price_subtotal_without_disc"
+								   t-value="line.quantity*line.price_unit"/>
+								<t t-set="price_subtotal"
+								   t-value="price_subtotal+price_subtotal_without_disc"/>
+								<t t-set="total_discount"
+								   t-value="total_discount+(price_subtotal_without_disc-line.price_subtotal)"/>
+								<tr>
+									<td style="text-align:left;">
+										<t t-out="no_line"/>
+									</td>
+									<td style="text-align:left;">
+										<t t-out="line.product_id.barcode"/>
+									</td>
+									<td style="text-align:left;">
+										<t t-out="line.product_id.name if line.product_id else line.name"/>
+									</td>
+									<td style="text-align:left;">
+										<t t-out="line.product_uom_id.name"/>
+									</td>
+									<td style="text-align:left;">
+										<t t-out="fm_cur.format(line.price_unit)"/>
+									</td>
+									<td style="text-align:left;">
+										<t t-out="fm_cur.format(line.quantity)"/>
+									</td>
+									<td style="text-align:right;">
+										<t t-out="fm_cur.format(price_subtotal_without_disc)"/>
+									</td>
+								</tr>
+							</t>
+							<tr>
+								<td height='15' colspan='8'
+									style="border-left: hidden;border-right: hidden;"/>
+							</tr>
+							<tr style="text-align:left !important;">
+								<td colspan='4' rowspan='5'
+									style='border:hidden;padding:0px !important'>
+									<div class="" >
+										<div style='max-height: 140px'
+											 class=" border border-dark p-2">
+											<table width='100%' height='100%' class='p-0'
+												   style='border: hidden'>
+												<tr>
+													<td width='70%' height='50%' style="text-align: left;">
+														<t t-if="o.account_id">Acc Number:
+
+															<strong style="text-align: left;" t-out="o.account_id.bank_account_id.acc_number"/>
+															<br/>
+															Acc Name:
+
+															<strong style="text-align: left;" t-out="o.account_id.bank_account_id.acc_holder_name"/>
+														</t>
+														<t t-else="">Acc Name:
+															<strong style="text-align: left;"
+																	t-out="'KOK KOK M CO LTD'"/>
+														</t>
+													</td>
+													<td style='border: hidden' width='30%'
+														class=' text-center'>
+														<t t-if="o.account_id">
+															<img class="rounded mx-auto d-block"
+																 src="/" width='80%' title='No QR'/>
+														</t>
+														<t t-else="">
+															<img class="rounded mx-auto d-block"
+																 src="/lo_accounting_enhancement/static/src/image/qrkkm.jpeg"
+																 width='80%'/>
+														</t>
+													</td>
+												</tr>
+											</table>
+										</div>
+										<div style='max-height: 140px'
+											 class=" border border-dark p-2 mt-3">
+											<table width='100%' height='100%' class='p-0'
+												   style='border: hidden'>
+												<tr>
+													<td width='70%' height='50%' style="text-align: left;">
+														<t t-if="o.account_ids">Acc Number:
+															<strong style="text-align: left;" t-out="o.account_ids.bank_account_id.acc_number"/>
+															<br/>
+															AccName:
+
+															<strong style="text-align: left;" t-out="o.account_ids.bank_account_id.acc_holder_name"/>
+														</t>
+														<t t-else="">AccName:
+															<strong style="text-align: left;" t-out="'KOK KOK M CO LTD'"/>
+														</t>
+													</td>
+													<td style='border: hidden' width='30%'
+														class=' text-center'>
+														<t t-if="o.account_ids">
+															<img class="rounded mx-auto d-block"
+																 src="/" width='80%' title='No QR'/>
+														</t>
+														<t t-else="">
+															<img class="rounded mx-auto d-block"
+																 src="/lo_accounting_enhancement/static/src/image/qrkkm.jpeg"
+																 width='80%'/>
+														</t>
+													</td>
+												</tr>
+											</table>
+										</div>
+									</div>
+								</td>
+								<td style='border-top:hidden;border-bottom:hidden;'></td>
+								<td>Sub total</td>
+								<td t-if="o.currency_id" t-out="o.currency_id.name"/>
+								<td t-if="price_subtotal">
+									<strong t-out="fm_cur.format(price_subtotal)"/>
+								</td>
+							</tr>
+							<tr style="text-align:left !important;">
+								<td style='border-top:hidden;border-bottom:hidden;'></td>
+								<td>VAT</td>
+								<td t-out="o.currency_id.name"/>
+								<t t-if="len(tax_totals['subtotals'])>0">
+									<t
+											t-foreach="tax_totals['groups_by_subtotal']['Untaxed Amount']"
+											t-as="amount_by_group">
+										<td>
+											<strong
+													t-out="fm_cur.format(amount_by_group['tax_group_amount'])"/>
+										</td>
+									</t>
+								</t>
+								<t t-else="">
+									<td>
+										<strong t-out='fm_cur.format(0)'/>
+									</td>
+								</t>
+							</tr>
+							<tr style="text-align:left !important;">
+								<td style='border-top:hidden;border-bottom:hidden;'></td>
+								<td>Discount</td>
+								<td t-out="o.currency_id.name"/>
+								<td>
+									<strong t-out="fm_cur.format(total_discount if len(tax_totals['subtotals'])>0 else price_subtotal-o.amount_total)"/>
+								</td>
+							</tr>
+							<tr style="text-align:left !important;">
+								<td style='border-top:hidden;border-bottom:hidden;'></td>
+								<td>Total</td>
+								<td t-out="o.currency_id.name"/>
+								<td>
+									<strong t-out="fm_cur.format(price_subtotal-(price_subtotal-o.amount_total))"/>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class=" pt-5">
+					<div class="row">
+						<div class="col-6 pl-5">
+							<h6>Date......../........./...........</h6>
+							<h6>Customer</h6>
+						</div>
+						<div class="col-6 pr-5">
+							<h6 style="text-align: right;">Date......../........./..........</h6>
+							<h6 style="text-align: right;">Accounting Manager</h6>
+						</div>
+					</div>
+				</div>
+				<t t-call="lo_accounting_enhancement.footer_2kkm"/>
+			</div>
+		</t>
+	</template>
+	<template id="report_invoice_account_taladlao">
+		<t t-call="web.html_container">
+			<t t-foreach="docs" t-as="o">
+				<t t-set="lang" t-value="o.partner_id.lang"/>
+				<t t-call="lo_accounting_enhancement.report_invoice_account_taladlaos" t-lang="lang"/></t>
+		</t>
+	</template>
+	<record id="invoice_manager_kokkok_id" model="ir.actions.report">
+		<field name="name">Invoice For Account</field>
+		<field name="model">account.move</field>
+		<field name="binding_model_id" ref="account.model_account_move"/>
+		<field name="report_type">qweb-pdf</field>
+		<field name="report_name">lo_accounting_enhancement.report_invoice_account_taladlao</field>
+		<field name="report_file">lo_accounting_enhancement.report_invoice_account_taladlao</field>
+		<field name="paperformat_id" ref="lo_accounting_enhancement.paperformat_for_kokkok"/>
+		<field name="print_report_name">('Invoice - %s' % (object.name))</field>
+		<field name="attachment">('Invoice.pdf')</field>
+		<field name="binding_type">report</field>
+	</record>
+</odoo>

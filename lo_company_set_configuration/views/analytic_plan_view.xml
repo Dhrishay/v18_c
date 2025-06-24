@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id='analytic_plan_view_inherit_analytic_cr' model="ir.ui.view">
+        <field name="name">analytic.plan.view.analytic.cr</field>
+        <field name='model'>account.analytic.plan</field>
+        <field name='inherit_id' ref="analytic.account_analytic_plan_form_view"/>
+        <field name='arch' type='xml'>
+            <xpath expr="//field[@name='color']" position='after'>
+               <field name="company_id"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

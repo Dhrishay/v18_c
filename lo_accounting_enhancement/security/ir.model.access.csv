@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+lo_accounting_enhancement.access_kke_delivery_type,access_kke_delivery_type,lo_accounting_enhancement.model_kke_delivery_type,base.group_user,1,1,1,1
+access_check_branch_balance_wizard,check.branch.balance.wizard,model_check_branch_balance_wizard,base.group_user,1,1,1,1
+access_check_main_balance_wizard,check.main.balance.wizard,model_check_main_balance_wizard,base.group_user,1,1,1,1

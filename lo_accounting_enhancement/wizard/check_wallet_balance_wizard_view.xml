@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="check_branch_wallet_form" model="ir.ui.view">
+        <field name="name">check.branch.balance.wizard.form</field>
+        <field name="model">check.branch.balance.wizard</field>
+        <field name="arch" type="xml">
+            <form string="POS KKM">
+                <group>
+                    
+                </group>
+                <footer>
+                    <button name="action_confirm" string="Confirm" type="object"  class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>    
+    </record>
+
+    <record id="action_check_branch_wallet_wizard" model="ir.actions.act_window">
+        <field name="name">Check Branch Wallet Wizard</field>
+        <field name="res_model">check.branch.balance.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="check_branch_wallet_form"/>
+        <field name="target">new</field>
+    </record>
+
+
+
+
+    <record id="action_check_main_wallet_wizard_form" model="ir.ui.view">
+        <field name="name">check.main.balance.wizard.form</field>
+        <field name="model">check.main.balance.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Check Wallet Balance">
+                <group>
+                    
+                </group>
+                <footer>
+                    <button name="action_confirm" string="Confirm" type="object"  class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>    
+    </record>
+
+    <record id="action_check_main_wallet_wizard" model="ir.actions.act_window">
+        <field name="name">Check KokkokM Wallet Wizard</field>
+        <field name="res_model">check.main.balance.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="action_check_main_wallet_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+
+<!--     <menuitem
+        id="check_balance_menu_item"
+        name="Check Wallet Balance"
+        parent="account.menu_finance_entries"
+        sequence="20">
+        <menuitem id="check_main_wallet_balance_menu" name="Check KokkokM Wallet" action="action_check_main_wallet_wizard" sequence="10"/>
+        <menuitem id="check_batch_wallet_balance_menu" name="Check Branch Wallet" action="action_check_branch_wallet_wizard" sequence="20"/>
+    </menuitem> -->
+</odoo>

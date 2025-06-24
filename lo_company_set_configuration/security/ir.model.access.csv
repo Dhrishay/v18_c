@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_analytic_create_company_wizard,access_analytic_create_company_wizard,model_analytic_create_company_wizard,base.group_user,1,1,1,1
+access_analytic_plan_company_line,access_analytic_plan_company_line,model_analytic_plan_company_line,base.group_user,1,1,1,1
+access_company_create_analytic_plan,access_company_create_analytic_plan,model_company_create_analytic_plan,base.group_user,1,1,1,1
+access_analytic_create_sub_company_wizard,access_analytic_create_sub_company_wizard,model_analytic_create_sub_company_wizard,base.group_user,1,1,1,1
+access_sale_zone_ordering,access_sale_zone_ordering,model_sale_zone_ordering,base.group_user,1,1,1,1
+access_res_district,access_res_district,model_res_district,base.group_user,1,1,1,1

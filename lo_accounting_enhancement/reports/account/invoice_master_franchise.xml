@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="kokkok_master_fc_inv_cust_tmpl">
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id"></t>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"></t>
+        </t>
+
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <div class="article" t-att-data-oe-model="doc and doc._name" t-att-data-oe-id="doc and doc.id" t-att-data-oe-lang="doc and doc.env.context.get('lang')">
+                    <div class="page">
+                        <div class="oe_structure" />
+
+                        <!-- <header> -->
+                        <div class='row'>
+                            <div class='col-12' >
+                                <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" alt="Logo"  style="max-height: 80px; float: left;"/>
+                                <!-- <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" style="max-height: 80px; float: left;" /> -->
+                                <br/>
+                                <br/>
+                                <br/>
+                                <div style="margin: 20px 0; border-bottom: 2px solid black; width: 100%;"></div>
+                            </div>
+                        </div>
+                        <!-- <header> -->
+                        <br/>
+                        <!-- ຫົວຂໍ້ໃຫ່ຍ -->
+                        <div class="text-center" style=" ">
+                            <span style="font-family:Saysettha OT, sahadeva;;font-size:30px;">
+                                <b> ໃບເກັບເງິນ</b>
+                            </span>
+                            <br/>
+                            <span style="font-family: Time New Roman;font-size:24px;"> Invoice</span>
+                        </div>
+                        <!-- ຫົວຂໍ້ໃຫ່ຍ -->
+                        <!-- ລາຍລະອຽດ -->
+                        <div class="row">
+                            <div class="col-6">
+
+                                <div class="text-left" style="font-size: 16px; padding-top: 5px; ">
+                                    <span style="font-family:Saysettha OT, sahadeva;;">ໃບເກັບເງິນເລກທີ /</span>
+                                    <span> Invoice No.: </span>
+                                    <span style="color: #FF0000; padding-left: 25px;" t-field="doc.name" />
+                                </div>
+                                <div class="text-left" style="font-size: 14px;">
+                                    <div style="color: #002060; font-size: 16px;">
+                                        <span style="font-family:Saysettha OT, sahadeva;;"> ສາຂາຈຳໜາຍ / Franchisee: </span>
+                                        <span t-out="doc.company_id.name" />
+                                    </div>
+                                    <div>
+                                        <t t-if="doc.partner_id.street">
+                                            <t t-out="doc.partner_id.street" />
+ .
+                                            <t t-out="doc.partner_id.city" />
+                                        </t>
+                                    </div>
+                                    <div>
+                                        <span style="font-family:Saysettha OT, sahadeva;;">ເບິໂທ / </span>
+                                    Tel: <t t-out="doc.partner_id.mobile" />
+ ,                                    <t t-out="doc.partner_id.phone" />
+                                    <br />
+                                    Email: <t t-out="doc.partner_id.email" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class='col-1'></div>
+                        <div class="col-5">
+
+                            <div class="row pt-2" style="font-size: 16px; margin-top: 10px; ">
+                                <div class="col-12 text-left">
+                                    <div>
+                                        <span style="font-family:Saysettha OT, sahadeva;;">ວັນທີ / </span> Date : 
+                                        <span style="color: #002060;" t-if="doc.invoice_date" t-field="doc.invoice_date" t-options='{"format": "dd/MM/yyyy"}' />
+                                        <span t-else=""> - </span>
+                                    </div>
+                                    <div>
+                                        <span style="font-family:Saysettha OT, sahadeva;;">ກຳນົດຈ່າຍ / </span>Due Date : 
+                                        <span style="color: #002060;" t-if="doc.invoice_date_due" t-field="doc.invoice_date_due" t-options='{"format": "dd/MM/yyyy"}' />
+                                        <span t-else=""> - </span>
+                                    </div>
+                                    <div>
+                                        <span style="font-family:Saysettha OT, sahadeva;;">ອ້າງອິງ / </span>REF SO : 
+                                        <span style="color: #002060;">
+                                            <t t-if="doc.invoice_origin" t-esc="doc.invoice_origin" />
+                                            <t t-elif="doc.sale_order_id" t-esc="doc.sale_order_id" />
+                                            <t t-else=""> - </t>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ລາຍລະອຽດ -->
+                    <!-- table...1 -->
+                    <br/>
+                    <t t-set="subtotal" t-value="0" />
+                    <table class="text-center " width="100%" style=" font-family: Saysettha OT, sahadeva; ">
+                        <thead class="text-center ">
+
+                            <tr>
+                                <th height="40" width="4%" style="font-size: 14px; border: 1px solid #000000; vertical-align: middle;"> ລຳດັບ                                    <br/>
+ No
+                                </th>
+                                <th height="40" width="12%" style="font-size: 14px; border: 1px solid #000000; vertical-align: middle;">  ບາໂຄດ                                    <br />
+Barcode
+                                </th>
+                                <th height="40" width="25%" style="font-size: 14px; border: 1px solid #000000; vertical-align: middle;">ຊື່ສິນຄ້າ                                    <br/>
+ Product Name
+                                </th>
+                                <th height="40" width="6%" style="font-size: 14px; border: 1px solid #000000; vertical-align: middle;">
+                                            ຫົວໜ່ວຍ                                    <br/>
+Unit
+                                </th>
+                                <th height="40" width="9%" style="font-size: 14px; border: 1px solid #000000; vertical-align: middle;">
+                                            ລາຄາ                                    <br/>
+Price
+                                </th>
+                                <th height="40" width="6%" style="font-size: 14px; border: 1px solid #000000; vertical-align: middle;">
+                                            ຈຳນວນ                                    <br/>
+Qty
+                                </th>
+                                <th height="40" width="13%" style="font-size: 14px; border: 1px solid #000000; vertical-align: middle;">
+                                            ລວມ                                    <br/>
+Total
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="text-left" style="font-size: 12px;">
+                            <!-- new SET -->
+                            <t t-set="price_subtotal" t-value="0" />
+                            <t t-set="total" t-value="0" />
+                            <!-- new SET -->
+
+                            <t t-set="total" t-value="0" />
+                            <t t-set="c_p" t-value="0" />
+                            <t t-set="S_p" t-value="0" />
+                            <t t-set="S_p_c" t-value="0" />
+                            <t t-set="S_p_ct" t-value="0" />
+                            <t t-set="return_total" t-value="0" />
+                            <t t-set="i" t-value="1" />
+                            <t t-foreach="doc.invoice_line_ids" t-as="line">
+                                <t t-set="price_subtotal_witout_disc" t-value="line.quantity*line.price_unit" />
+                                <t t-set="price_subtotal" t-value="price_subtotal+price_subtotal_witout_disc" />
+                                <t t-if="line.product_id.is_product_discount != True">
+                                    <t t-if="line.product_id.is_product_return != True">
+                                        <tr style="border: 0px solid black;">
+                                            <td class="text-center p-1" style="border: 1px solid #000000; vertical-align: middle;">
+                                                <t t-out="i" />
+                                            </td>
+                                            <td class="text-left p-1" style="border: 1px solid #000000; vertical-align: middle;">
+                                                <t t-out="line.product_id.barcode" />
+                                            </td>
+                                            <td class="text-left p-1" style="border: 1px solid #000000; vertical-align: middle;">
+                                                <t t-out="line.name" />
+                                            </td>
+                                            <td class="text-center p-1" style="border: 1px solid #000000; vertical-align: middle;">
+                                                <t t-out="line.product_uom_id.name" />
+                                            </td>
+                                            <td class="text-right p-1" style="border: 1px solid #000000; vertical-align: middle;">
+                                                <t t-out="'{:,.2f}'.format(line.price_unit)" />
+                                            </td>
+                                            <td class="text-center p-1" style="border: 1px solid #000000; vertical-align: middle;">
+                                                <t t-out="'{:,.2f}'.format(line.quantity)" />
+                                            </td>
+                                            <td class="text-right p-1" style="border: 1px solid #000000; vertical-align: middle; padding-right: 5px;">                                                
+                                                <t t-out="'{:,.2f}'.format(price_subtotal_witout_disc)" />
+                                            </td>
+                                        </tr>
+                                        <t t-set="subtotal" t-value="subtotal + line.price_subtotal" />
+                                    </t>
+                                    <t t-if="line.product_id.is_product_return == True">
+                                        <t t-set="return_total" t-value="return_total + line.price_subtotal" />
+                                    </t>
+                                </t>
+                                <t t-set="i" t-value="i+1" />
+                            </t>
+                            <tr style="border-left:0px;border-right:0px;">
+                                <td height="15" class="text-center p-1" style="border-left:0px;border-right:0px; vertical-align: middle;"></td>
+                                <td class="text-left p-1" style="border-left:0px;border-right:0px; vertical-align: middle;"></td>
+                                <td class="text-left p-1" style="border-left:0px;border-right:0px; vertical-align: middle;"></td>
+                                <td class="text-center p-1" style="border-left:0px;border-right:0px; vertical-align: middle;"></td>
+                                <td class="text-center p-1" style="border-left:0px;border-right:0px; vertical-align: middle;"></td>
+                                <td class="text-right p-1" style="border-left:0px;border-right:0px; vertical-align: middle;"></td>
+                                <td class="text-center p-1" style="border-left:0px;border-right:0px; vertical-align: middle;"></td>
+                                <td class="text-right p-1" style="border-left:0px;border-right:0px; vertical-align: middle; padding-right: 5px;"></td>
+                            </tr>
+                            <tr>
+                                <td height="25" class="text-center p-1" style="border-left:0px;border-right:0px;border-top:0px;border-bottom:0px; vertical-align: middle;" colspan="5"></td>
+                                <td class="text-left p-1" style="border: 1px solid #000000; vertical-align: middle;" colspan="1">
+                                                    Subtotal
+                                </td>
+                                <td class="text-center p-1" style="border: 1px solid #000000; vertical-align: middle; padding-right: 5px;">
+                                    <span style="font-size:12px;" t-field="doc.currency_id.name" />
+                                </td>
+                                <td class="text-right p-1" style="border: 1px solid #000000; vertical-align: middle; padding-right: 5px;">
+                                    <strong>
+                                        <t t-out="'{:,.0f}'.format(price_subtotal)" />
+                                    </strong>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td height="25" class="text-center p-1" style="border-left:0px;border-right:0px;border-top:0px;border-bottom:0px; vertical-align: middle;" colspan="5"></td>
+                                <td class="text-left p-1" style="border: 1px solid #000000; vertical-align: middle;" colspan="1">
+                                                    VAT %
+                                </td>
+                                <td class="text-center p-1" style="border: 1px solid #000000; vertical-align: middle; padding-right: 5px;">
+                                                    10%
+                                </td>
+                                <td class="text-right p-1" style="border: 1px solid #000000; vertical-align: middle; padding-right: 5px;">
+                                    <strong>
+                                        <t t-out="'{:,.0f}'.format(doc.amount_tax)" />
+                                    </strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="25" class="text-center p-1" style="border-left:0px;border-right:0px;border-top:0px;border-bottom:0px; vertical-align: middle;" colspan="5"></td>
+                                <td class="text-left p-1" style="border: 1px solid #000000; vertical-align: middle;" colspan="1">
+                                                    Discount
+                                </td>
+                                <td class="text-center p-1" style="border: 1px solid #000000; vertical-align: middle; padding-right: 5px;">
+                                    <span style="font-size:12px;" t-field="doc.currency_id.name" />
+                                </td>
+                                <td class="text-right p-1" style="border: 1px solid #000000; vertical-align: middle; padding-right: 5px;">
+                                    <strong>
+
+                                        <t t-out="'{:,.0f}'.format(price_subtotal-doc.amount_total)" />
+                                    </strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="25" class="text-center p-1" style="border-left:0px;border-right:0px;border-top:0px;border-bottom:0px; vertical-align: middle;" colspan="5"></td>
+                                <td class="text-left p-1" style="border: 1px solid #000000; vertical-align: middle;" colspan="1">
+                                                    Total
+                                </td>
+                                <td class="text-center p-1" style="border: 1px solid #000000; vertical-align: middle; padding-right: 5px;">
+                                    <span style="font-size:12px;" t-field="doc.currency_id.name" />
+                                </td>
+                                <td class="text-right p-1" style="border: 1px solid #000000; vertical-align: middle; padding-right: 5px;">
+                                    <strong>
+                                        <t t-out="'{:,.0f}'.format(doc.amount_total)" />
+                                    </strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- table...1 -->
+
+                    <div class="row">
+                        <table style="width: 53%; margin-left: 10px; margin-top: -113px; border-left:0px; border-right:0px;">
+                            <tr>
+                                <td height="128" class="text-left" style="font-size: 14px; color: black; border: 1px solid #000000; width: 450px; padding-left:5px; border-right:0px;">
+
+                                    <br />
+                                    <br />
+                                    <span> AccNumber: <span t-out="doc.account_id.name" />
+                                    </span>
+                                    <br />
+                                    <br />
+                                                 AccName: <span t-out="doc.account_id.bank_account_id.acc_holder_name" />
+                                </td>
+                                <td class="text-center" style="border: 1px solid #000000; width: 450px; padding-left:80px; border-left:0px;">
+                                    <br />
+                                    <img class="img" src="/lod_report_kokkok/static/image/qrkkm.jpeg" style="height:55%;width:65%;" />
+                                    <br />
+                                    <br />
+                                    <span style="color:white" t-out="doc.account_id.name" />
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td height="128"></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <table style="width: 53%; margin-left: 10px; margin-top: -135px; border-left:0px; border-right:0px;">
+                            <tr>
+                                <td height="128" class="text-left" style="font-size: 16px; color: black; border: 1px solid #000000; width: 450px; padding-left:5px; border-right:0px;">
+
+                                    <br />
+                                    <br />
+                                    <span> AccNumber: <span t-out="doc.account_ids.name" />
+                                    </span>
+                                    <br />
+                                    <br />
+                                                 AccName: <span t-out="doc.account_ids.bank_account_id.acc_holder_name" />
+                                </td>
+                                <td class="text-center" style="border: 1px solid #000000; width: 450px; padding-left:80px; border-left:0px;">
+                                    <br />
+                                    <img class="img" src="/lod_report_kokkok/static/image/qrkkm.jpeg" style="height:55%;width:65%;" />
+                                    <br />
+                                    <br />
+                                    <span style="color:white" t-out="doc.account_id.name" />
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td height="50"></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class='row' style="font-size:16px;">
+                        <div class='col-5'>
+                            <span style="font-family:Saysettha OT, sahadeva;; text-decoration: underline;">
+                                <b>ສາຂາຈຳໜ່າຍ/</b>
+                            </span>
+                            <span style="font-family: Time New Roman; text-decoration: underline;">
+                                <b>Franchisee  </b>
+                            </span>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <span style="font-family:Saysettha OT, sahadeva;;"> ຊື່ເເຈ້ງ...............................................  </span>
+                            <br/>
+                            <br/>
+                            <span style="font-family:Saysettha OT, sahadeva;;"> ວັນທີ /  </span>
+                            <span style="font-family: Time New Roman;">Date ............/............/............  </span>
+                        </div>
+                        <div class='col-2'></div>
+                        <div class='col-5 '>
+                            <span style="font-family:Saysettha OT, sahadeva;; text-decoration: underline;">
+                                <b>ຕົວແທ່ນຈຳໜ່າຍ /</b>
+                            </span>
+                            <span style="font-family: Time New Roman; text-decoration: underline;">
+                                <b> Master Franchise </b>
+                            </span>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <span style="font-family:Saysettha OT, sahadeva;;"> ຊື່ເເຈ້ງ...............................................  </span>
+                            <br/>
+                            <br/>
+                            <span style="font-family:Saysettha OT, sahadeva;;"> ວັນທີ /  </span>
+                            <span style="font-family: Time New Roman;">Date ............/............/............  </span>
+
+                        </div>
+                    </div>
+
+                    <div class="footer">
+                        <div class="row pt-2" style="font-size: 12px;">
+                            <div class="col-10">
+                                <strong>
+                                    <span style="font-family:Saysettha OT, sahadeva;">
+                                        <!-- <span t-field="user.company_id.address"/> -->
+                                        <span t-field="user.company_id"/>
+                                    </span>
+                                    <br />
+ <!-- Tel: <span t-field="user.company_id.telephone"/> -->
+ ,                                <span t-field="company.partner_id.email" />
+ ,                                <span t-field="company.partner_id.website" />
+                            </strong>
+                        </div>
+                        <div class="col-2 text-right">
+                            <strong>Page: <span class="page" />
+ of <span class="topage" />
+                        </strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</t>
+</t>
+</template>
+
+</odoo>
