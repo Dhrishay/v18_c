@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="stock_adjustment_report_template">
+        <t t-call="web.external_layout">
+            <div class="page">
+                <t t-set="store" t-value="True"/>
+                <div t-if="store">
+                    <div>
+                        <h2 class="text-center">Stock Adjustment Report</h2>
+                    </div>
+                    <div class="row mt-5" style="padding: 30px;">
+                        <div class="col-3">
+                            <b>Store Name</b>
+                            <div t-esc="data.get('company_name')"></div>
+                        </div>
+                        <div class="col-3">
+                            <b>Address</b>
+                            <p t-esc="data.get('company_address')"/>
+                        </div>
+                        <div>
+                            <strong>Date Range:</strong>
+                            <div>
+                                <span t-esc="data.get('start_date')"/>
+                                to
+                                <span t-esc="data.get('end_date')"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <t t-set="store" t-value="False"/>
+                <div class="oe_structure"></div>
+                <table class="o_has_total_table table o_main_table table-borderless">
+                    <thead style="display: table-row-group">
+                        <tr>
+                            <th>No.</th>
+                            <th>Store Code</th>
+                            <th>Div Name</th>
+                            <th>Dept Name</th>
+                            <th>Sub-Dept Name</th>
+                            <th>Product ID</th>
+                            <th>Barcode</th>
+                            <th>Description</th>
+                            <th>Reason Adjustment</th>
+                            <th>ADJ-Qty</th>
+                            <th>Cost of unit</th>
+                            <th>Cost Amount</th>
+                            <th>Price Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody class="sale_tday">
+                        <t t-set="index" t-value="0"/>
+                        <t t-foreach="docs" t-as="doc">
+                            <t t-foreach="doc.order_line_ids" t-as="o">
+                                <t t-set="cost_amount" t-value="0"/>
+                                <tr>
+                                    <td>
+                                        <t t-out="index + 1"/>
+                                        <t t-set="index" t-value="index + 1"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.company_id.pc_code"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.product_template_id.categ_id.division_name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.product_template_id.categ_id.department_name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.product_template_id.categ_id.sub_department_name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.product_template_id.default_code"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.product_barcode"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.product_template_id"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.description"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.diff_qty"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.product_template_id.standard_price"/>
+                                    </td>
+                                    <td>
+                                        <t t-set="cost_amount"
+                                           t-value="o.diff_qty * o.product_template_id.standard_price"/>
+                                        <t t-out="'%.2f' % cost_amount"/>
+                                    </td>
+                                    <td>
+                                        <t t-set="sale_amount" t-value="o.diff_qty * o.product_template_id.list_price"/>
+                                        <t t-out="'%.2f' % sale_amount"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+    <template id="stock_adjustment_report">
+        <t t-call="web.html_container">
+            <t t-call="lo_stock_adjustment_report.stock_adjustment_report_template"/>
+        </t>
+    </template>
+
+    <record id="paperformat_a4_stock_adjustment" model="report.paperformat">
+        <field name="name">A4 stock_ending_report</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="orientation">Landscape</field>
+        <field name="page_width">302</field>
+        <field name="margin_top">24</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">20</field>
+        <field name="dpi">100</field>
+    </record>
+
+    <record id="action_stock_adjustment_report" model="ir.actions.report">
+        <field name="name">Stock Adjustment Report PDF</field>
+        <field name="model">multi.scrap</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lo_stock_adjustment_report.stock_adjustment_report</field>
+        <field name="report_file">lo_stock_adjustment_report.stock_adjustment_report</field>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'Stock Adjustment Report'</field>
+        <field name="paperformat_id" ref="lo_stock_adjustment_report.paperformat_a4_stock_adjustment"/>
+    </record>
+</odoo>

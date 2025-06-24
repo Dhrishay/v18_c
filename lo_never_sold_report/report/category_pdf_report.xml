@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <template id="lo_never_sold_report_template_data">
+        <t t-call="web.external_layout">
+            <div class="page">
+                <h2>
+                    Never Been Sold Report by 
+                    <t t-if="group_by == 'category'">Category</t>
+                    <t t-else="">Vendor</t>
+                </h2>
+                <p>
+                    <strong>Store Name:</strong>
+                    <t t-esc="store_name"/>
+                </p>
+                <p>
+                    <strong>Date:</strong>
+                    <t t-esc="start_date"/>
+                    to
+                    <t t-esc="end_date"/>
+                </p>
+                <t t-if="group_by == 'category'">
+                    <table t-if="datas" class="table table-bordered">
+                        <thead style="display: table-row-group">
+                            <tr>
+                                <th style="text-align: center;">
+                                    No
+                                </th>
+                                <th>
+                                    Div Name
+                                </th>
+                                <th>
+                                    Dept Name
+                                </th>
+                                <th>
+                                    Sub-dept Name
+                                </th>
+                                <th>
+                                    Product ID
+                                </th>
+                                <th>Barcode</th>
+                                <th>
+                                    Description
+                                </th>
+                                <th>
+                                    Store No
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="index" t-value="0"/>
+                            <t t-foreach="datas" t-as="data">
+                                <tr>
+                                    <td style="text-align: center;">
+                                        <t t-esc="index + 1"/>
+                                        <t t-set="index" t-value="index + 1"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="data['division'] or ''"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="data['department'] or ''"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="data['sub_department'] or ''"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="data['product_default_code'] or ''"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="data['barcode'] or ''"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="data['description']['en_US'] or ''"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="store_no"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </t>
+                <t t-else="">
+                    <table t-if="datas" class="table table-bordered">
+                        <thead style="display: table-row-group">
+                            <tr>
+                                <th style="text-align: center;">
+                                    No
+                                </th>
+                                <th>
+                                    Vendor Code
+                                </th>
+                                <th>
+                                    Vendor Name
+                                </th>
+                                <th>
+                                    Product ID
+                                </th>
+                                <th>Barcode</th>
+                                <th>
+                                    Description
+                                </th>
+                                <th>
+                                    Store No
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="index" t-value="0"/>
+                            <t t-foreach="datas" t-as="data">
+                                <tr>
+                                    <td style="text-align: center;">
+                                        <t t-esc="index + 1"/>
+                                        <t t-set="index" t-value="index + 1"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="data['vendor_code'] or ''"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="data['vendor_name'] or ''"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="data['product_default_code'] or ''"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="data['barcode'] or ''"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="data['description']['en_US'] or ''"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="store_no"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </t>
+            </div>
+        </t>
+    </template>
+    <template id="lo_never_sold_report">
+        <t t-call="web.html_container">
+            <t t-call="lo_never_sold_report.lo_never_sold_report_template_data"/>
+        </t>
+    </template>
+
+    <record id="lo_never_sold_report_paperformat_a4" model="report.paperformat">
+        <field name="name">A4 Landscape Stock</field>
+        <field name="default" eval="True"/>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">9</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">14</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">35</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_lo_never_sold_report" model="ir.actions.report">
+        <field name="name">Never Been Sold Report PDF</field>
+        <field name="model">never.sold.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="binding_model_id" ref="model_never_sold_wizard"/>
+        <field name="report_name">lo_never_sold_report.lo_never_sold_report</field>
+        <field name="report_file">lo_never_sold_report.lo_never_sold_report</field>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'Never Been Sold Report'</field>
+        <field name="paperformat_id" ref="lo_never_sold_report.lo_never_sold_report_paperformat_a4"/>
+    </record>
+
+
+    <record id="action_lo_never_sold_report_xlsx" model="ir.actions.report">
+        <field name="name">Never Been Sold Report XLSX</field>
+        <field name="model">never.sold.wizard</field>
+        <field name="report_type">xlsx</field>
+        <field name="binding_model_id" ref="model_never_sold_wizard"/>
+        <field name="report_name">lo_never_sold_report.report_never_sold_xlsx</field>
+        <field name="report_file">lo_never_sold_report.report_never_sold_xlsx</field>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'Never Been Sold Report'</field>
+    </record>
+
+
+</odoo>

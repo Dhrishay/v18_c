@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="action_report_action_stock_sumary" model="ir.actions.report">
+        <field name="name">Stock Adjustment Report (xlxs)</field>
+        <field name="model">multi.scrap</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">lo_stock_adjustment_report.adj_rpt_tpl</field>
+        <field name="report_file">lo_stock_adjustment_report.adj_rpt_tpl</field>
+        <field name="print_report_name">Stock Adjustment Report </field>
+        <field name="binding_type">report</field>
+    </record>  
+</odoo>

@@ -1,0 +1,43 @@
+<odoo>
+    <record id="stock_adjustment_report_wiz_form" model="ir.ui.view">
+        <field name="name">stock.adjustment.report.wiz.form</field>
+        <field name="model">stock.adjustment.report.wiz</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="start_date"/>
+                        <field name="reason_code_id"/>
+                        <field name="export_format"/>
+                    </group>
+                    <group>
+                        <field name="end_date"/>
+                        <field name="company_id"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_download_adjustment_report" type="object" string="Download Report"
+                            class="oe_highlight"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action to Open the Wizard -->
+    <record id="action_stock_adjustment_report_wiz" model="ir.actions.act_window">
+        <field name="name">Stock Adjustment Report</field>
+        <field name="res_model">stock.adjustment.report.wiz</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="stock_adjustment_report_wiz_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Menu Item to Open the Wizard -->
+    <menuitem id="menu_stock_adjustment_report"
+              name="Stock Adjustment Report"
+              parent="stock.menu_warehouse_report"
+              action="action_stock_adjustment_report_wiz"
+              sequence="10"/>
+
+</odoo>

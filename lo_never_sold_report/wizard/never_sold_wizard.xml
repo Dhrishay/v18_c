@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_never_sold_wizard_form" model="ir.ui.view">
+        <field name="name">never.sold.wizard.form</field>
+        <field name="model">never.sold.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="start_date"/>
+                    </group>
+                    <group>
+                        <field name="end_date"/>
+                    </group>
+                    <group invisible="group_by == 'vendor'">
+                        <field name="report_by" required="group_by == 'category'"/>
+                    </group>
+                    <group invisible="group_by == 'category'">
+                        <field name="vendor_report_by" required="group_by == 'vendor'"/>
+                    </group>
+                    <group invisible="vendor_report_by == 'all'">
+                        <field name="vendor_ids" required="vendor_report_by == 'vendor'" widget="many2many_tags"/>
+                    </group>
+                    <group>
+                        <field name="company_id"/>
+                    </group>
+                    <group>
+                        <field name="export_format"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_download_report" type="object" string="Download Report" class="oe_highlight"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_never_sold_wizard" model="ir.actions.act_window">
+        <field name="name">Never Sold Category Report</field>
+        <field name="res_model">never.sold.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_never_sold_wizard_form"/>
+        <field name="target">new</field>
+        <field name="context">{'default_group_by': 'category'}</field>
+    </record>
+
+    <record id="action_never_sold_vendor_wizard" model="ir.actions.act_window">
+        <field name="name">Never Sold Vendor Report</field>
+        <field name="res_model">never.sold.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_never_sold_wizard_form"/>
+        <field name="target">new</field>
+        <field name="context">{'default_group_by': 'vendor'}</field>
+    </record>
+
+
+    <menuitem id="menu_never_sold_report"
+              name="Never Sold Category Report"
+              parent="stock.menu_warehouse_report"
+              action="action_never_sold_wizard"
+              sequence="20"/>
+
+    <menuitem id="menu_never_sold_vendor_report"
+              name="Never Sold Vendor Report"
+              parent="stock.menu_warehouse_report"
+              action="action_never_sold_vendor_wizard"
+              sequence="21"/>
+</odoo>

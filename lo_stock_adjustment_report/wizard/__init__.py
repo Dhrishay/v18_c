@@ -1,0 +1,1 @@
+from . import stock_adjustment_report_wiz
